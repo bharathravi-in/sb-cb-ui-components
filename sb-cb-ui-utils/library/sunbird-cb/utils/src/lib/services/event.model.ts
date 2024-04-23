@@ -198,6 +198,7 @@ export namespace WsEvents {
   export enum EnumInteractTypes {
     CLICK = 'click',
   }
+
   export enum EnumInteractSubTypes {
     COURSE_TAB = 'course-tab',
     CAREER_TAB = 'career-tab',
@@ -207,5 +208,29 @@ export namespace WsEvents {
     DISCUSS_TAB = 'discuss-tab',
     EVENTS_TAB = 'events-tab',
     SIDE_MENU = 'side-menu',
+    HOME_PAGE_STRIP_TABS = 'home-page-strip-tabs',
+    HUB_MENU = 'hub-menu',
+    PORTAL_NUDGE = 'portal_nudge',
+    CERTIFICATE = 'certificate',
   }
+  export interface ITodayEvents {
+    eventName: string,
+    eventStartTime?: string
+    eventEndTime?: string
+    eventStartDate?: string
+    eventCreatedOn?: string
+    eventDuration?: string
+    eventjoined?: string,
+    eventThumbnail?: string
+    pastevent?: boolean
+    event?: IEventsDetails
+  }
+
+  export interface IEventsDetails {
+    contentType?: string
+    identifier?: string
+    description?: string
+    resourceType?: string
+  }
+
 }

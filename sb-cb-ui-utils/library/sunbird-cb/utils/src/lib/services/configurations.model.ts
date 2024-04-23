@@ -25,6 +25,7 @@ export namespace NsInstanceConfig {
     defaultThemeClass: string
     defaultLocale: string
     disablePidCheck?: boolean
+    isMultilingualEnabled?: boolean
     fontSizes: IFontSize[]
     isContentDownloadAvailable: boolean
     indexHtmlMeta: IIndexHtmlMeta
@@ -38,6 +39,7 @@ export namespace NsInstanceConfig {
     mailIds: IMailIds
     details: IDetails
     validMailIdExtensionsForMailMe: string[]
+    overrideThemeChanges: IOverrideThemeChanges
     defaultFeatureConfigs: {
       error: string
     }
@@ -61,8 +63,19 @@ export namespace NsInstanceConfig {
     forgotPasswordConfig?: IForgotPassword
     hubs: IHubs[]
     courseContentPath?: string
+    portalUrls: IPortalUrls | undefined
+    positions: any
+    websitelanguages: any[]
+    profileTimelyNudges: any
   }
-
+  export interface IPortalUrls {
+    igot: string,
+    spv: string,
+    mdo: string,
+    cbc: string,
+    cbp: string,
+    frac: string
+  }
   export interface IForgotPassword {
     local?: string
     enterprise?: string
@@ -81,7 +94,8 @@ export namespace NsInstanceConfig {
     desc: string
     hubname: string
     icon: string
-    path: string
+    path: string,
+    order: number
   }
   export interface IIndexHtmlMeta {
     description?: string
@@ -132,9 +146,26 @@ export namespace NsInstanceConfig {
     primary: string
     warn: string
   }
+  export interface IOverrideThemeChanges {
+    isEnabled: boolean
+    desktop: IDesktop
+    mWeb: IMWeb
+  }
+  export interface IDesktop {
+    animationDuration: number
+    logoUrl: string
+    logoText: string
+    logoDisplayTime: number
+    backgroundTheme: string
+  }
+  export interface IMWeb {
+    logoUrl: string
+    logoText: string
+  }
   export interface ILogos {
     app: string
     appTransparent: string
+    appSecondary: string
     aboutFooter: string
     aboutHeader: string
     appBottomNav?: string
@@ -189,6 +220,8 @@ export namespace NsInstanceConfig {
     endpoint: string
     apislug: string
     sid: string
+    publicEndpoint: string
+    protectedEndpoint: string
   }
 }
 
@@ -240,7 +273,6 @@ export namespace NsUser {
   export interface IUserProfile {
     userId: string
     email?: string
-    mobile?: string
     departmentName?: string
     userName?: string
     firstName?: string
@@ -256,6 +288,15 @@ export namespace NsUser {
     source_profile_picture?: null | string
     dealerCode?: null | string
     isManager?: boolean
+    competencies?: any
+    systemTopics?: any
+    desiredTopics?: any
+    desiredCompetencies?: any
+    userRoles?: any
+    profileUpdateCompletion?: number
+    profileImageUrl?: string
+    professionalDetails?: any
+    webPortalLang?: any
   }
 
   export interface INodebbUserProfile {

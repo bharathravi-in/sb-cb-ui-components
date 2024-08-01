@@ -33,13 +33,13 @@ export class PipeCertificateImageURL implements PipeTransform {
         const finalURL = `${this.environment.contentHost}/${this.environment.contentBucket}${mainUrl}`
         return value ? finalURL : ''
       }
-      if (value.indexOf('/igotbm/collection') > -1) {
-        const mainUrl = value && value.split('/igotbm').pop() || ''
+      if (value.indexOf('/igotuat/collection') > -1) {
+        const mainUrl = value && value.split('/igotuat').pop() || ''
         const finalURL = `${this.environment.contentHost}/${this.environment.contentBucket}${mainUrl}`
         return value ? finalURL : ''
       }
-      if (value.indexOf('/igotbm/content') > -1) {
-        const mainUrl = value && value.split('/igotbm').pop() || ''
+      if (value.indexOf('/igotuat/content') > -1) {
+        const mainUrl = value && value.split('/igotuat').pop() || ''
         const finalURL = `${this.environment.contentHost}/${this.environment.contentBucket}${mainUrl}`
         return value ? finalURL : ''
       }
@@ -63,8 +63,8 @@ export class PipeCertificateImageURL implements PipeTransform {
         const finalURL = `${this.environment.contentHost}/${this.environment.contentBucket}${mainUrl}`
         return value ? finalURL : ''
       }
-      if (value.indexOf('/igotbm/profileImage') > -1) {
-        const mainUrl = value && value.split('/igotbm').pop() || ''
+      if (value.indexOf('/igotuat/profileImage') > -1) {
+        const mainUrl = value && value.split('/igotuat').pop() || ''
         const finalURL = `${this.environment.contentHost}/${this.environment.contentBucket}${mainUrl}`
         return value ? finalURL : ''
       }
@@ -82,6 +82,24 @@ export class PipeCertificateImageURL implements PipeTransform {
         const mainUrl = value && value.split('/content').pop() || ''
         const finalURL = `${this.environment.contentHost}/${this.environment.contentBucket}${mainUrl}`
         return value ? finalURL : ''
+      }
+
+      if(this.environment && this.environment.bucketName){
+        if (value.indexOf(`/${this.environment.bucketName}/profileImage`) > -1) {
+          const mainUrl = value && value.split(`/${this.environment.bucketName}`).pop() || ''
+          const finalURL = `${this.environment.contentHost}/${this.environment.contentBucket}${mainUrl}`
+          return value ? finalURL : ''
+        }
+        if (value.indexOf(`/${this.environment.bucketName}/content`) > -1) {
+          const mainUrl = value && value.split(`/${this.environment.bucketName}`).pop() || ''
+          const finalURL = `${this.environment.contentHost}/${this.environment.contentBucket}${mainUrl}`
+          return value ? finalURL : ''
+        }
+        if (value.indexOf(`/${this.environment.bucketName}/collection`) > -1) {
+          const mainUrl = value && value.split(`/${this.environment.bucketName}`).pop() || ''
+          const finalURL = `${this.environment.contentHost}/${this.environment.contentBucket}${mainUrl}`
+          return value ? finalURL : ''
+        }
       }
 
     }

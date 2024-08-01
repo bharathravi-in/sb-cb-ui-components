@@ -216,7 +216,7 @@ $secondary-color: #EF951E;
       // height: $title-line-count * $title-line-height;
       // line-height: $title-line-height;
   
-      word-break: break-all;
+      word-break: break-word;
       white-space: initial;
       margin: 8px 0;
       position: relative;

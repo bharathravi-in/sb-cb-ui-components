@@ -84,7 +84,7 @@ export class PipeCertificateImageURL implements PipeTransform {
         return value ? finalURL : ''
       }
 
-      if(this.environment && this.environment.bucketName){
+      if (this.environment && this.environment.bucketName) {
         if (value.indexOf(`/${this.environment.bucketName}/profileImage`) > -1) {
           const mainUrl = value && value.split(`/${this.environment.bucketName}`).pop() || ''
           const finalURL = `${this.environment.contentHost}/${this.environment.contentBucket}${mainUrl}`

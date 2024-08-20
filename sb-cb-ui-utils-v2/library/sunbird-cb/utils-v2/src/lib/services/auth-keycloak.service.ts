@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http'
-import { Injectable } from '@angular/core'
+import { Inject, Injectable } from '@angular/core'
 import { KeycloakEvent, KeycloakEventType, KeycloakInitOptions, KeycloakService } from 'keycloak-angular'
 import { fromEvent, ReplaySubject } from 'rxjs'
 import { filter } from 'rxjs/operators'
@@ -21,13 +21,16 @@ const storageKey = 'kc'
   providedIn: 'root',
 })
 export class AuthKeycloakService {
+  environment: any
   private loginChangeSubject = new ReplaySubject<boolean>(1)
   constructor(
+    @Inject('environment') environment: any,
     private http: HttpClient,
     private configSvc: ConfigurationsService,
     private keycloakSvc: KeycloakService,
     private msAuthSvc: AuthMicrosoftService,
   ) {
+    this.environment = environment
     this.loginChangeSubject.subscribe((isLoggedIn: boolean) => {
       this.configSvc.isAuthenticated = isLoggedIn
       if (
@@ -180,7 +183,9 @@ export class AuthKeycloakService {
       // window.location.href = '/public/home'
       storage.removeItem(storageKey)
       await this.http.get('/apis/reset').toPromise()
-      await this.http.get('https://admin-test.ecornell.com/saml/logout.do').toPromise()
+      if (this.environment && this.environment.missionKarmayogiPath && this.environment.missionKarmayogiPath.includes('portal.')) {
+        await this.http.get('https://admin-test.ecornell.com/saml/logout.do').toPromise()
+      }
     }
     try {
       sessionStorage.clear()
@@ -190,7 +195,9 @@ export class AuthKeycloakService {
     }
     storage.removeItem(storageKey)
     await this.http.get('/apis/reset').toPromise()
-    await this.http.get('https://admin-test.ecornell.com/saml/logout.do').toPromise()
+    if (this.environment && this.environment.missionKarmayogiPath && this.environment.missionKarmayogiPath.includes('portal.')) {
+      await this.http.get('https://admin-test.ecornell.com/saml/logout.do').toPromise()
+    }
   }
   private addKeycloakEventListener() {
     this.keycloakSvc.keycloakEvents$.subscribe((event: KeycloakEvent) => {

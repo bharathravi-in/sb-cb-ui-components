@@ -1,0 +1,9 @@
+.topSection {
+
+    ::ng-deep.prev {
+        margin-left: 15px!important;
+    }
+    ::ng-deep.next {
+        margin-right: 15px!important;
+    }
+}

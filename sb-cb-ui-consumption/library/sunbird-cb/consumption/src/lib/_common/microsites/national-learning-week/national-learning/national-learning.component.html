@@ -1,4 +1,4 @@
-<div class="container-fluid" id="section-micro-sites">
+<div class="container-fluid white-background nlm-micro-sites" id="nlm-micro-sites">
     <div class="flex flex-col flex-1">
         <ng-container *ngIf="sectionList?.length">
             <ng-container *ngFor="let section of sectionList">
@@ -9,10 +9,14 @@
                                 <ng-container *ngIf="column?.enabled" [ngSwitch]="column?.key">
                                     <ng-container *ngSwitchCase="'topSection'" [ngTemplateOutlet]="topSection"
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
-                                    <!-- <ng-container *ngSwitchCase="'topLearners'" [ngTemplateOutlet]="topLearners"
+                                    <ng-container *ngSwitchCase="'keyHighlightSection'" [ngTemplateOutlet]="keyHighlightSection"
+                                        [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
+                                    <ng-container *ngSwitchCase="'eventsContent'" [ngTemplateOutlet]="eventsContent"
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'mainContent'" [ngTemplateOutlet]="mainContent"
-                                        [ngTemplateOutletContext]="{data: column?.data}"></ng-container> -->
+                                        [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
+                                    <ng-container *ngSwitchCase="'wowContent'" [ngTemplateOutlet]="wowContent"
+                                        [ngTemplateOutletContext]="{data: {contentStrip: column?.data, sectionKey: section.key}}"></ng-container>
                                 </ng-container>
                             </div>
                         </ng-container>
@@ -31,3 +35,73 @@
         </div>
     </div>
 </ng-template>
+
+<ng-template #keyHighlightSection let-data="data">
+    <div class="col-span-12">
+        <div class="flex items-center justify-center">
+            <div class="container">
+                <div class="hidden md:block">
+                    <sb-uic-key-highlights (emptyResponse)="hideKeyHightlight($event, data)"  [formData]="data" [providerId]="providerId" [mode]="'desktop'"></sb-uic-key-highlights>
+                </div>
+                <div class="block md:hidden">
+                    <sb-uic-key-highlights (emptyResponse)="hideKeyHightlight($event, data)"  [formData]="data" [providerId]="providerId" [mode]="'mobile'"></sb-uic-key-highlights>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #mainContent let-data="data">
+    <div class="flex items-center justify-center">
+        <div class="container">
+            <div class="grid grid-cols-12 gap-4 padding-top-m">
+                <div class="col-span-12 md:col-span-{{data.content.colspan}}">
+                    {{data.content.data.title}}
+                </div>
+                <div class="col-span-12 md:col-span-{{data.mdoLeaderboard.colspan}}">
+                    {{data.mdoLeaderboard.data.title}}
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #eventsContent let-data="data">
+    <div class="col-span-12 padding-top-m">
+        <div class="flex items-center justify-center">
+            <div class="container">
+                {{data.title}}
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #wowContent let-data="data">
+    <ng-container *ngIf="!data?.contentStrip?.hideSection">
+        <div class="flex justify-center relative">
+            <img class="absolute {{data?.contentStrip?.sectionImagePosition}}" src="{{data?.contentStrip?.sectionImage}}" alt="">
+            <div class="container ">
+                <div class="w-full">
+                    <sb-uic-content-strip-with-tabs
+                        [emitViewAll]="true"
+                        (viewAllResponse)="showAllContent($event,data)"
+                        (emptyResponse)="hideContentStrip($event, data)"
+                        (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+                        [providerId]="providerId"
+                        [widgetData]="data?.contentStrip">
+                    </sb-uic-content-strip-with-tabs>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>
+
+
+<!-- <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="bg-gray-200 p-4">Item 1</div>
+    <div class="bg-gray-200 p-4">Item 2</div>
+    <div class="bg-gray-200 p-4">Item 3</div>
+    <div class="bg-gray-200 p-4">Item 4</div>
+    <div class="bg-gray-200 p-4">Item 5</div>
+    <div class="bg-gray-200 p-4">Item 6</div>
+</div> -->

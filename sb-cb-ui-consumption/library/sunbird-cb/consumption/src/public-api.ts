@@ -32,3 +32,4 @@ export * from './lib/_common/cbp-plan/cbp-plan.module'
 
 
 export * from './lib/_common/dialog-components/dialog-components.module'
+export * from './lib/_common/key-highlights/key-highlights.module'

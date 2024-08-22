@@ -8,6 +8,7 @@ import { CommonStripModule } from './_common/common-strip/common-strip.module';
 import { AnnouncementsModule } from './_common/announcements/announcements.module';
 import { TopLearnersModule } from './_common/top-learners/top-learners.module';
 import { CbpPlanModule } from './_common/cbp-plan/cbp-plan.module';
+import { KeyHighlightsModule } from './_common/key-highlights/key-highlights.module';
 
 
 

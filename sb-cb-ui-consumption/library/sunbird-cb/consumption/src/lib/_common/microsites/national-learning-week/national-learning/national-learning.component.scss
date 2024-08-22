@@ -1,9 +1,26 @@
-.topSection {
+::ng-deep.micro-white {
+    background-color: white!important;
+}
 
+.nlm-micro-sites {
+    ::ng-deep.container {
+        max-width: 1200px!important;
+    }
+}
+.topSection {    
     ::ng-deep.prev {
         margin-left: 15px!important;
     }
     ::ng-deep.next {
         margin-right: 15px!important;
+    }
+
+    @media screen and (min-width: 320px) and (max-width: 769px) {
+        ::ng-deep.prev {
+            margin-left: 15px!important;
+        }
+        ::ng-deep.next {
+            margin-right: 15px!important;
+        }
     }
 }

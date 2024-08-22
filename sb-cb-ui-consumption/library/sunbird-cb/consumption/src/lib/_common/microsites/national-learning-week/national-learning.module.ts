@@ -5,6 +5,8 @@ import { SkeletonLoaderLibModule } from '../../skeleton-loader-lib/skeleton-load
 import { NationalLearningComponent } from './national-learning/national-learning.component';
 import { CommonMethodsService } from '../../../_services/common-methods.service';
 import { SlidersLibModule } from '../../sliders/sliders.module';
+import { KeyHighlightsModule } from '../../key-highlights/key-highlights.module';
+import { ContentStripWithTabsLibModule } from '../../content-strip-with-tabs-lib/content-strip-with-tabs-lib.module';
 
 
 
@@ -17,9 +19,11 @@ import { SlidersLibModule } from '../../sliders/sliders.module';
     SkeletonLoaderLibModule,
     SlidersLibModule,
     MatTabsModule,
+    KeyHighlightsModule,
+    ContentStripWithTabsLibModule,
   ],
   exports: [
-    NationalLearningComponent
+    NationalLearningComponent,
   ],
   providers:[
     CommonMethodsService

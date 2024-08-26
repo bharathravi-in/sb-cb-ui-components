@@ -7,6 +7,8 @@ import { CommonMethodsService } from '../../../_services/common-methods.service'
 import { SlidersLibModule } from '../../sliders/sliders.module';
 import { KeyHighlightsModule } from '../../key-highlights/key-highlights.module';
 import { ContentStripWithTabsLibModule } from '../../content-strip-with-tabs-lib/content-strip-with-tabs-lib.module';
+import { EventsModule } from '../../events/events.module';
+import { MdoLeaderboardModule } from '../../mdo-leaderboard/mdo-leaderboard.module';
 
 
 
@@ -21,6 +23,8 @@ import { ContentStripWithTabsLibModule } from '../../content-strip-with-tabs-lib
     MatTabsModule,
     KeyHighlightsModule,
     ContentStripWithTabsLibModule,
+    EventsModule,
+    MdoLeaderboardModule,
   ],
   exports: [
     NationalLearningComponent,

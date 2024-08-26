@@ -6,7 +6,8 @@ const API_END_POINTS = {
   PROVIDER_INSIGHTS: `/apis/proxies/v8/microsite/read/insights`,
   TRAINING_DETAILS: `apis/proxies/v8/sunbirdigot/search`,
   ANNOUNCEMENTS_DETAILS: `apis/proxies/v8/announcements/v1/search`,
-  LEARNERS: `apis/proxies/v8/halloffame/top/learners`
+  LEARNERS: `apis/proxies/v8/halloffame/top/learners`,
+  LEADERBOARD: 'apis/proxies/v8/halloffame/v1/mdoleaderboard'
 }
 
 @Injectable({
@@ -32,6 +33,10 @@ export class InsiteDataService {
 
   fetchLearner(channelId: any): Observable<any> {
     return this.http.get(`${API_END_POINTS.LEARNERS}/${channelId}`)
+  }
+
+  fetchLeaderboard() {
+    return this.http.get(`${API_END_POINTS.LEADERBOARD}`)
   }
 
 }

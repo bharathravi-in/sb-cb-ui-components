@@ -20,7 +20,7 @@ export class KeyHighlightsComponent implements OnInit {
 
   ngOnInit() {
     this.styleData = this.formData && this.formData.sliderData && this.formData.sliderData.styleData
-    this.contentdata = this.formData && this.formData.content
+    this.contentdata = this.formData && this.formData.content ? this.formData.content : []
   }
 
   getCurrentIndex(indexValue: any) {

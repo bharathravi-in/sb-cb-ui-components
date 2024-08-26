@@ -1,4 +1,4 @@
-<ng-container *ngIf="contentdata.length && mode === 'desktop'">
+<ng-container *ngIf="contentdata?.length && mode === 'desktop'">
     <div class="key-highlighs-container">
         <sb-uic-sliders-ng-content
             [title]="'providerName'"
@@ -12,7 +12,7 @@
                 <div *ngFor="let content of contentdata; let i = index" [hidden]="i !== currentIndex">
                     <div class="flex flex-row">
                         <div class="kh-left">Key Highlights</div>
-                        <div class="kh-right"> {{content.title}}</div>
+                        <div class="kh-right"> {{content?.title}}</div>
                     </div>
                 </div>
             </div>                    
@@ -20,7 +20,7 @@
     </div>
 </ng-container>
 
-<ng-container *ngIf="contentdata.length && mode === 'mobile'">
+<ng-container *ngIf="contentdata?.length && mode === 'mobile'">
     <div class="p-5">
         <div class="mob-key-highlighs-container">
             <sb-uic-sliders-ng-content
@@ -37,7 +37,7 @@
                             <div class="kh-left">Key Highlights</div>
                         </div>
                         <div class="flex flex-row">
-                            <div class="kh-description"> {{content.title}}</div>
+                            <div class="kh-description"> {{content?.title}}</div>
                         </div>
                     </div>
                 </div>                    

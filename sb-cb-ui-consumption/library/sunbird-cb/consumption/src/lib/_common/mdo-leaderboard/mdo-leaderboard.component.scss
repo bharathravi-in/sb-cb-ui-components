@@ -1,0 +1,150 @@
+.l-title {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 29.26px;
+    text-align: left;
+    align-items: center;
+}
+
+.l-content {
+    background-color: #E9EEF6;
+    border-radius: 16px;
+    padding: 16px 16px 0 16px;
+}
+
+.l-tabs {
+    justify-content: space-between;
+    border-bottom: 1px solid #c3c3c3;
+    .tab-title {
+        font-family: Lato;
+        font-size: 14px;
+        line-height: 16.8px;
+        text-align: left;
+        cursor: pointer;
+    }
+    .active {
+        font-weight: 700;
+        border-bottom: 2px solid #1b4ca1;;
+        padding-bottom: 8px;
+    }
+}
+.search-field {
+    height: 34px;
+    padding: 0px 16px 0px 40px;
+    border-radius: 52px;
+    background: #fff;
+    border: 2px solid #00000014;
+    width: 100%;
+}
+
+.icon-search {
+    top: 10px;
+    left: 15px;
+    height: 15px;
+    width: 17px;
+}
+
+.item {
+    border-radius: 12px;
+    background-color: white;
+    padding: 16px;
+    align-items: flex-start;
+    cursor: pointer;
+}
+.rank1 {
+    background: #ffca28;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 9px;
+    text-align: center;
+    border-radius: 50%;
+    padding: 10px;
+}
+.rank2 {
+    background: #1B4CA1;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 9px;
+    text-align: center;
+    border-radius: 50%;
+    padding: 10px;
+    color: white;
+}
+
+.rank3{
+    background: #FF8228;
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 9px;
+    text-align: center;
+    border-radius: 50%;
+    padding: 10px;
+}
+
+.rank0 {
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 9px;
+    text-align: center;
+    border-radius: 50%;
+    padding: 10px;
+    border: 1px solid #c3c3c3;
+}
+
+.rank-name {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.5px;
+    text-align: left;
+    align-items: center;
+    display: -webkit-box;          
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2; 
+    line-clamp: 2;
+    line-height: 1.5em;
+}
+
+.rank-points {
+    align-items: center;
+}
+
+.nlw-kb {
+    height: 24px;
+    width: 24px;
+}
+
+.points {
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16.8px;
+    text-align: right;
+}
+
+.crown {
+    left: -14px;
+    top: -16px;
+    width: 36px;
+    height: 36px;
+}
+
+.l-tab-data {
+    height: 520px;
+    overflow: auto;
+}
+
+.l-tab-data::-webkit-scrollbar {
+    display: none;
+}
+.active-item {
+    background-color: #1B4CA1;
+    color: white;
+}

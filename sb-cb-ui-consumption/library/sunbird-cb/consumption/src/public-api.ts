@@ -29,7 +29,9 @@ export * from './lib/_services/widget-content.service'
 export * from './lib/_services/common-methods.service'
 export * from './lib/_common/top-learners/top-learners.module'
 export * from './lib/_common/cbp-plan/cbp-plan.module'
+export * from './lib/_common/mdo-leaderboard/mdo-leaderboard.module'
 
 
 export * from './lib/_common/dialog-components/dialog-components.module'
 export * from './lib/_common/key-highlights/key-highlights.module'
+export * from './lib/_common/events/events.module'

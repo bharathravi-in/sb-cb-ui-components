@@ -1,0 +1,43 @@
+<div class="flex l-title gap-2 margin-bottom-m">
+    {{object?.mdoLeaderboard?.data?.title}} <mat-icon>info</mat-icon>
+</div>
+<div class="l-content">
+    <div class="flex l-tabs">
+        <span class="tab-title"  [ngClass]="{'active' : currentTab === 'XL' }" (click)="getTabData('XL')">Greater than 50K</span>
+        <span class="tab-title"  [ngClass]="{'active' : currentTab === 'L' }" (click)="getTabData('L')">10K-50K</span>
+        <span class="tab-title"  [ngClass]="{'active' : currentTab === 'M' }" (click)="getTabData('M')">1K-10K</span>
+        <span class="tab-title"  [ngClass]="{'active' : currentTab === 'S' }" (click)="getTabData('S')">500</span>
+    </div>
+    <div class="relative search-wrapper margin-top-m mb-5">
+        <mat-icon matPrefix class="flex absolute items-center justify-center mr-2 icon-search">search
+        </mat-icon>
+        <input type="search" name="searchKey" class="search-field" i18-aria-label
+            aria-label="Search" i18n-placeholder="search"  [(ngModel)]="searchTerm"
+            placeholder="Search your MDO" (keyup)="handleSearchQuery($event)" />
+    </div>
+    <div class="l-tab-data">
+        <div *ngFor="let user of filteredData">
+            <div class="flex flex-row item mb-5 gap-3 {{user.selected ? 'active-item' : ''}}" (click)="getChildren(user)">
+                <img class="crown absolute" src="assets/images/national-learning/rank-crown.svg" *ngIf="user.row_num === 1"/>
+                <div class="{{getRank(user.row_num)}}">{{user.row_num}}</div>
+                <div class="w-full">
+                    <div class="flex flex-between gap-2">
+                        <div>
+                            <div class="rank-name">{{user.org_name}} - {{user.org_name}}</div>
+                            <div class="rank-points flex mt-1 gap-1">
+                                <img class="nlw-kb" src="assets/icons/home/karma-badge.svg"/>
+                                <div class="points">{{user.total_points}} points</div>
+                            </div>
+                        </div>                    
+                        <div class="rank-crown" *ngIf="[1,2,3].includes(user.row_num)">
+                            <img class="nlw-animation" [src]="getMedal(user.row_num)"/>
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        </div>
+        <div class="no-data my-5 px-1" *ngIf="filteredData?.length === 0">
+            No data found!
+        </div>        
+    </div>
+</div>

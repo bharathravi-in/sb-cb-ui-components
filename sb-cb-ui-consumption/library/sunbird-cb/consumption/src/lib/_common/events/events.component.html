@@ -1,0 +1,16 @@
+<div class="flex my-5 e-header">
+    <div class="event-title">
+        {{object?.title}}
+    </div>
+    <div class="e-all">
+        <a [routerLink]="object?.redirectLink">{{object?.redirectText || 'Show all'}}</a>
+    </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="bg-gray-200 p-4"><sb-uic-event-card></sb-uic-event-card></div>
+    <div class="bg-gray-200 p-4"><sb-uic-event-card></sb-uic-event-card></div>
+    <div class="bg-gray-200 p-4"><sb-uic-event-card></sb-uic-event-card></div>
+    <div class="bg-gray-200 p-4"><sb-uic-event-card></sb-uic-event-card></div>
+    <div class="bg-gray-200 p-4"><sb-uic-event-card></sb-uic-event-card></div>
+    <div class="bg-gray-200 p-4"><sb-uic-event-card></sb-uic-event-card></div>
+</div>

@@ -2,12 +2,15 @@
     {{object?.mdoLeaderboard?.data?.title}} <mat-icon>info</mat-icon>
 </div>
 <div class="l-content">
-    <div class="flex l-tabs">
-        <span class="tab-title"  [ngClass]="{'active' : currentTab === 'XL' }" (click)="getTabData('XL')">Greater than 50K</span>
-        <span class="tab-title"  [ngClass]="{'active' : currentTab === 'L' }" (click)="getTabData('L')">10K-50K</span>
-        <span class="tab-title"  [ngClass]="{'active' : currentTab === 'M' }" (click)="getTabData('M')">1K-10K</span>
-        <span class="tab-title"  [ngClass]="{'active' : currentTab === 'S' }" (click)="getTabData('S')">500</span>
-    </div>
+    <div class="horizontal-scroll-container">
+        <div class="scroll-content">
+            <span class="tab-title"  [ngClass]="{'active' : currentTab === 'XL' }" (click)="getTabData('XL')">Greater than 50K</span>
+            <span class="tab-title"  [ngClass]="{'active' : currentTab === 'L' }" (click)="getTabData('L')">10K-50K</span>
+            <span class="tab-title"  [ngClass]="{'active' : currentTab === 'M' }" (click)="getTabData('M')">1K-10K</span>
+            <span class="tab-title"  [ngClass]="{'active' : currentTab === 'S' }" (click)="getTabData('S')">500-1K</span>
+            <span class="tab-title"  [ngClass]="{'active' : currentTab === 'XS' }" (click)="getTabData('XS')">Less than 500</span>
+        </div>
+      </div>
     <div class="relative search-wrapper margin-top-m mb-5">
         <mat-icon matPrefix class="flex absolute items-center justify-center mr-2 icon-search">search
         </mat-icon>
@@ -23,7 +26,7 @@
                 <div class="w-full">
                     <div class="flex flex-between gap-2">
                         <div>
-                            <div class="rank-name">{{user.org_name}} - {{user.org_name}}</div>
+                            <div class="rank-name">{{user.org_name}}</div>
                             <div class="rank-points flex mt-1 gap-1">
                                 <img class="nlw-kb" src="assets/icons/home/karma-badge.svg"/>
                                 <div class="points">{{user.total_points}} points</div>
@@ -36,7 +39,7 @@
                 </div>
             </div>
         </div>
-        <div class="no-data my-5 px-1" *ngIf="filteredData?.length === 0">
+        <div class="no-data px-1" *ngIf="filteredData?.length === 0">
             No data found!
         </div>        
     </div>

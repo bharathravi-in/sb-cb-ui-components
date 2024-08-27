@@ -13,22 +13,35 @@
     padding: 16px 16px 0 16px;
 }
 
-.l-tabs {
-    justify-content: space-between;
-    border-bottom: 1px solid #c3c3c3;
-    .tab-title {
-        font-family: Lato;
-        font-size: 14px;
-        line-height: 16.8px;
-        text-align: left;
-        cursor: pointer;
-    }
-    .active {
-        font-weight: 700;
-        border-bottom: 2px solid #1b4ca1;;
-        padding-bottom: 8px;
-    }
+.horizontal-scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    height: 32px;
 }
+  .horizontal-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scroll-content {
+    display: inline-block;
+  }
+  .tab-title {
+    font-family: Lato;
+    font-size: 14px;
+    line-height: 16.8px;
+    text-align: left;
+    cursor: pointer;
+    padding: 0 15px;
+    border-bottom: 2px solid #c3c3c3;
+    padding-bottom: 8px;
+}
+.active {
+    font-weight: 700;
+    border-bottom: 2px solid #1b4ca1;
+}
+
 .search-field {
     height: 34px;
     padding: 0px 16px 0px 40px;

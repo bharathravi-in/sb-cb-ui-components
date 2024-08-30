@@ -393,10 +393,9 @@
 
 .custombgsection {
     background: url('/assets/icons/microsite/side_banner.png');
-    width: 40%;
-    position: absolute;
+    width: 100%;
+    // position: absolute;
     z-index: 99;
-    left: 0;
     height: 21.3em;
     background-repeat: no-repeat;
     background-size: cover;
@@ -405,7 +404,7 @@
 @media screen and (min-width: 768px) and (max-width: 1023px){
     .custombgsection {
         height: 16em !important;
-        width: 22%;
+        width: 98%;
         padding: 0.75rem 1rem !important;
     }
 }
@@ -419,7 +418,7 @@
 }
 @media screen and (min-width: 1023px) { 
     .custombgsection {
-        width: 38%;
+        width: 98%;
         height: 15em;
     }
 }
@@ -430,7 +429,7 @@
 }
 @media screen and (min-width: 1280px) { 
     .custombgsection {
-        width: 42%;
+        // width: 36%;
         height: 21.3em;
     }
     .infobanner {

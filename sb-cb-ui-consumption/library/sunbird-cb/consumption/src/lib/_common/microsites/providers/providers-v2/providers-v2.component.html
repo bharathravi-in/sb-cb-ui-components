@@ -53,10 +53,12 @@
     <!-- <div class="w-full grid grid-cols-12 gap-4"> -->
         <div class="col-span-12 ">
             <div class="grid grid-cols-12">
-                <div class="hidden md:block p-5 custombgsection">
-                    <sb-uic-data-points  [providerId]="providerId" [fetchDataFromApi]="true" [objectData]="data?.metrics?.data" [layoutType]="'multipleRows-V2'"></sb-uic-data-points>
+                
+                <div class="col-span-3">
+                    <div class="hidden md:block py-5  custombgsection">
+                        <sb-uic-data-points  [providerId]="providerId" [fetchDataFromApi]="true" [objectData]="data?.metrics?.data" [layoutType]="'multipleRows-V2'"></sb-uic-data-points>
+                    </div>
                 </div>
-                <div class="col-span-3"></div>
                 <div class="col-span-12 md:col-span-9">
                     <div class="slider h-full" *ngIf="data?.sliderData?.sliders">
                         <sb-uic-sliders [title]="providerName" [widgetData]="data?.sliderData?.sliders" [styleData]="data?.sliderData?.styleData" [type]="'atictitop'"></sb-uic-sliders>

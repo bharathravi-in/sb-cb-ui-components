@@ -113,7 +113,7 @@ export class OverviewComponent implements OnInit, OnChanges, OnDestroy {
 
   checkForAssessmentSubmitAlready(identifier: any) {
     if (this.selectedAssessmentCompatibilityLevel) {
-      if (this.selectedAssessmentCompatibilityLevel < 6) {
+      if (this.selectedAssessmentCompatibilityLevel < 7) {
         if (!this.fromCreation) {
           this.quizSvc.canAttend(identifier).subscribe(response => {
             if (response && response.attemptsMade > 0) {

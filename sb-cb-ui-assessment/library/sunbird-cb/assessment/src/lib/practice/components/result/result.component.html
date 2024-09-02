@@ -1,7 +1,7 @@
-<div [ngClass]="selectedAssessmentCompatibilityLevel < 6 ? 'blue-bg':''">
+<div [ngClass]="selectedAssessmentCompatibilityLevel < 7 ? 'blue-bg':''">
   <div class="flex flex-col"
-    [ngClass]="selectedAssessmentCompatibilityLevel >= 6 ? 'box-height-standalone-assessment':'box-height'">
-    <ng-container *ngIf="selectedAssessmentCompatibilityLevel < 6 && quizResponse">
+    [ngClass]="selectedAssessmentCompatibilityLevel >= 7 ? 'box-height-standalone-assessment':'box-height'">
+    <ng-container *ngIf="selectedAssessmentCompatibilityLevel < 7 && quizResponse">
       <div class="assessment-container">
         <div class="assessment-stats-count">
           <div class="flex flex-row justify-end">
@@ -279,7 +279,7 @@
         </div>
       </div>
     </ng-container>
-    <ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 6 && quizResponse && !showInsight">
+    <ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 7 && quizResponse && !showInsight">
       <div class="results flex flex-col gap-6 px-5 py-4">
         <div class="header-text flex flex-col">
           My Overall Performance Summary
@@ -433,7 +433,7 @@
 
       </div>
     </ng-container>
-    <ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 6 && quizResponse && showInsight">
+    <ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 7 && quizResponse && showInsight">
       <div class="results result-insight flex flex-col gap-6 px-5 py-4">
         <ng-container *ngIf="questionTYP.PRACTICE_RESOURCE !== quizCategory; else overAllPerformance">
           <div class="flex overAllScore justify-center items-center">
@@ -560,7 +560,7 @@
     </ng-container>
   </div>
   <div class="footer flex justify-center items-center gap-2"
-    *ngIf="selectedAssessmentCompatibilityLevel >= 6 && quizResponse">
+    *ngIf="selectedAssessmentCompatibilityLevel >= 7 && quizResponse">
     <ng-container *ngIf="!showInsight">
       <button mat-button class="flex justify-center items-center px-4 inSight gap-2" (click)="showInsight = true">
         <img class="mr-2" src="/assets/icons/final-assessment/insight.svg">

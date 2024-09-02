@@ -21,7 +21,7 @@
 
 </div>
 <!-- Course Assessment-->
-<ng-container *ngIf="selectedAssessmentCompatibilityLevel < 6">
+<ng-container *ngIf="selectedAssessmentCompatibilityLevel < 7">
   <!-- Desktop Not Standalone Assessment -->
   <div #quizContainer class="quiz-container"
     *ngIf="viewState !== 'initial' && !isMobile && fetchingQuestionsStatus === 'done'">
@@ -190,11 +190,12 @@
             <div class="mb-24">
               <div class="flex flex-row justify-evenly">
                 <div class="flex flex-col align-center">
-                  <div class="ques-count">{{totalQCount - questionAttemptedCount}}</div>
+                  <div class="ques-count">{{getSectionTotalQuestionAndAnswerCount()['totalCount'] -
+                    getSectionTotalQuestionAndAnswerCount()['answered']}}</div>
                   <div class="stats-label">Not Answered</div>
                 </div>
                 <div class="flex flex-col align-center">
-                  <div class="ques-count">{{questionAttemptedCount ? questionAttemptedCount : 0}}</div>
+                  <div class="ques-count">{{getSectionTotalQuestionAndAnswerCount()['answered']}}</div>
                   <div class="stats-label">Answered</div>
                 </div>
                 <!-- <div class="flex flex-col align-center">
@@ -466,11 +467,12 @@
               <div class="mb-24 mt-4">
                 <div class="flex flex-row">
                   <div class="flex flex-col align-center w-full">
-                    <div class="ques-count">{{totalQuestionsCount - questionAttemptedCount}}</div>
+                    <div class="ques-count">{{getSectionTotalQuestionAndAnswerCount()['totalCount'] -
+                      getSectionTotalQuestionAndAnswerCount()['answered']}}</div>
                     <div class="stats-label">Not Answered</div>
                   </div>
                   <div class="flex flex-col align-center w-full">
-                    <div class="ques-count">{{questionAttemptedCount ? questionAttemptedCount : 0}}</div>
+                    <div class="ques-count">{{getSectionTotalQuestionAndAnswerCount()['answered']}}</div>
                     <div class="stats-label">Answered</div>
                   </div>
                 </div>
@@ -1122,7 +1124,7 @@
 <!------------------------------------------------------------------------------------------------------------------------------------>
 
 <!-- Desktop Standalone Assessment-->
-<ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 6">
+<ng-container *ngIf="selectedAssessmentCompatibilityLevel >= 7">
   <div #quizContainer [ngClass]="!fromCreation ? 'quiz-container-standalone':'quiz-container-standalone-from-creation'"
     *ngIf="viewState !== 'initial' && !isMobile && fetchingQuestionsStatus === 'done'">
     <div class="margin-m"

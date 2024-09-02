@@ -64,10 +64,10 @@
   <div class="flex flex-1 blank_box"></div>
 </div> -->
 <div class="flex flex-col ws-mat-primary-lite-background-important"
-  [ngClass]=" !fromCreation ? (selectedAssessmentCompatibilityLevel < 6 ? 'box-height':'box-height-standalone') : 'box-height-from-creation'">
+  [ngClass]=" !fromCreation ? (selectedAssessmentCompatibilityLevel < 7 ? 'box-height':'box-height-standalone') : 'box-height-from-creation'">
   <div class="assessment-container">
     <div
-      [ngClass]="selectedAssessmentCompatibilityLevel < 6 ? 'assessment-stats-count':'standalone-assessment-stats-count'">
+      [ngClass]="selectedAssessmentCompatibilityLevel < 7 ? 'assessment-stats-count':'standalone-assessment-stats-count'">
       <div class="flex flex-row justify-between">
         <div class="flex flex-row">
           <div>
@@ -79,15 +79,15 @@
           <div>
             <div class="flex flex-col stats-label ml-2"
               *ngIf="questionTYP.FINAL_ASSESSMENT === primaryCategory || questionTYP.PRACTICE_RESOURCE === primaryCategory"
-              [ngClass]="selectedAssessmentCompatibilityLevel >= 6 ? 'ml-5':''">
-              <div><img src="assets/icons/final-assessment/timer.svg"></div>
+              [ngClass]="selectedAssessmentCompatibilityLevel >= 7 ? 'ml-5':''">
+              <div *ngIf="timeLimit"><img src="assets/icons/final-assessment/timer.svg"></div>
               <div>{{( timeLimit | pipeDurationTransform: 'hms')}}</div>
             </div>
           </div>
           <div>
 
             <div class="ml-5 start-assessment-cta-standalone block md:hidden"
-              *ngIf="selectedAssessmentCompatibilityLevel >= 6">
+              *ngIf="selectedAssessmentCompatibilityLevel >= 7">
               <button [disabled]="!consentGiven ? 'disabled': null" *ngIf="forPreview" [class.spinner]="loading"
                 (click)="overviewed('start')"
                 [ngClass]="consentGiven ? 'bg-blue-800 text-white' : 'secondary-standalone text-standalone-black'"
@@ -99,7 +99,7 @@
         </div>
 
         <div class="start-assessment-cta" [ngClass]="fromCreation ? '' : 'hidden md:block'"
-          *ngIf="selectedAssessmentCompatibilityLevel >= 6">
+          *ngIf="selectedAssessmentCompatibilityLevel >= 7">
           <button [disabled]="!consentGiven ? 'disabled': null" *ngIf="forPreview" [class.spinner]="loading"
             (click)="overviewed('start')"
             [ngClass]="consentGiven ? 'bg-blue-800 text-white' : 'secondary-standalone text-standalone-black'"
@@ -109,7 +109,7 @@
         </div>
 
         <div class="start-assessment-cta" [ngClass]="fromCreation ? '' : 'hidden md:block'"
-          *ngIf="selectedAssessmentCompatibilityLevel < 6">
+          *ngIf="selectedAssessmentCompatibilityLevel < 7">
           <button *ngIf="forPreview" [class.spinner]="loading" [disabled]="loading" (click)="overviewed('start')"
             class="bg-blue-800 text-white text-sm font-semibold py-3 px-5 rounded-full border-none cursor-pointer tracking-wide">
             <span class="padding-xs" i18n>Start Assessment</span>
@@ -119,13 +119,13 @@
       </div>
 
     </div>
-    <div class="summary flex flex-col" *ngIf="selectedAssessmentCompatibilityLevel < 6">
+    <div class="summary flex flex-col" *ngIf="selectedAssessmentCompatibilityLevel < 7">
       <div>
         <h2 class="summary-label">Summary</h2>
       </div>
       <div class="summary-detail">
         <ul class="summary-detail-list">
-          <li>
+          <li *ngIf="questionTYP.PRACTICE_RESOURCE === primaryCategory">
             <!-- <img src="assets/icons/final-assessment/star_empty.svg"> -->
             <span class="summary-list-label">Unlimited Retakes are allowed</span>
           </li>
@@ -144,7 +144,7 @@
         </ul>
       </div>
     </div>
-    <div class="summary-standalone flex flex-col" *ngIf="selectedAssessmentCompatibilityLevel >= 6">
+    <div class="summary-standalone flex flex-col" *ngIf="selectedAssessmentCompatibilityLevel >= 7">
       <!-- <div>
       <h2 class="summary-label">{{ 'practiceoverview.summary' | translate }}</h2>
     </div> -->
@@ -180,7 +180,7 @@
 
 
   </div>
-  <div class="start-assessment-cta block md:hidden" *ngIf="selectedAssessmentCompatibilityLevel < 6">
+  <div class="start-assessment-cta block md:hidden" *ngIf="selectedAssessmentCompatibilityLevel < 7">
     <button *ngIf="canAttempt?.attemptsMade < canAttempt?.attemptsAllowed" [class.spinner]="loading"
       [disabled]="loading" (click)="overviewed('start')"
       class="bg-blue-800 text-sm font-semibold text-white py-3 px-5 rounded-full border-none cursor-pointer tracking-wide">

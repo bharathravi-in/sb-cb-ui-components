@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, HostListener, Input, OnInit } from '@angular/core'
 import { MatTabChangeEvent } from '@angular/material'
 import { ActivatedRoute, Router } from '@angular/router'
 import { EventService, WsEvents } from '@sunbird-cb/utils-v2'
@@ -30,6 +30,7 @@ export class MdoChannelV2Component  implements OnInit {
   showModal: boolean = false
   descriptionMaxLength = 500
   isTelemetryRaised: boolean = false
+  stripWidth: any
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +57,16 @@ export class MdoChannelV2Component  implements OnInit {
     })
   }
 
+  @HostListener('window:resize')
+  onResize() {
+    this.setWidth()
+  }
+
+  setWidth() {
+    this.stripWidth = `${(window.innerWidth - 1200 + 135)/2}px`
+
+  }
+
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.channnelName = params['channel']
@@ -64,14 +75,15 @@ export class MdoChannelV2Component  implements OnInit {
         title: this.channnelName, icon: '', url: 'none', disableTranslate: true,
       })
     })
+    this.setWidth()
   }
 
   public tabClicked(tabEvent: MatTabChangeEvent) {
     this.raiseTelemetry(`${tabEvent.tab.textLabel} tab`)
   }
-  hideContentStrip(event: any, contentStripData: any) {
+  hideContentStrip(event: any, colData: any) {
     if (event) {
-      contentStripData['hideSection'] = true
+      colData.contentStripData['hideSection'] = true
       this.contentTabEmptyResponseCount = this.contentTabEmptyResponseCount + 1
       // if(this.contentTabEmptyResponseCount === 4 ) {
       //   this.selectedIndex = 1
@@ -141,18 +153,13 @@ export class MdoChannelV2Component  implements OnInit {
     }
   }
 
-  showAllContent(_stripData: any, contentStrip: any) {
-    if (contentStrip && contentStrip.strips && contentStrip.strips.length) {
-      const stripData: any = contentStrip.strips[0]
-      if (stripData && stripData.request) {
-        delete(stripData['loaderWidgets'])
+  showAllContent(_stripData: any, columnData: any) {
+    if (columnData && columnData.contentStrip && columnData.contentStrip.strips && columnData.contentStrip.strips.length) {
+      const stripData: any = _stripData
+        let tabSelected =  stripData.viewMoreUrl && stripData.viewMoreUrl.queryParams && stripData.viewMoreUrl.queryParams.tabSelected && stripData.viewMoreUrl.queryParams.tabSelected || ''
         this.router.navigate(
           [`/app/learn/mdo-channels/${this.channnelName}/${this.orgId}/all-content`],
-          { queryParams: { stripData: JSON.stringify(stripData) } })
-      }
-    } else {
-       this.router.navigate(
-        [`/app/learn/browse-by/provider/${this.channnelName}/${this.orgId}/all-CBP`])
+          { queryParams: { tabSelected, key: columnData.sectionKey  } })
     }
   }
 

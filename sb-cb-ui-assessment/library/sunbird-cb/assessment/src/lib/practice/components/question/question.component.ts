@@ -44,6 +44,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
         isCorrect: false,
       },
     ],
+    choices: { options: [] },
   }
   @Input() itemSelectedList: string[] = []
   @Input() markedQuestions: Set<string> = new Set()
@@ -136,7 +137,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
       this.markedQuestions.delete(this.question.questionId)
     } else {
       this.markedQuestions.add(this.question.questionId)
-      if (this.selectedAssessmentCompatibilityLevel >= 6) {
+      if (this.selectedAssessmentCompatibilityLevel >= 7) {
         this.getNextQuestion.emit(true)
       }
     }

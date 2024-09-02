@@ -225,14 +225,14 @@
     justify-content: space-evenly;
 }
 
-@media screen and (min-width: 768px) and (max-width: 878px) {
-    .logodiv {
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    /* .logodiv {
         width: 75px !important;
         padding: 2px 0 0 !important;
     }
     .logoimg {
         width: 62px !important;
-    }
+    } */
     .v2-icon-contaier {
         height: 25px;
         width: 25px;
@@ -259,7 +259,37 @@
         width: 109px !important;
     }
 }
-
+@media screen and (min-width: 1023px) and (max-width: 1280px) {
+    .customdiv {
+        margin-left: 6%;
+        margin-top: 0.6em !important;
+    }
+    .v2-icon-contaier {
+        height: 34px;
+        width: 34px;
+    }
+    .v2-objIcon {
+        width: 20px;
+    }
+    .v2-value {
+        font-size: 16px !important;
+        line-height: 16px !important;
+        padding-left: 0 !important;
+    }
+    .v2-label {
+        font-size: 10px !important;
+        line-height: 10px !important;
+        padding-left: 0 !important;
+    }
+    .v2-dot {
+        width: 8px !important;
+        height: 8px !important;
+        border: 1px solid #fff !important;
+    }
+    .v2-border {
+        width: 122px !important;
+    }
+}
 @media screen and (max-width: 768px) { 
     .infra-objIcon {
         width: 24px;

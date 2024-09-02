@@ -52,10 +52,10 @@
 <ng-template #topSection let-data="data">
     <!-- <div class="w-full grid grid-cols-12 gap-4"> -->
         <div class="col-span-12 ">
-            <div class="grid grid-cols-12">
+            <div class="grid grid-cols-12 auto-rows-max">
                 
-                <div class="col-span-3">
-                    <div class="hidden md:block py-5  custombgsection">
+                <div class="col-span-3 custombgsection">
+                    <div class="hidden md:block py-5 h-full ">
                         <sb-uic-data-points  [providerId]="providerId" [fetchDataFromApi]="true" [objectData]="data?.metrics?.data" [layoutType]="'multipleRows-V2'"></sb-uic-data-points>
                     </div>
                 </div>

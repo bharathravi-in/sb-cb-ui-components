@@ -67,6 +67,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() showOnlyQuestion: any
   @Input() showMarkForReview: any = false
   @Input() assessmentType = ''
+  @Input() questionPreview = false
   expandedQuestionSetSubscription: any
 
   constructor(
@@ -92,6 +93,8 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
 
   init() {
     this.matchHintDisplay = []
+    // tslint:disable-next-line
+    console.log('this.question', this.question, this.showMarkForReview, this.questionNumber, this.showQuestionMarks, this.assessmentType)
     const res: string[] = this.question.question.match(/<img[^>]+src="([^">]+)"/g) || ['']
     for (const oldImg of res) {
       if (oldImg) {
@@ -107,6 +110,8 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
 
       }
     }
+    // tslint:disable-next-line
+    console.log('this.question', this.question, this.showMarkForReview, this.questionNumber, this.showQuestionMarks, this.assessmentType)
     this.practiceSvc.questionAnswerHash.subscribe(val => {
       this.itemSelectedList1 = val[this.question.questionId]
     })

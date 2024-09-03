@@ -48,6 +48,8 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
     showAns = false
     correctOption: boolean[] = []
     unTouchedBlank: boolean[] = []
+    @Input() questionPreview = false
+    @Input() selectedAssessmentCompatibilityLevel = 2
     // tslint:disable-next-line
     constructor(
         private domSanitizer: DomSanitizer,
@@ -57,20 +59,23 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
 
     }
     ngOnInit() {
-
         this.practiceSvc.clearResponse.subscribe((questionId: any) => {
             if (this.question.choices && this.question.choices.options && this.question.choices.options.length > 1) {
                 for (let i = 0; i < (this.localQuestion.match(/select/g) || []).length; i += 1) {
                     if (questionId === this.question.questionId) {
                         const blank: HTMLInputElement = this.elementRef.nativeElement.querySelector(`#${this.question.questionId}${i}`)
-                        blank.value = ''
+                        if (blank) {
+                            blank.value = ''
+                        }
                     }
                 }
             } else {
                 for (let i = 0; i < (this.localQuestion.match(/matInput/g) || []).length; i += 1) {
                     if (questionId === this.question.questionId) {
                         const blank: HTMLInputElement = this.elementRef.nativeElement.querySelector(`#${this.question.questionId}${i}`)
-                        blank.value = ''
+                        if (blank) {
+                            blank.value = ''
+                        }
                     }
                 }
             }
@@ -88,6 +93,9 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
             })
         }
         this.localQuestion = this.question.question
+        if (this.localQuestion) {
+            this.localQuestion = this.localQuestion.replace(/\\/g, '')
+        }
         this.init()
     }
     ngOnChanges(changes: SimpleChanges): void {
@@ -195,6 +203,7 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                     }
 
                     this.localQuestion = this.localQuestion.replace('<input style="border-style:none none solid none" />', 'idMarkerForReplacement')
+
                 }
 
             }
@@ -211,7 +220,6 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                             selectBox = selectBox + '<option value=\'' + this.question.choices.options[sel]['value']['body'] + '\'>' + this.question.choices.options[sel]['value']['body'] + '</option>'
                         }
                         selectBox = selectBox + '</select>'
-                        // console.log('selectBox', selectBox)
                     }
                 }
                 iterationNumber = (this.localQuestion.match(/idMarkerForReplacement/g) || []).length
@@ -227,7 +235,6 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                 }
             }
             let selectBox = ''
-
             for (let i = 0; i < iterationNumber; i += 1) {
                 if (this.question.options.length > 0 || (fromRichTextEditor && iterationNumber > 0)) {
                     if (this.question && this.question.choices && this.question.choices.options && this.question.choices.options.length > 1) {
@@ -238,25 +245,23 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                         width: auto;
                         background: #fff;
                         font-size: 14px; font-weight:700;
-                        font-family: 'Montserrat';' id=${this.question.questionId}${i}><option value=''>Choose Option</option>`
+                        ' id=${this.question.questionId}${i}><option value=''>Choose Option</option>`
                         for (let sel = 0; sel < this.question.choices.options.length; sel++) {
                             let optionString = ''
                             const selvalue = this.question.choices.options[sel]['value']['body']
                             const label = this.question.choices.options[sel]['value']['body']
-                            const selected = (value[i] && value[i].toString() === selvalue.toString()) ? 'selected' : ''
+                            const selected = (value[i] && value[i].toString().trim() === selvalue.toString().trim()) ? 'selected' : ''
                             if (selected) {
-                                optionString = `<option value=${selvalue} selected=${selected}>${label}</option>`
+                                optionString = `<option value='${selvalue}' selected=${selected}>${label}</option>`
                                 selectBox = selectBox + optionString
-                                break
                             } else {
-                                optionString = `<option value=${selvalue}>${label}</option>`
+                                optionString = `<option value='${selvalue}'>${label}</option>`
                                 selectBox = selectBox + optionString
                             }
                             // "<option value='"+this.question.choices.options[sel]['value']['body']+"'>"+this.question.choices.options[sel]['value']['body']+"</option>"
                         }
                         selectBox = selectBox + '</select></mat-form-field>'
                         selectBox = selectBox.toString()
-                        console.log('selectBox', selectBox)
                     }
                     // console.log('============>', i, this.question.options[i].text)
                     if (value[i]) {
@@ -295,7 +300,6 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                         )
                     }
                 }
-                // console.log('this.localQuestion--', this.localQuestion)
             }
         } else {
             for (let i = 0; i < (this.localQuestion.match(/matInput/g) ||

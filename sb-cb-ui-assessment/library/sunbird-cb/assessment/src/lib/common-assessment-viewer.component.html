@@ -1,6 +1,6 @@
 <!-- <router-outlet (activate)="getContentData($event)"></router-outlet> -->
 <div [ngClass]="questionPreview ? 'assessment-preview-dialog-question-preview' : 'assessment-preview-dialog'">
-  <button mat-icon-button class="close-button cursor-pointer">
+  <button mat-icon-button class="close-button cursor-pointer" [mat-dialog-close]="true">
     <mat-icon class="close-icon">close</mat-icon>
   </button>
   <ng-container *ngIf="!questionPreview">

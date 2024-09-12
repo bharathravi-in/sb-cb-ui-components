@@ -37,6 +37,14 @@
         margin-top: -21px;
     }
 
+    .nlw-div {
+        padding: 0 16px;
+        margin: 10px 0 16px 0;
+    }
+    .divider {
+        border-left: 1.6px solid #a6a4a4;
+    }
+
   .mob-image-container-v2 {
     height: 28px;
     width: 28px;

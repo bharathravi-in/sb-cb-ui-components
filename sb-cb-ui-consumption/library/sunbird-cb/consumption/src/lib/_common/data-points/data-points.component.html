@@ -151,8 +151,8 @@
     </div>
     <div class="nlw-status">
         <div class="flex space-around pt-5">
-            <div *ngFor="let obj of objectData?.data" class="flex-container">
-                <div class="singleFlexeRow-div singleFlexeRow flex-item">
+            <div *ngFor="let obj of objectData?.data; index as i" class="flex-container">
+                <div class="nlw-div singleFlexeRow flex-item {{i === 0 ? '' : 'divider'}} ">
                     <div class="flex flex-row gap-3">
                         <div>
                             <img [style.color]="obj?.iconColor"  class="singleFlexeRowIcon" [src]="obj.icon">

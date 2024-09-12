@@ -26,6 +26,28 @@ $banner-min-height: 243px;
   }
 }
 
+.keybanner {
+  // max-height: 442px;
+  //min-height: $banner-min-height;
+  // overflow-y: hidden;
+  position: relative;
+  margin: auto;
+  // border-radius: 12px;
+  &.inline-meta{
+    padding-bottom: 0 !important;
+  }
+
+  &.flat {
+    // .banner-overlay {
+      .banner {
+        .banner-image{
+          border-radius: 0 !important;
+        }
+      }
+    // }
+  }
+}
+
 
 
 
@@ -299,6 +321,42 @@ $banner-min-height: 243px;
     width: 100%;
     .default-title {
       width: unset !important;
+    }
+  }
+}
+
+.keybanner {
+  .prev {
+    right: 54px;
+    margin-right: 0px;
+    top: 69%;
+    left: unset;
+    color: #FF8A61;
+    background-color: white !important;
+  }
+  .next {
+    right: 28px;
+    margin-right: -16px;
+    top: 69%;
+    color: #FF8A61;
+    background-color: white !important;
+  }
+
+  @media screen and (max-width: 768px) { 
+    .prev {
+      right: 54px;
+      margin-right: 0px;
+      top: 50px;
+      left: unset;
+      color: #FF8A61;
+      background-color: white !important;
+    }
+    .next {
+      right: 28px;
+      margin-right: -16px;
+      top: 50px;
+      color: #FF8A61;
+      background-color: white !important;
     }
   }
 }

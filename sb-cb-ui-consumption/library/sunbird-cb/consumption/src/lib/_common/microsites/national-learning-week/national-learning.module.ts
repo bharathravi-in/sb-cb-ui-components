@@ -9,6 +9,7 @@ import { KeyHighlightsModule } from '../../key-highlights/key-highlights.module'
 import { ContentStripWithTabsLibModule } from '../../content-strip-with-tabs-lib/content-strip-with-tabs-lib.module';
 import { EventsModule } from '../../events/events.module';
 import { MdoLeaderboardModule } from '../../mdo-leaderboard/mdo-leaderboard.module';
+import { DataPointsModule } from '../../data-points/data-points.module';
 
 
 
@@ -23,6 +24,7 @@ import { MdoLeaderboardModule } from '../../mdo-leaderboard/mdo-leaderboard.modu
     MatTabsModule,
     KeyHighlightsModule,
     ContentStripWithTabsLibModule,
+    DataPointsModule,
     EventsModule,
     MdoLeaderboardModule,
   ],

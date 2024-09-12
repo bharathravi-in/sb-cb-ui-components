@@ -10,9 +10,8 @@
             [widgetData]="contentdata" [styleData]="styleData">
             <div sliderbody>
                 <div *ngFor="let content of contentdata; let i = index" [hidden]="i !== currentIndex">
-                    <div class="flex flex-row">
-                        <div class="kh-left">Key Highlights</div>
-                        <div class="kh-right"> {{content?.title}}</div>
+                    <div class="flex flex-row key-wrapper items-center justify-center">
+                        <div class="kh-description"> {{content?.title}}</div>
                     </div>
                 </div>
             </div>                    
@@ -33,14 +32,11 @@
                 [widgetData]="contentdata" [styleData]="styleData">
                 <div sliderbody>
                     <div *ngFor="let content of contentdata; let i = index" [hidden]="i !== currentIndex">
-                        <div class="flex flex-row">
-                            <div class="kh-left">Key Highlights</div>
-                        </div>
-                        <div class="flex flex-row">
-                            <div class="kh-description"> {{content?.title}}</div>
+                        <div class="flex flex-row mkey-wrapper items-center justify-center">
+                            <div class="mkh-description"> {{content?.title}}</div>
                         </div>
                     </div>
-                </div>                    
+                </div>
             </sb-uic-sliders-ng-content>
         </div>
     </div>

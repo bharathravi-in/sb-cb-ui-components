@@ -137,6 +137,40 @@
     </div>
 </div>
 
+<div class="w-full" *ngIf="layoutType === 'nlwRow' && !isDataLoading">
+    <div class="stats-header">
+        <div class="flex items-center justify-center stats-title">
+            <span class="my-arrow">&#10094;</span>
+            <span class="my-arrow less-opacity1">&#10094;</span>
+            <span class="my-arrow less-opacity2">&#10094;</span>
+            <span class="px-4">{{objectData?.title}}</span>
+            <span class="my-arrow less-opacity2">&#10095;</span>
+            <span class="my-arrow less-opacity1">&#10095;</span>
+            <span class="my-arrow">&#10095;</span>
+        </div>
+    </div>
+    <div class="nlw-status">
+        <div class="flex space-around pt-5">
+            <div *ngFor="let obj of objectData?.data" class="flex-container">
+                <div class="singleFlexeRow-div singleFlexeRow flex-item">
+                    <div class="flex flex-row gap-3">
+                        <div>
+                            <img [style.color]="obj?.iconColor"  class="singleFlexeRowIcon" [src]="obj.icon">
+                        </div>
+                        <div class="flex flex-col">
+                            <div [style.color]="obj?.valueColor" class="singleFlexeRowHeader pb-2" *ngIf="!(obj && obj.value)">0</div>
+                            <div [style.color]="obj?.valueColor" class="singleFlexeRowHeader pb-2" *ngIf="(obj && obj.value)">
+                                {{converToIndianSystem(obj?.value)}}
+                            </div>
+                            <div [style.color]="obj?.labelColor" class="singleFlexeRowDescription">{{obj?.label}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- skeleton  loaders -->
 
 <ng-container>

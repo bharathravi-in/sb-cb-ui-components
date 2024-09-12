@@ -1,63 +1,33 @@
+.kh-description {
+    /* stylelint-disable */
+    font-family: Montserrat;
+    /* stylelint-enable */
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.5px;
+    text-align: center;
+    padding: 0 10px;
+}
 
-@font-face {
-    font-family: 'Poppins';
-    /* src: url('../../../assets/fonts/poppins/Poppins-Regular.ttf'); */    
-    src: url('https://cdn.jsdelivr.net/fontsource/fonts/poppins@latest/latin-400-normal.woff2') format('woff2'), url('https://cdn.jsdelivr.net/fontsource/fonts/poppins@latest/latin-400-normal.woff') format('woff');
-  }
-
-  .mob-key-highlighs-container {
+.key-wrapper {
     background-color: #EAF1F8;
-
-    .kh-left {
-        background-color: #1B4CA1;
-        padding: 24.95px 50px 25.45px 30px;
-        color: white;
-        font-family: "Poppins";
-        font-size: 18px;
-        font-weight: 500;
-        line-height: 21.6px;
-        text-align: left;
-        border-top-right-radius: 50px;
-        border-bottom-right-radius: 50px;
-        min-width: 127px;
-    }
-    .kh-description {
-        color: #5F77A7;
-        font-family: Poppins;
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 22px;
-        text-align: left;
-        padding: 25px 15px;
-    }
-  }
-
-.key-highlighs-container{
-    background-color: #EAF1F8;
+    padding: 25px 16px;
     border-radius: 50px;
+}
+.mkey-wrapper {
+    background-color: #EAF1F8;
+    padding: 16px;
+    border-radius: 50px;
+}
 
-    .kh-left {
-        background-color: #1B4CA1;
-        padding: 24.95px 50px 25.45px 30px;
-        color: white;
-        font-family: "Poppins";
-        font-size: 18px;
-        font-weight: 500;
-        line-height: 21.6px;
-        text-align: left;
-        border-top-left-radius: 50px;
-        border-bottom-left-radius: 50px;
-        min-width: 127px;
-    }
-    .kh-right {
-        font-family: "Poppins";
-        font-size: 15px;
-        font-weight: 500;
-        line-height: 19.2px;
-        display: flex;
-        align-items: center;
-        padding: 0 100px 0 25px;
-        color: #5F77A7;
+.mkh-description{
+    /* stylelint-disable */
+    font-family: Lato;
+    /* stylelint-enable */
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 16.8px;
+    text-align: center;
+    padding: 0 30px;
 
-    }
 }

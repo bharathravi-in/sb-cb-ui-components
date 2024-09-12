@@ -4,6 +4,39 @@
     src: url('https://cdn.jsdelivr.net/fontsource/fonts/poppins@latest/latin-400-normal.woff2') format('woff2'), url('https://cdn.jsdelivr.net/fontsource/fonts/poppins@latest/latin-400-normal.woff') format('woff');
   }
 
+    .stats-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .stats-title {
+        background-color: #F3962F;
+        padding: 12px 16px;
+        color: white;
+        /* stylelint-disable */
+        font-family: Lato;
+        /* stylelint-enable */
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 16.8px;
+        border-radius: 35px;
+        margin-top: -20px;
+        z-index: 90;
+    }
+    .my-arrow {
+        font-size: 12px;
+    }
+    .less-opacity1 {
+        opacity: 0.75;
+    }
+    .less-opacity2 {
+        opacity: 0.5;
+    }
+    .nlw-status {
+        background: linear-gradient(173.01deg, #266EEB -5.09%, #133F8B 133.16%);
+        margin-top: -21px;
+    }
+
   .mob-image-container-v2 {
     height: 28px;
     width: 28px;

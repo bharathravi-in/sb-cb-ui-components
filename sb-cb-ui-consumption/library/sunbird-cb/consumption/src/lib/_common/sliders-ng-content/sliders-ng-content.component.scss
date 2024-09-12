@@ -327,36 +327,35 @@ $banner-min-height: 243px;
 
 .keybanner {
   .prev {
-    right: 54px;
-    margin-right: 0px;
-    top: 69%;
-    left: unset;
-    color: #FF8A61;
-    background-color: white !important;
+    background-color: #F3962F!important;
+    color: white;
+    top: 50%;
+    font-size: 12px;
+    height: 26px !important;
+    width: 26px !important;
   }
   .next {
-    right: 28px;
-    margin-right: -16px;
-    top: 69%;
-    color: #FF8A61;
-    background-color: white !important;
+    top: 50%;
+    background-color: #F3962F!important;
+    color: white;
+    font-size: 12px;
+    height: 26px !important;
+    width: 26px !important;
   }
 
   @media screen and (max-width: 768px) { 
     .prev {
-      right: 54px;
-      margin-right: 0px;
       top: 50px;
-      left: unset;
-      color: #FF8A61;
-      background-color: white !important;
+      left: 0;
+      background-color: #F3962F!important;
+    color: white;
     }
     .next {
-      right: 28px;
+      right: 0px;
       margin-right: -16px;
       top: 50px;
-      color: #FF8A61;
-      background-color: white !important;
+      background-color: #F3962F!important;
+    color: white;
     }
   }
 }

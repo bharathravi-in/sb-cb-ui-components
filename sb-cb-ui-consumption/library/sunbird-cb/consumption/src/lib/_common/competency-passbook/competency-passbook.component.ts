@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { ConfigurationsService, EventService } from '@sunbird-cb/utils-v2';
 import { WidgetContentService } from '../../_services/widget-content.service';
 import { CompetencyPassbookService } from './competency-passbook.service';
 import { Router } from '@angular/router';
+import { NsCompentency } from '../../_models/compentencies.model'
 
 @Component({
   selector: 'sb-uic-competency-passbook',
@@ -30,7 +32,8 @@ export class CompetencyPassbookComponent implements OnInit {
   competencyStrength: any = 0
   competencyThemeLength: any = 6
   showAllTheme : any = [{name:'Show all', showAll: false}]
-
+  environment!: any;
+  comeptencyKeys: NsCompentency.CompentencyKeys;
   // subTheme = ['Behavioural']
   // currentFilter = 'Behavioural'
   // currentCompetencies: any = []
@@ -38,13 +41,16 @@ export class CompetencyPassbookComponent implements OnInit {
   constructor(public configSvc: ConfigurationsService,
     public contentSvc:WidgetContentService,
     public competencySvc: CompetencyPassbookService,
-    public router : Router
+    public router : Router,
+    @Inject('environment') environment: any,
   ) { 
-    
+    this.environment = environment
   }
 
  
   ngOnInit() {
+    this.comeptencyKeys = this.configSvc.compentency[this.environment.compentencyVersionKey]
+    
     this.getAllCompetencies()
     // this.competencyData = this.objectData
     // this.filter(this.currentFilter)
@@ -58,7 +64,8 @@ export class CompetencyPassbookComponent implements OnInit {
   }
 
   // to get competency area from facets
-  async getCompetencyArea(){let addfilter: any = {}
+  async getCompetencyArea(){
+  let addfilter: any = {}
   if(this.providerId) {
     addfilter = {
       "createdFor": [
@@ -81,7 +88,7 @@ export class CompetencyPassbookComponent implements OnInit {
                 "lastUpdatedOn": "desc"
             },
             "facets": [
-                "competencies_v5.competencyArea"
+                `${this.environment.compentencyVersionKey}.${this.comeptencyKeys.vCompetencyArea}`
             ],
             "limit": 0,
             "offset": 0,
@@ -96,7 +103,8 @@ export class CompetencyPassbookComponent implements OnInit {
       if (response && response.results) {
         if(response.results.result.facets){
           response.results.result.facets.forEach((fact: any) => {
-            if(fact.name === 'competencies_v5.competencyArea') {
+
+            if(fact.name ===   `${this.environment.compentencyVersionKey}.${this.comeptencyKeys.vCompetencyArea}`) {
               this.competencyArea = fact.values
             }
           });
@@ -159,14 +167,12 @@ export class CompetencyPassbookComponent implements OnInit {
   }
   getAllCompetencies(){
     this.loadCometency = true
-    let request = {"search":{"type":"Competency Area"},"filter":{"isDetail":true}}
-    this.competencySvc.getCompetencyList(request).subscribe((response: any) => {
+    this.competencySvc.getCompetencyListv_V2().subscribe((response: any) => {
       this.allcompetencyTheme = {}
-      if(response && response.result && response.result.competency) {
-        this.originalCompetencyArray = response.result.competency
-
+      if(response && response.result && response.result.content) {
+        this.originalCompetencyArray = response.result.content
         this.getCompetencyArea()
-        response.result.competency.forEach(element => {
+        response.result.content.forEach(element => {
           element.children.forEach((childEle) => {
             let name = childEle.name.toLowerCase()
             this.allcompetencyTheme[name] = childEle
@@ -185,7 +191,7 @@ export class CompetencyPassbookComponent implements OnInit {
           "filters": {
               "contentType":"Course",
               ...addFilter,
-              "competencies_v5.competencyArea" : value,
+              [`${this.environment.compentencyVersionKey}.${this.comeptencyKeys.vCompetencyArea}`] : value,
               "status": [
                   "Live"
               ]
@@ -194,7 +200,7 @@ export class CompetencyPassbookComponent implements OnInit {
               "lastUpdatedOn": "desc"
           },
           "facets": [
-              "competencies_v5.competencyTheme"
+              `${this.environment.compentencyVersionKey}.${this.comeptencyKeys.vCompetencyTheme}`
           ],
           "limit": 0,
           "offset": 0,
@@ -257,7 +263,7 @@ export class CompetencyPassbookComponent implements OnInit {
           "filters": {
               "contentType":"Course",
               ...addFilter,
-              "competencies_v5.competencyArea" : area.name,
+              [`${this.environment.compentencyVersionKey}.${this.comeptencyKeys.vCompetencyArea}`] : area.name,
               "status": [
                   "Live"
               ]
@@ -266,7 +272,7 @@ export class CompetencyPassbookComponent implements OnInit {
               "lastUpdatedOn": "desc"
           },
           "facets": [
-              "competencies_v5.competencyTheme"
+              `${this.environment.compentencyVersionKey}.${this.comeptencyKeys.vCompetencyTheme}`
           ],
           "limit": 0,
           "offset": 0,
@@ -329,7 +335,7 @@ export class CompetencyPassbookComponent implements OnInit {
           "filters": {
               "contentType":"Course",
               ...addFilter,
-              "competencies_v5.competencyArea" : compArea.name,
+             [`${this.environment.compentencyVersionKey}.${this.comeptencyKeys.vCompetencyArea}`] : compArea.name,
               "status": [
                   "Live"
               ]
@@ -338,7 +344,7 @@ export class CompetencyPassbookComponent implements OnInit {
               "lastUpdatedOn": "desc"
           },
           "facets": [
-              "competencies_v5.competencySubThemeId"
+               `${this.environment.compentencyVersionKey}.${this.comeptencyKeys.vCompetencySubTheme}`
           ],
           "limit": 0,
           "offset": 0,
@@ -361,7 +367,7 @@ export class CompetencyPassbookComponent implements OnInit {
               this.allcompetencyTheme[themeEle.name.toLowerCase()].children.length) {
                 let data = this.allcompetencyTheme[themeEle.name.toLowerCase()].children.filter(obj1 => 
                   competencySubThemeData.some(obj2 => 
-                    Object.keys(obj1).every(key => obj1['id'] === Number(obj2['name']))
+                    Object.keys(obj1).every(key => obj1['name'] === (obj2['name']))
                   )
                 );
                 
@@ -371,6 +377,7 @@ export class CompetencyPassbookComponent implements OnInit {
           }
         })
       }
+
       this.loadCometency = false
     }
   } catch (error) {

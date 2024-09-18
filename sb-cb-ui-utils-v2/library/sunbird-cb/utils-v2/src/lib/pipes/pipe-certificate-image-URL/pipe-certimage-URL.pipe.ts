@@ -9,7 +9,7 @@ export class PipeCertificateImageURL implements PipeTransform {
     this.environment = environment
   }
   transform(value: string): any {
-    if(value.indexOf(this.environment.contentHost) < 0) {
+    if (value.indexOf(this.environment.contentHost) < 0) {
       if (value.indexOf('/public/content') > -1) {
         if (value.indexOf('/content/content') === -1 || value.indexOf('/content/collection') === -1) {
           const mainUrl = value && value.split('/content').pop() || ''

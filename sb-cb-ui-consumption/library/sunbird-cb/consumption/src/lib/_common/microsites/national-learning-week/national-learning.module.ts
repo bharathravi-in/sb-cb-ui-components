@@ -10,6 +10,8 @@ import { ContentStripWithTabsLibModule } from '../../content-strip-with-tabs-lib
 import { EventsModule } from '../../events/events.module';
 import { MdoLeaderboardModule } from '../../mdo-leaderboard/mdo-leaderboard.module';
 import { DataPointsModule } from '../../data-points/data-points.module';
+import { HighlightsOfWeekModule } from '../../highlights-of-week/highlights-of-week.module';
+import { SpeakersModule } from '../../speakers/speakers.module';
 
 
 
@@ -27,6 +29,8 @@ import { DataPointsModule } from '../../data-points/data-points.module';
     DataPointsModule,
     EventsModule,
     MdoLeaderboardModule,
+    HighlightsOfWeekModule,
+    SpeakersModule,
   ],
   exports: [
     NationalLearningComponent,

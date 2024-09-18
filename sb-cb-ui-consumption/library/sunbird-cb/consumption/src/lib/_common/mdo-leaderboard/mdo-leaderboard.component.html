@@ -1,5 +1,6 @@
-<div class="flex l-title gap-2 margin-bottom-m">
-    {{object?.mdoLeaderboard?.data?.title}} <mat-icon>info</mat-icon>
+<div class="flex l-title gap-2 margin-bottom-xs">
+    {{object?.title}} <div><img [src]="object?.infoIcon" alt="" i18n-matTooltip
+    [matTooltip]="object?.infoText"></div>
 </div>
 <div class="l-content">
     <div class="horizontal-scroll-container">
@@ -10,7 +11,7 @@
             <span class="tab-title"  [ngClass]="{'active' : currentTab === 'S' }" (click)="getTabData('S')">500-1K</span>
             <span class="tab-title"  [ngClass]="{'active' : currentTab === 'XS' }" (click)="getTabData('XS')">Less than 500</span>
         </div>
-      </div>
+    </div>
     <div class="relative search-wrapper margin-top-m mb-5">
         <mat-icon matPrefix class="flex absolute items-center justify-center mr-2 icon-search">search
         </mat-icon>
@@ -20,7 +21,7 @@
     </div>
     <div class="l-tab-data">
         <div *ngFor="let user of filteredData">
-            <div class="flex flex-row item mb-5 gap-3 {{user.selected ? 'active-item' : ''}}" (click)="getChildren(user)">
+            <div class="flex flex-row item mb-5 gap-3">
                 <img class="crown absolute" src="assets/images/national-learning/rank-crown.svg" *ngIf="user.row_num === 1"/>
                 <div class="{{getRank(user.row_num)}}">{{user.row_num}}</div>
                 <div class="w-full">

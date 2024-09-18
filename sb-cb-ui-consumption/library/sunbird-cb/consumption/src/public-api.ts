@@ -30,6 +30,8 @@ export * from './lib/_services/common-methods.service'
 export * from './lib/_common/top-learners/top-learners.module'
 export * from './lib/_common/cbp-plan/cbp-plan.module'
 export * from './lib/_common/mdo-leaderboard/mdo-leaderboard.module'
+export * from './lib/_common/highlights-of-week/highlights-of-week.module'
+export * from './lib/_common/speakers/speakers.module'
 
 
 export * from './lib/_common/dialog-components/dialog-components.module'

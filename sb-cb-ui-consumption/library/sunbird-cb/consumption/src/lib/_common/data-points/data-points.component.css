@@ -34,7 +34,12 @@
     }
     .nlw-status {
         background: linear-gradient(173.01deg, #266EEB -5.09%, #133F8B 133.16%);
-        margin-top: -21px;
+        margin-top: -22px;
+    }
+    .nlw-status-mob {
+        background: linear-gradient(173.01deg, #266EEB -5.09%, #133F8B 133.16%);
+        margin-top: -22px;
+        padding-top: 32px;
     }
 
     .nlw-div {

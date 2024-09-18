@@ -1,0 +1,50 @@
+.highlights-of-the-week-container {
+    ::ng-deep.banner-title {
+        display: none;
+    }
+    ::ng-deep.banner-meta {
+        bottom: -37px;
+    }
+    ::ng-deep.prev {
+        margin-left: 11px;
+    }
+    ::ng-deep.next {
+        margin-right: 16px;
+    }
+}
+.wh-wrapper {
+    background-color: #D1DBEC;
+    padding: 16px;
+    border-radius: 12px;
+    .title {
+        /* stylelint-disable */
+        font-family: Montserrat;
+        /* stylelint-enable */
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 24.38px;
+        text-align: left;
+
+    }
+    .player {
+        height: 420px;
+    }
+    .player-title {
+        /* stylelint-disable */
+        font-family: Montserrat;
+        /* stylelint-disable */
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 19.5px;
+        text-align: left;
+    }
+    .player-body {
+         /* stylelint-disable */
+        font-family: Lato;
+        /* stylelint-disable */
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 16.8px;
+        text-align: left;
+    }
+}

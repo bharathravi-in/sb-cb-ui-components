@@ -33,7 +33,7 @@
                     <div class="flex flex-wrap gap-3 pt-4 chip-container">
                         <ng-container *ngFor="let child of allcompetencyTheme[obj.name]?.children| slice:0: allcompetencyTheme[obj.name]?.viewMore ? allcompetencyTheme[obj.name]?.children?.length : 3; let i = index">
                             <div class="chip rounded-full p-2 text-xs chip-ellipsis" [title]="child?.displayName" >
-                                {{ child.displayName }}
+                                {{ child?.displayName }}
                             </div>
                         </ng-container>
                         <div class="p-2 info-btn cursor-pointer"

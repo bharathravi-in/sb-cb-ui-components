@@ -6,6 +6,13 @@
     background-color: white!important;
 }
 
+.nlw-mandatoryCourse {
+    ::ng-deep.capitalize {
+        font-size: 20px;
+        line-height: 24.38px;
+    }
+}
+
 .nlm-micro-sites {
     ::ng-deep.container {
         max-width: 1200px!important;

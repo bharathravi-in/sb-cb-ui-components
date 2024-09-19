@@ -8,7 +8,8 @@ const API_END_POINTS = {
   ANNOUNCEMENTS_DETAILS: `apis/proxies/v8/announcements/v1/search`,
   LEARNERS: `apis/proxies/v8/halloffame/top/learners`,
   LEADERBOARD: 'apis/proxies/v8/halloffame/v1/mdoleaderboard',
-  LEADERBOARD_USERS: `apis/proxies/v8/halloffame/v1/userleaderboard`
+  LEADERBOARD_USERS: `apis/proxies/v8/halloffame/v1/userleaderboard`,
+  NLW_LEADERBOARD: `apis/proxies/v8/national/learning/week/insights`
 }
 
 @Injectable({
@@ -42,6 +43,10 @@ export class InsiteDataService {
 
   fetchMdoUsers(orgId: any): Observable<any> {
     return this.http.get(`${API_END_POINTS.LEADERBOARD_USERS}/${orgId}`)
+  }
+
+  fetchNwlStats() {
+    return this.http.get(`${API_END_POINTS.NLW_LEADERBOARD}`)
   }
 
 }

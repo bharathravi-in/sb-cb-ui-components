@@ -43,6 +43,7 @@ export class NationalLearningComponent {
   }
 
   raiseTelemetryInteratEvent(event: any) {
+    console.log(event)
     
   }
 

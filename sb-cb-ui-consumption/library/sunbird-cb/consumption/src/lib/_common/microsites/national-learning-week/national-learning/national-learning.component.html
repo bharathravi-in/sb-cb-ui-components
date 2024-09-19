@@ -11,8 +11,6 @@
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'contentSection'" [ngTemplateOutlet]="contentSection"
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
-                                    <ng-container *ngSwitchCase="'wowContent'" [ngTemplateOutlet]="wowContent"
-                                        [ngTemplateOutletContext]="{data: {contentStrip: column?.data, sectionKey: section.key}}"></ng-container>
                                 </ng-container>
                             </div>
                         </ng-container>
@@ -33,18 +31,20 @@
             <div class="block md:hidden">
                 <sb-uic-data-points
                     [providerId]="providerId"
-                    [fetchDataFromApi]="false"
-                    [objectData]="data?.metrics"
+                    [fetchDataFromApi]="true"
+                    [objectData]="data?.metrics?.data"
                     [layoutType]="'nlwCol'"
+                    [title]="data?.metrics?.title"
                     [pageLayout]="'nlw'">
                 </sb-uic-data-points>
             </div>
             <div class="hidden md:block">
                 <sb-uic-data-points
                     [providerId]="providerId"
-                    [fetchDataFromApi]="false"
-                    [objectData]="data?.metrics"
+                    [fetchDataFromApi]="true"
+                    [objectData]="data?.metrics?.data"
                     [layoutType]="'nlwRow'"
+                    [title]="data?.metrics?.title"
                     [pageLayout]="'nlw'">
                 </sb-uic-data-points>
             </div>
@@ -113,15 +113,32 @@
         <div class="container">
             <div class="grid grid-cols-12 gap-4 mb-6">
                 <div class="col-span-12 md:col-span-{{data.leftContent.colspan}}">
-                    <div *ngIf="data.leftContent.weekHighlights.data">
+                    <div *ngIf="data.leftContent.data.weekHighlights.data">
                         <sb-uic-highlights-of-week
-                            [objectData]="data.leftContent.weekHighlights.data">
+                            [objectData]="data.leftContent.data.weekHighlights.data">
                         </sb-uic-highlights-of-week>
+                    </div>
+                    <div *ngIf="data.leftContent.data.mandatoryCourse.enabled && data?.leftContent?.data?.mandatoryCourse?.column[0]?.data">
+                        <div class="margin-top-l nlw-mandatoryCourse">
+                            <sb-uic-content-strip-with-tabs
+                                [emitViewAll]="false"
+                                (viewAllResponse)="''"
+                                (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+                                (emptyResponse)="''"
+                                [providerId]="'123456789'"
+                                [widgetData]="data?.leftContent?.data?.mandatoryCourse?.column[0]?.data"
+                                [channnelName]="'channnelName'">
+                            </sb-uic-content-strip-with-tabs>
+                        </div>
                     </div>
                 </div>
                 <div class="col-span-12 md:col-span-{{data.rightContent.colspan}}">
                     <div *ngIf="data.rightContent.data.myprogress">
-                        {{data?.rightContent?.data?.myprogress?.data?.title}}
+                        <div class="margin-bottom-m">
+                            <sb-uic-user-progress
+                            [objectData]="data.rightContent.data.myprogress.data">
+                        </sb-uic-user-progress>
+                        </div>
                     </div>
                     <div *ngIf="data.rightContent.data.speakerOftheDay">
                         <sb-uic-speakers
@@ -145,26 +162,6 @@
             </div>
         </div>
     </div>
-</ng-template>
-
-<ng-template #wowContent let-data="data">
-    <ng-container *ngIf="!data?.contentStrip?.hideSection">
-        <div class="flex justify-center relative">
-            <img class="absolute {{data?.contentStrip?.sectionImagePosition}}" src="{{data?.contentStrip?.sectionImage}}" alt="">
-            <div class="container wow-contents">
-                <div class="w-full">
-                    <sb-uic-content-strip-with-tabs
-                        [emitViewAll]="true"
-                        (viewAllResponse)="showAllContent($event,data)"
-                        (emptyResponse)="hideContentStrip($event, data)"
-                        (telemtryResponse)="raiseTelemetryInteratEvent($event)"
-                        [providerId]="providerId"
-                        [widgetData]="data?.contentStrip">
-                    </sb-uic-content-strip-with-tabs>
-                </div>
-            </div>
-        </div>
-    </ng-container>
 </ng-template>
 
 

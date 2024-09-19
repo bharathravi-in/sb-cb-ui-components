@@ -1,0 +1,95 @@
+.user-progress-title {
+    /* stylelint-disable */
+    font-family: Montserrat;
+    /* stylelint-enable */
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24.38px;
+    text-align: left;
+}
+
+.user-progress-wrapper {
+    border-radius: 12px;
+}
+.user-rank {
+    background: linear-gradient(124.59deg, #266EEB 51.53%, #133F8B 140.2%);
+    height: 76px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border-left-color: #266EEB;
+    border-right-color: #266EEB;
+    border-top-color: #266EEB;
+    padding-left: 25%;
+}
+.current-rank {
+    padding: 3px 10px;
+    border-radius: 15px;
+    background-color: white;
+    color: #F3962F;
+    /* stylelint-disable */
+    font-family: Montserrat;
+    /* stylelint-enable */
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.5px;
+    text-align: center;
+}
+.user-details-wrapper {
+    padding: 0 16px;
+    border: 1px solid #e8e8e8;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+.user-initial {
+    /* stylelint-disable */
+    font-family: Montserrat;
+    /* stylelint-enable */
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24.38px;
+    text-align: center;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+    color: #fff;
+    border-radius: 50px;
+    border: 3px solid white;
+    margin-top: -30px;
+}
+.user-name {
+    /* stylelint-disable */
+    font-family: Montserrat;
+    /* stylelint-enable */
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19.5px;
+    text-align: left;
+}
+
+.my-hours {
+    height: 62px;
+    padding: 16px;
+    background-color: #F0F3F4;
+    border-radius: 12px;
+    width: 50%;
+    border: 1px solid #c3c3c3;
+}
+.my-certificates {
+    height: 62px;
+    padding: 16px;
+    background-color: #F0F3F4;
+    width: 50%;
+    border-radius: 12px;
+    border: 1px solid #c3c3c3;
+}
+.k-points {
+    height: 62px;
+    padding: 16px;
+    background-color: #F0F3F4;
+    width: 50%;
+    border-radius: 12px;
+    border: 1px solid #c3c3c3;
+}

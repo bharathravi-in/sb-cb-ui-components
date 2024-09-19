@@ -12,6 +12,7 @@ import { MdoLeaderboardModule } from '../../mdo-leaderboard/mdo-leaderboard.modu
 import { DataPointsModule } from '../../data-points/data-points.module';
 import { HighlightsOfWeekModule } from '../../highlights-of-week/highlights-of-week.module';
 import { SpeakersModule } from '../../speakers/speakers.module';
+import { UserProgressModule } from '../../user-progress/user-progress.module';
 
 
 
@@ -31,6 +32,7 @@ import { SpeakersModule } from '../../speakers/speakers.module';
     MdoLeaderboardModule,
     HighlightsOfWeekModule,
     SpeakersModule,
+    UserProgressModule
   ],
   exports: [
     NationalLearningComponent,

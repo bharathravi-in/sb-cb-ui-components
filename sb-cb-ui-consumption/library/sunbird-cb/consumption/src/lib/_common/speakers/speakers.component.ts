@@ -28,7 +28,6 @@ export class SpeakersComponent implements OnInit {
         localData['profileImage'] = contentEle.profileImage ? contentEle.profileImage : ''
         this.contentdata.push(localData)
       })
-      console.log(" contentdata ", this.contentdata)
     }
   }
 

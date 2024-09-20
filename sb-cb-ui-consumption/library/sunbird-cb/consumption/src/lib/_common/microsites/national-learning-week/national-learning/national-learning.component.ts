@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class NationalLearningComponent {
   @Input() sectionList:any = []
+  @Input() configDetails: any
   providerId: string = '123456789'
   providerName: ''
   descriptionMaxLength = 500

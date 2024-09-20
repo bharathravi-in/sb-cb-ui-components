@@ -136,7 +136,7 @@
                     <div *ngIf="data.rightContent.data.myprogress">
                         <div class="margin-bottom-m">
                             <sb-uic-user-progress
-                            [objectData]="data.rightContent.data.myprogress.data">
+                            [objectData]="data.rightContent.data.myprogress.data" [rootOrgId]="configDetails?.unMappedUser?.rootOrgId">
                         </sb-uic-user-progress>
                         </div>
                     </div>

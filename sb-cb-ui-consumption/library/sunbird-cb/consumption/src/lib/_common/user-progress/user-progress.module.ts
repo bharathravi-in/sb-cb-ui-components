@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserProgressComponent } from './user-progress.component';
-import { MatTooltipModule } from '@angular/material';
+import { MatIconModule, MatTooltipModule } from '@angular/material';
+import { ScrollableItemModule } from '../../_directives/scrollable-item/scrollable-item.module';
+import { SlidersNgContentLibModule } from '../sliders-ng-content/sliders-ng-content.module';
 
 
 
@@ -9,7 +11,10 @@ import { MatTooltipModule } from '@angular/material';
   declarations: [UserProgressComponent],
   imports: [
     CommonModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatIconModule,
+    ScrollableItemModule,
+    SlidersNgContentLibModule,
   ],
   exports: [
     UserProgressComponent

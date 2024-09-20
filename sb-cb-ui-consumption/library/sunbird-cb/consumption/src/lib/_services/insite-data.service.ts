@@ -9,7 +9,8 @@ const API_END_POINTS = {
   LEARNERS: `apis/proxies/v8/halloffame/top/learners`,
   LEADERBOARD: 'apis/proxies/v8/halloffame/v1/mdoleaderboard',
   LEADERBOARD_USERS: `apis/proxies/v8/halloffame/v1/userleaderboard`,
-  NLW_LEADERBOARD: `apis/proxies/v8/national/learning/week/insights`
+  NLW_LEADERBOARD: `apis/proxies/v8/national/learning/week/insights`,
+  INSIGHTS: `apis/proxies/v8/read/user/insights`,
 }
 
 @Injectable({
@@ -47,6 +48,11 @@ export class InsiteDataService {
 
   fetchNwlStats() {
     return this.http.get(`${API_END_POINTS.NLW_LEADERBOARD}`)
+  }
+
+  fetchInsightsData(payload: any) {
+    const result = this.http.post(API_END_POINTS.INSIGHTS, payload)
+    return result
   }
 
 }

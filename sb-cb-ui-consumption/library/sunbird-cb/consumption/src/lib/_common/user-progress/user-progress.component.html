@@ -4,12 +4,15 @@
 </div>
 <div class="user-progress-wrapper margin-bottom-l">
     <div class="user-rank flex items-center">
-        <div class="current-rank">#100001 Rank</div>
+        <div class="current-rank" *ngIf="userProgress?.rank > 0">#{{userProgress?.rank}} Rank</div>
     </div>
     <div class="user-details-wrapper">
         <div class="user-details flex gap-2">
-            <div class="user-initial">VK</div>
-            <div class="user-name pt-3">Venky Kandagaddala</div>
+            <div class="user-initial" *ngIf="userProgress?.profile_image">
+                <img class="user-profile" [src]="userProgress?.profile_image" alt=""/>
+            </div>
+            <div class="user-initial" *ngIf="!userProgress?.profile_image && userProgress?.fullname">{{createInititals(userProgress?.fullname)}}</div>
+            <div class="user-name pt-3">{{userProgress?.fullname}}</div>
         </div>
         <div class="user-stats my-3">
             <div class="flex gap-2 items-center justify-center">
@@ -18,7 +21,7 @@
                         <img class="hours-icon"
                             src="https://portal.dev.karmayogibharat.net/content-store/orgStore/0135071359030722569/1726808794219_InProgress_Icon.svg" alt="">
                         <div>
-                            <div class="counter">55</div>
+                            <div class="counter">{{userProgress?.total_learning_hours || 0}}</div>
                             <div class="counter-title pt-1">Learning Hours</div>
                         </div>
                     </div>
@@ -28,7 +31,7 @@
                         <img class="cert-icon"
                             src="https://portal.dev.karmayogibharat.net/content-store/orgStore/0135071359030722569/1726808775795_Certificate_icon.svg" alt="">
                         <div>
-                            <div class="counter">101</div>
+                            <div class="counter">{{userProgress?.count || 0}}</div>
                             <div class="counter-title pt-1">Certificates</div>
                         </div>
                     </div>
@@ -40,7 +43,7 @@
                         <img class="kp-point-icon"
                             src="https://portal.dev.karmayogibharat.net/content-store/orgStore/0135071359030722569/1726808815206_karma-badge.svg" alt="">
                         <div>
-                            <div class="counter">2000</div>
+                            <div class="counter">{{userProgress?.total_points || 0}}</div>
                             <div class="counter-title pt-1">Karma Points</div>
                         </div>
                     </div>

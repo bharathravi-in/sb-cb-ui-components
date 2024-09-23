@@ -131,6 +131,9 @@
                             </sb-uic-content-strip-with-tabs>
                         </div>
                     </div>
+                    <div *ngIf="data.leftContent.data.events.enabled && data.leftContent.data.events.column[0]">
+                        <sb-uic-events [object]="data.leftContent.data.events.column[0]" [nwlEventsConfig]="nwlConfiguration"></sb-uic-events>
+                    </div>
                 </div>
                 <div class="col-span-12 md:col-span-{{data.rightContent.colspan}}">
                     <div *ngIf="data.rightContent.data.myprogress">

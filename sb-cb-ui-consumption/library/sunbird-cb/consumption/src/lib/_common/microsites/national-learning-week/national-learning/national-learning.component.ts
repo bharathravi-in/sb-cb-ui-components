@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,14 +6,18 @@ import { Router } from '@angular/router';
   templateUrl: './national-learning.component.html',
   styleUrls: ['./national-learning.component.scss']
 })
-export class NationalLearningComponent {
+export class NationalLearningComponent implements OnInit {
   @Input() sectionList:any = []
   @Input() configDetails: any
+  @Input() nwlConfiguration: any
   providerId: string = '123456789'
   providerName: ''
   descriptionMaxLength = 500
-  constructor(public router: Router) { }
+  constructor(public router: Router) {
+   }
 
+   ngOnInit(): void {
+   }
 
 
   hideKeyHightlight(event: any, learnerReview: any) {

@@ -14,14 +14,23 @@ export class UserProgressComponent implements OnInit {
   insitesData = []
   currentIndex = 0
   styleData: any = {}
+  userProgress: any
   @ViewChildren(ScrollableItemDirective) scrollableItems: QueryList<ScrollableItemDirective>
   constructor(public insightSvc: InsiteDataService,
   ) { }
 
   ngOnInit() {
     this.styleData = this.objectData.insights.data.sliderData.styleData
-    console.log("sdfd ", this.styleData)
+    this.getUserProgress()
     this.getInsightsData()
+  }
+
+  getUserProgress() {
+    this.insightSvc.fetchUserProgress().subscribe((res: any) => {
+      if(res && res.result && res.result.userLeaderBoard) {
+        this.userProgress = res.result.userLeaderBoard[0]
+      }
+    })
   }
   getInsightsData() {
     const request = {
@@ -52,6 +61,29 @@ export class UserProgressComponent implements OnInit {
 
   getCurrentIndex(indexValue: any) {
     this.currentIndex = indexValue
+  }
+
+  createInititals(name: string) {
+    let initials = ''
+    const array = name.toString().split(' ')
+    if (array[0] !== 'undefined' && typeof array[1] !== 'undefined') {
+      initials += array[0].charAt(0)
+      initials += array[1].charAt(0)
+    } else {
+      for (let i = 0; i < name.length; i += 1) {
+        if (name.charAt(i) === ' ') {
+          continue
+        }
+        if (name.charAt(i) === name.charAt(i)) {
+          initials += name.charAt(i)
+
+          if (initials.length === 2) {
+            break
+          }
+        }
+      }
+    }
+    return initials.toUpperCase()
   }
 
 }

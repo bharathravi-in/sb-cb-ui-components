@@ -149,7 +149,9 @@
                         </sb-uic-speakers>
                     </div>
                     <div *ngIf="data.rightContent.data.mdoLeaderboard">
-                        <sb-uic-mdo-leaderboard [object]="data.rightContent.data.mdoLeaderboard.data"></sb-uic-mdo-leaderboard>
+                        <sb-uic-mdo-leaderboard
+                            [object]="data.rightContent.data.mdoLeaderboard.data"
+                            (tabClicked)="raiseTabClick($event)"></sb-uic-mdo-leaderboard>
                     </div>
                 </div>
             </div>

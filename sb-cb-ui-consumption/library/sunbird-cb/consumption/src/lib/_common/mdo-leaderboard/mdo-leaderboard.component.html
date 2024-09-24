@@ -30,7 +30,7 @@
                             <div class="rank-name">{{user.org_name}}</div>
                             <div class="rank-points flex mt-1 gap-1">
                                 <img class="nlw-kb" src="assets/icons/home/karma-badge.svg"/>
-                                <div class="points">{{user.total_points}} points</div>
+                                <div class="points">{{user.total_points || 0 }} points</div>
                             </div>
                         </div>                    
                         <div class="rank-crown" *ngIf="[1,2,3].includes(user.row_num)">

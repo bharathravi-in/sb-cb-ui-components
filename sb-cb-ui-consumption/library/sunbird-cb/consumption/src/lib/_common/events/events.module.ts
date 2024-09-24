@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EventsComponent } from './events.component';
 import { EventCardComponent } from './event-card/event-card.component';
 import { RouterModule } from '@angular/router';
+import { SkeletonLoaderLibModule } from '../skeleton-loader-lib/skeleton-loader-lib.module';
 
 
 
@@ -11,6 +12,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     RouterModule,
+    SkeletonLoaderLibModule,
   ],
   exports: [EventsComponent, EventCardComponent]
 })

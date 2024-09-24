@@ -14,29 +14,13 @@ export class EventsComponent implements OnInit {
   @Input() nwlEventsConfig: any
   daysBetween: any = []
   events: any = []
+  requestBody: any
+  currentDay: any
+  loader: boolean = false
   constructor(public insightSvc: InsiteDataService) { }
 
   ngOnInit() {
-    this.getEventsList()
-  }
-  getDaysBetweenDates() {
-    let currentDate = moment(this.nwlEventsConfig.startDate, 'DD-MM-YYYY')
-    const endDate = moment(this.nwlEventsConfig.endDate, 'DD-MM-YYYY')
-    while (currentDate.isSameOrBefore(endDate)) {
-      let localObj = {}
-      localObj['startDate'] = currentDate.format('YYYY-MM-DD')
-      localObj['diplayFormat'] = currentDate.format('MMM DD, YYYY')
-      currentDate.add(1, 'days')
-      this.daysBetween.push(localObj)
-    }
-  }
-
-  getEventsList() {
-    this.getDaysBetweenDates()
-    let nextDay = moment(this.daysBetween[0]['startDate'], 'YYYY-MM-DD')
-    nextDay.add(1, 'days')
-    console.log("nextr date ", nextDay)
-    const requestObj = {
+    this.requestBody = {
       locale: [
         'en',
       ],
@@ -48,8 +32,8 @@ export class EventsComponent implements OnInit {
           contentType: 'Event',
           category: 'Event',
           startDate	: {
-            ">=": this.daysBetween[0]['startDate'],
-            "<": nextDay.format('YYYY-MM-DD')
+            ">=": '',
+            "<": ''
           }
         },
         sort_by: {
@@ -57,10 +41,61 @@ export class EventsComponent implements OnInit {
         },
       },
     }
-    this.insightSvc.fetchTrainingDetails(requestObj).subscribe((res: any)=> {
-      if (res && res.result && res.result.Event) {
-        this.events = res.result.Event
+    this.getEventsList()
+  }
+  getDaysBetweenDates() {
+    let currentDate = moment(this.nwlEventsConfig.startDate, 'DD-MM-YYYY')
+    const endDate = moment(this.nwlEventsConfig.endDate, 'DD-MM-YYYY')
+    while (currentDate.isSameOrBefore(endDate)) {
+      let localObj = {}
+      localObj['startDate'] = currentDate.format('YYYY-MM-DD')
+      localObj['diplayFormat'] = currentDate.format('MMM DD, YYYY')
+      if(currentDate.isSame(moment(), 'day')){
+        this.currentDay = currentDate.format('YYYY-MM-DD')
       }
+      currentDate.add(1, 'days').format('YYYY-MM-DD')
+      this.daysBetween.push(localObj)
+    }
+    console.log("currentDay ", this.currentDay)
+  }
+
+  getEvents(slectedDate: any) {
+    this.currentDay = slectedDate.target.value
+    let nextDay = moment(slectedDate.target.value, 'YYYY-MM-DD')
+    nextDay.add(1, 'days')
+    this.requestBody.request.filters.startDate[">="] = this.currentDay
+    this.requestBody.request.filters.startDate["<"] = nextDay.format('YYYY-MM-DD')
+    this.loader = true
+    this.insightSvc.fetchTrainingDetails(this.requestBody).subscribe((res: any)=> {
+      this.events = []
+      if (res && res.result && res.result.count > 0) {
+        this.events = res.result.Event
+        this.loader = false
+      } else {
+        this.loader = false
+      }
+    }, error => {
+      this.loader = false
+    })
+  }
+
+  getEventsList() {
+    this.getDaysBetweenDates()
+    let nextDay = moment(this.currentDay, 'YYYY-MM-DD')
+    nextDay.add(1, 'days')
+    this.requestBody.request.filters.startDate[">="] = this.currentDay
+    this.requestBody.request.filters.startDate["<"] = nextDay.format('YYYY-MM-DD')
+    this.loader = true
+    this.insightSvc.fetchTrainingDetails(this.requestBody).subscribe((res: any)=> {
+      this.events = []
+      if (res && res.result && res.result.count > 0) {
+        this.events = res.result.Event
+        this.loader = false
+      } else {
+        this.loader = false
+      }
+    }, error => {
+      this.loader = false
     })
   }
 

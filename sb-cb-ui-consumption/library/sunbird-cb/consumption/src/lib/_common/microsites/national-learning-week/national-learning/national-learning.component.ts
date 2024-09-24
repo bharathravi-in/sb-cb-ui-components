@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { EventService, WsEvents } from '@sunbird-cb/utils-v2';
+import * as _ from 'lodash'
 
 @Component({
   selector: 'sb-uic-national-learning',
@@ -13,7 +15,7 @@ export class NationalLearningComponent implements OnInit {
   providerId: string = '123456789'
   providerName: ''
   descriptionMaxLength = 500
-  constructor(public router: Router) {
+  constructor(public router: Router, private events: EventService) {
    }
 
    ngOnInit(): void {
@@ -47,9 +49,37 @@ export class NationalLearningComponent implements OnInit {
     }
   }
 
+  raiseTabClick(event) {
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'mdo-leaderboard',
+        id: `${event}-tab`,
+      },
+      {
+      },
+      {
+        module: 'National Learning Week',
+      }
+    )
+  }
+
   raiseTelemetryInteratEvent(event: any) {
-    console.log(event)
-    
+    this.events.raiseInteractTelemetry(
+      {
+        type: 'click',
+        subType: 'mandatory-courses',
+        id: `mandatory-courses-card`,
+      },
+      {
+        id: event.identifier,
+        type: event.primaryCategory,
+      },
+      {
+        pageIdExt: `mandatory-courses-card`,
+        module: 'National Learning Week',
+      }
+    )
   }
 
 }

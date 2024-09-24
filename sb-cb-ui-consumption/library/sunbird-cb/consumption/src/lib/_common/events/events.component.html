@@ -3,17 +3,29 @@
         {{object?.title}}
     </div>
     <div class="events-select">
-        <select>
-            <option value="1">6 Sept, 2024</option>
-            <option value="2">7 Sept, 2024</option>
-            <option value="3">8 Sept, 2024</option>
+        <select (change)="getEvents($event)">
+            <option value="{{d?.startDate}}" *ngFor="let d of daysBetween" [selected]="currentDay === d.startDate">{{d?.diplayFormat}}</option>
         </select>
     </div>
 </div>
 <div class="grid grid-cols-1 gap-4">
     <div class="events-card-wrapper">
-        <div *ngFor="let event of events">
-            <sb-uic-event-card [objectData]="object" [eventDetails]="event"></sb-uic-event-card>
+        <div *ngIf="!loader">
+            <div *ngIf="events?.length > 0">
+                <div *ngFor="let event of events">
+                    <sb-uic-event-card [objectData]="object" [eventDetails]="event" [loader]="loader"></sb-uic-event-card>
+                </div>
+            </div>
+            <div *ngIf="events?.length === 0">
+                <div class="flex item-center justify-center p-5 no-events">
+                    No events exist.
+                </div>
+            </div>
+        </div>
+        <div *ngIf="loader && events?.length === 0">
+            <div *ngFor="let event of [1,2,3]">
+                <sb-uic-event-card [objectData]="object" [eventDetails]="event" [loader]="loader"></sb-uic-event-card>
+            </div>
         </div>
     </div>
 </div>

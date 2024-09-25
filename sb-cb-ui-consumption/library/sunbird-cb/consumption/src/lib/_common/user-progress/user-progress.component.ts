@@ -15,6 +15,7 @@ export class UserProgressComponent implements OnInit {
   currentIndex = 0
   styleData: any = {}
   userProgress: any
+  expand: boolean = true
   @ViewChildren(ScrollableItemDirective) scrollableItems: QueryList<ScrollableItemDirective>
   constructor(public insightSvc: InsiteDataService,
   ) { }
@@ -84,6 +85,10 @@ export class UserProgressComponent implements OnInit {
       }
     }
     return initials.toUpperCase()
+  }
+
+  toggleWeekHightlits() {
+    this.expand = !this.expand
   }
 
 }

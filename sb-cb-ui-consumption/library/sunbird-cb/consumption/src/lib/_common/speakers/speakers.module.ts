@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SpeakersComponent } from './speakers.component';
 import { ScrollableItemModule } from '../../_directives/scrollable-item/scrollable-item.module';
 import { SlidersNgContentLibModule } from '../sliders-ng-content/sliders-ng-content.module';
-import { MatTooltipModule } from '@angular/material';
+import { MatIconModule, MatTooltipModule } from '@angular/material';
 
 
 
@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material';
     ScrollableItemModule,
     SlidersNgContentLibModule,
     MatTooltipModule,
+    MatIconModule,
   ],
   exports: [
     SpeakersComponent

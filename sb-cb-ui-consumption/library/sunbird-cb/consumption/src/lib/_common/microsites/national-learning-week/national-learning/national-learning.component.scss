@@ -161,6 +161,9 @@
         ::ng-deep.next {
             margin-right: 15px!important;
         }
+        ::ng-deep.banner-container {
+            min-height: 212px !important;
+        }
     }
 }
 

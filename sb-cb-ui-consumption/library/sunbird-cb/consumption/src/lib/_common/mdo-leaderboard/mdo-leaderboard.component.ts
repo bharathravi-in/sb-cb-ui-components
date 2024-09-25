@@ -12,6 +12,7 @@ export class MdoLeaderboardComponent implements OnInit {
   result: any = []
   filteredData: any
   searchTerm: string = ''
+  expand: boolean = true
 
   @Input() object: any
   @Output() tabClicked = new EventEmitter<any>()
@@ -87,6 +88,10 @@ export class MdoLeaderboardComponent implements OnInit {
             .filter(user => user.size === this.currentTab)
             .map(user => ({ ...user, children: []}))
     }
+  }
+
+  toggleWeekHightlits() {
+    this.expand = !this.expand
   }
 
 }

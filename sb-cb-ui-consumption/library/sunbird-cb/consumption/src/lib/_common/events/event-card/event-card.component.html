@@ -7,10 +7,10 @@
             <div class="flex">
                 <div class="flex event-label">{{eventDetails?.resourceType}}</div>
             </div>
-            <div class="flex orgName pt-2 pb-1">
+            <div class="orgName pt-2 pb-1">
                 {{eventDetails?.owner}}
             </div>
-            <div class="flex event-title pt-1">
+            <div class="event-title pt-1">
                 {{eventDetails?.name | slice:0:descriptionMaxLength}}
                 <span *ngIf="eventDetails?.name?.length > descriptionMaxLength">...</span>
             </div>

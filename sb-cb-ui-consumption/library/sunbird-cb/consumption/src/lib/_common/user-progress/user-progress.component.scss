@@ -39,6 +39,7 @@
     border: 1px solid #e8e8e8;
     border-bottom-left-radius: 12px;
     border-bottom-right-radius: 12px;
+    background-color: white;
 }
 .user-details {
     padding: 0 8px;
@@ -188,6 +189,12 @@
     font-size: 12px;
     font-weight: 400;
     line-height: 14.4px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 769px) {
+    .week-progress {
+        background-color: #d1dbec;
+    }
 }
 
 

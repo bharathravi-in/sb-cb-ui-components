@@ -118,30 +118,32 @@
                             [objectData]="data.leftContent.data.weekHighlights.data">
                         </sb-uic-highlights-of-week>
                     </div>
-                    <div *ngIf="data.leftContent.data.mandatoryCourse.enabled && data?.leftContent?.data?.mandatoryCourse?.column[0]?.data">
-                        <div class="margin-top-l nlw-mandatoryCourse">
-                            <sb-uic-content-strip-with-tabs
-                                [emitViewAll]="false"
-                                (viewAllResponse)="''"
-                                (telemtryResponse)="raiseTelemetryInteratEvent($event)"
-                                (emptyResponse)="''"
-                                [providerId]="'123456789'"
-                                [widgetData]="data?.leftContent?.data?.mandatoryCourse?.column[0]?.data"
-                                [channnelName]="'channnelName'">
-                            </sb-uic-content-strip-with-tabs>
+                    <div class="hidden md:block">
+                        <div *ngIf="data.leftContent.data.mandatoryCourse.enabled && data?.leftContent?.data?.mandatoryCourse?.column[0]?.data">
+                            <div class="margin-top-l nlw-mandatoryCourse">
+                                <sb-uic-content-strip-with-tabs
+                                    [emitViewAll]="false"
+                                    (viewAllResponse)="''"
+                                    (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+                                    (emptyResponse)="''"
+                                    [providerId]="'123456789'"
+                                    [widgetData]="data?.leftContent?.data?.mandatoryCourse?.column[0]?.data"
+                                    [channnelName]="'channnelName'">
+                                </sb-uic-content-strip-with-tabs>
+                            </div>
                         </div>
                     </div>
-                    <div *ngIf="data.leftContent.data.events.enabled && data.leftContent.data.events.column[0]">
-                        <sb-uic-events [object]="data.leftContent.data.events.column[0]" [nwlEventsConfig]="nwlConfiguration"></sb-uic-events>
+                    <div class="hidden md:block">
+                        <div *ngIf="data.leftContent.data.events.enabled && data.leftContent.data.events.column[0]">
+                            <sb-uic-events [object]="data.leftContent.data.events.column[0]" [nwlEventsConfig]="nwlConfiguration"></sb-uic-events>
+                        </div>
                     </div>
                 </div>
                 <div class="col-span-12 md:col-span-{{data.rightContent.colspan}}">
                     <div *ngIf="data.rightContent.data.myprogress">
-                        <div class="margin-bottom-m">
-                            <sb-uic-user-progress
+                        <sb-uic-user-progress
                             [objectData]="data.rightContent.data.myprogress.data" [rootOrgId]="configDetails?.unMappedUser?.rootOrgId">
                         </sb-uic-user-progress>
-                        </div>
                     </div>
                     <div *ngIf="data.rightContent.data.speakerOftheDay">
                         <sb-uic-speakers
@@ -152,6 +154,28 @@
                         <sb-uic-mdo-leaderboard
                             [object]="data.rightContent.data.mdoLeaderboard.data"
                             (tabClicked)="raiseTabClick($event)"></sb-uic-mdo-leaderboard>
+                    </div>
+
+                    <div class="block md:hidden">
+                        <div *ngIf="data.leftContent.data.mandatoryCourse.enabled && data?.leftContent?.data?.mandatoryCourse?.column[0]?.data">
+                            <div class="margin-top-l nlw-mandatoryCourse">
+                                <sb-uic-content-strip-with-tabs
+                                    [emitViewAll]="false"
+                                    (viewAllResponse)="''"
+                                    (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+                                    (emptyResponse)="''"
+                                    [providerId]="'123456789'"
+                                    [widgetData]="data?.leftContent?.data?.mandatoryCourse?.column[0]?.data"
+                                    [channnelName]="'channnelName'">
+                                </sb-uic-content-strip-with-tabs>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="block md:hidden px-4 md-px-0">
+                        <div *ngIf="data.leftContent.data.events.enabled && data.leftContent.data.events.column[0]">
+                            <sb-uic-events [object]="data.leftContent.data.events.column[0]" [nwlEventsConfig]="nwlConfiguration"></sb-uic-events>
+                        </div>
                     </div>
                 </div>
             </div>

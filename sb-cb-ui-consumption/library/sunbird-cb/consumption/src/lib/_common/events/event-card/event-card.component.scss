@@ -49,4 +49,11 @@
         text-align: left;
         color: #1B4CA1;
     }
+
+    @media screen and (min-width: 320px) and (max-width: 769px) {
+        .poster {
+            width: 80px;
+            height: 69px;
+        }
+    }
 }

@@ -11,6 +11,7 @@ export class SpeakersComponent implements OnInit {
   currentIndex = 0
   contentdata: any = []
   styleData: any = {}
+  expand: boolean = true
   
   @ViewChildren(ScrollableItemDirective) scrollableItems: QueryList<ScrollableItemDirective>
 
@@ -56,6 +57,10 @@ export class SpeakersComponent implements OnInit {
   
   getCurrentIndex(indexValue: any) {
     this.currentIndex = indexValue
+  }
+
+  toggleWeekHightlits() {
+    this.expand = !this.expand
   }
 
 }

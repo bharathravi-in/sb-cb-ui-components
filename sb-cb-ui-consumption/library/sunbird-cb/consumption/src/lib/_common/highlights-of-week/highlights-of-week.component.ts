@@ -12,6 +12,7 @@ export class HighlightsOfWeekComponent implements OnInit {
   currentIndex = 0
   contentdata: any = []
   styleData: any = {}
+  expand: boolean = true
   
   @ViewChildren(ScrollableItemDirective) scrollableItems: QueryList<ScrollableItemDirective>
   constructor() { }
@@ -28,6 +29,10 @@ export class HighlightsOfWeekComponent implements OnInit {
         this.contentdata.push(localData)
       })
     }
+  }
+
+  toggleWeekHightlits() {
+    this.expand = !this.expand
   }
 
   getCurrentIndex(indexValue: any) {

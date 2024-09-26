@@ -369,83 +369,93 @@ export class ContentStripWithTabsLibComponent extends WidgetBaseComponent
       // tslint:disable-next-line: deprecation
       this.userSvc.fetchUserBatchList(userId, queryParams).subscribe(
         (result: any) => {
-          const courses = result && result.courses;
-          const showViewMore = Boolean(
-            courses.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
-          );
-          const viewMoreUrl = showViewMore
-            ? {
-              path: (strip.viewMoreUrl && strip.viewMoreUrl.path) || '',
-              queryParams: {
-                q: strip.viewMoreUrl && strip.viewMoreUrl.queryParams,
-                f:
-                  strip.request && strip.request.searchV6 && strip.request.searchV6.filters
-                    ? JSON.stringify(
-                      // this.searchServSvc.transformSearchV6Filters(
-                      strip.request.searchV6.filters
-                      // ),
-                    )
-                    : {},
-              },
-            }
-            : null;
-          if (courses && courses.length) {
-            content = courses.map((c: any) => {
-              const contentTemp: NsContent.IContent = c.content;
-              contentTemp.completionPercentage = c.completionPercentage || c.progress || 0;
-              contentTemp.completionStatus = c.completionStatus || c.status || 0;
-              contentTemp.enrolledDate = c.enrolledDate || '';
-              contentTemp.lastContentAccessTime = c.lastContentAccessTime || '';
-              contentTemp.lastReadContentStatus = c.lastReadContentStatus || '';
-              contentTemp.lastReadContentId = c.lastReadContentId || '';
-              contentTemp.lrcProgressDetails = c.lrcProgressDetails || '';
-              contentTemp.issuedCertificates = c.issuedCertificates || [];
-              contentTemp.batchId = c.batchId || '';
-              return contentTemp;
-            });
-          }
-          // To filter content with completionPercentage > 0,
-          // so that only those content will show in home page
-          // continue learing strip
-          // if (content && content.length) {
-          //   contentNew = content.filter((c: any) => {
-          //     /** commented as both are 0 after enrolll */
-          //     if (c.completionPercentage && c.completionPercentage > 0) {
-          //       return c
-          //     }
-          //   })
-          // }
+          this.userSvc.fetchExtEnrollData().subscribe((res: any)=> {
+            debugger
+            if(res && res.result && res.result.courses && res.result.courses.length){
+                let enrolledCourses = result && result.courses;
+                let enrolledExtCourses = res.result && res.result.courses;
+                const courses = [...enrolledExtCourses,...enrolledCourses]
+                const showViewMore = Boolean(
+                  courses.length > 5 && strip.stripConfig && strip.stripConfig.postCardForSearch,
+                );
+                const viewMoreUrl = showViewMore
+                  ? {
+                    path: (strip.viewMoreUrl && strip.viewMoreUrl.path) || '',
+                    queryParams: {
+                      q: strip.viewMoreUrl && strip.viewMoreUrl.queryParams,
+                      f:
+                        strip.request && strip.request.searchV6 && strip.request.searchV6.filters
+                          ? JSON.stringify(
+                            // this.searchServSvc.transformSearchV6Filters(
+                            strip.request.searchV6.filters
+                            // ),
+                          )
+                          : {},
+                    },
+                  }
+                  : null;
+                if (courses && courses.length) {
+                  content = courses.map((c: any) => {
+                    const contentTemp: NsContent.IContent = c.content;
+                    contentTemp.completionPercentage = c.completionPercentage || c.progress || 0;
+                    contentTemp.completionStatus = c.completionStatus || c.status || 0;
+                    contentTemp.enrolledDate = c.enrolledDate || '';
+                    contentTemp.lastContentAccessTime = c.lastContentAccessTime || '';
+                    contentTemp.lastReadContentStatus = c.lastReadContentStatus || '';
+                    contentTemp.lastReadContentId = c.lastReadContentId || '';
+                    contentTemp.lrcProgressDetails = c.lrcProgressDetails || '';
+                    contentTemp.issuedCertificates = c.issuedCertificates || [];
+                    contentTemp.batchId = c.batchId || '';
+                    return contentTemp;
+                  });
+                }
+                // To filter content with completionPercentage > 0,
+                // so that only those content will show in home page
+                // continue learing strip
+                // if (content && content.length) {
+                //   contentNew = content.filter((c: any) => {
+                //     /** commented as both are 0 after enrolll */
+                //     if (c.completionPercentage && c.completionPercentage > 0) {
+                //       return c
+                //     }
+                //   })
+                // }
 
-          // To sort in descending order of the enrolled date
-          contentNew = (content || []).sort((a: any, b: any) => {
-            const dateA: any = new Date(a.lastContentAccessTime || 0);
-            const dateB: any = new Date(b.lastContentAccessTime || 0);
-            return dateB - dateA;
-          });
+                // To sort in descending order of the enrolled date
+                contentNew = (content || []).sort((a: any, b: any) => {
+                  const dateA: any = new Date(a.lastContentAccessTime || 0);
+                  const dateB: any = new Date(b.lastContentAccessTime || 0);
+                  return dateB - dateA;
+                });
 
-          if (strip.tabs && strip.tabs.length) {
-            tabResults = this.splitEnrollmentTabsData(contentNew, strip);
-            this.processStrip(
-              strip,
-              this.transformContentsToWidgets(contentNew, strip),
-              'done',
-              calculateParentStatus,
-              viewMoreUrl,
-              tabResults
-            );
-          } else {
-            this.processStrip(
-              strip,
-              this.transformContentsToWidgets(contentNew, strip),
-              'done',
-              calculateParentStatus,
-              viewMoreUrl,
-            );
+                if (strip.tabs && strip.tabs.length) {
+                  tabResults = this.splitEnrollmentTabsData(contentNew, strip);
+                  this.processStrip(
+                    strip,
+                    this.transformContentsToWidgets(contentNew, strip),
+                    'done',
+                    calculateParentStatus,
+                    viewMoreUrl,
+                    tabResults
+                  );
+                } else {
+                  this.processStrip(
+                    strip,
+                    this.transformContentsToWidgets(contentNew, strip),
+                    'done',
+                    calculateParentStatus,
+                    viewMoreUrl,
+                  );
+                }
+                    
           }
+          console.log(res,'res=======')
+        })
         },
         () => {
           this.processStrip(strip, [], 'error', calculateParentStatus, null);
         }
+        
       );
     }
   }

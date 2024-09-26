@@ -318,4 +318,20 @@ export class WidgetUserService {
     localStorage.removeItem('userEnrollmentCount')
     localStorage.setItem('userEnrollmentCount', JSON.stringify(userData))
   }
+
+  fetchExtEnrollData() {
+    return this.http.get('apis/proxies/v8/cios-enroll/v1/courselist/byuserid').pipe(map((extRes: any)=> {
+      debugger
+      if(extRes && extRes.result && extRes.result.courses) {
+        extRes.result.courses.forEach((ele: any) => {
+          ele['completionPercentage'] = ele['completionpercentage']
+          ele['lastContentAccessTime'] = new Date(ele.content.lastUpdatedOn).getTime()
+          ele['content']['primaryCategory'] = ele.content.topic
+          ele['content']['organisation'] = [ele.content.contentPartner.contentPartnerName]
+          ele['content']['completionStatus'] = ele['completionpercentage']< 100 ? 1: 2
+        })
+      }
+      return extRes
+    }))
+  }
 }

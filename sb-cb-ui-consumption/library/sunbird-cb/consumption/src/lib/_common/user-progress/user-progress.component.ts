@@ -36,6 +36,9 @@ export class UserProgressComponent implements OnInit {
         this.userProgress['fullname'] = this.configSvc.userProfile.firstName
         this.userProgress['profile_image'] = this.configSvc.userProfile.profileImageUrl
       }
+    }, error => {
+      this.userProgress['fullname'] = this.configSvc.userProfile.firstName
+      this.userProgress['profile_image'] = this.configSvc.userProfile.profileImageUrl
     })
   }
   getInsightsData() {

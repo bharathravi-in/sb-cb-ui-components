@@ -9,8 +9,6 @@ import { AnnouncementsModule } from './_common/announcements/announcements.modul
 import { TopLearnersModule } from './_common/top-learners/top-learners.module';
 import { CbpPlanModule } from './_common/cbp-plan/cbp-plan.module';
 
-
-
 @NgModule({
   declarations: [ConsumptionComponent,],
   imports: [

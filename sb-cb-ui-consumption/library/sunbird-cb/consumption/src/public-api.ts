@@ -23,11 +23,18 @@ export * from './lib/_common/content-progress/content-progress.module'
 
 export * from './lib/_common/microsites/mdo-channels/mdo-channel.module'
 export * from './lib/_common/microsites/providers/providers.module'
+export * from './lib/_common/microsites/national-learning-week/national-learning.module'
 export * from './lib/_services/widget-content.service'
 
 export * from './lib/_services/common-methods.service'
 export * from './lib/_common/top-learners/top-learners.module'
 export * from './lib/_common/cbp-plan/cbp-plan.module'
+export * from './lib/_common/mdo-leaderboard/mdo-leaderboard.module'
+export * from './lib/_common/highlights-of-week/highlights-of-week.module'
+export * from './lib/_common/speakers/speakers.module'
+export * from './lib/_common/user-progress/user-progress.module'
 
 
 export * from './lib/_common/dialog-components/dialog-components.module'
+export * from './lib/_common/key-highlights/key-highlights.module'
+export * from './lib/_common/events/events.module'

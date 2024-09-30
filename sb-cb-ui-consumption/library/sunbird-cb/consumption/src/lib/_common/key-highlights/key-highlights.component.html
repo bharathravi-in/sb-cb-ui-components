@@ -11,7 +11,10 @@
             <div sliderbody>
                 <div *ngFor="let content of contentdata; let i = index" [hidden]="i !== currentIndex">
                     <div class="flex flex-row key-wrapper items-center justify-center">
-                        <div class="kh-description"> {{content?.title}}</div>
+                        <div class="kh-description">
+                            {{content?.title | slice:0:titleMaxLength}}
+                            <span *ngIf="content?.title?.length > titleMaxLength">...</span>
+                        </div>
                     </div>
                 </div>
             </div>                    
@@ -33,7 +36,10 @@
                 <div sliderbody>
                     <div *ngFor="let content of contentdata; let i = index" [hidden]="i !== currentIndex">
                         <div class="flex flex-row mkey-wrapper items-center justify-center">
-                            <div class="mkh-description"> {{content?.title}}</div>
+                            <div class="mkh-description">
+                                {{content?.title | slice:0:titleMaxLength }}
+                                <span *ngIf="content?.title?.length > titleMaxLength">...</span>
+                            </div>
                         </div>
                     </div>
                 </div>

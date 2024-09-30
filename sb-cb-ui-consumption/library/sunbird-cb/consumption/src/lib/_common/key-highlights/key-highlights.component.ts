@@ -12,6 +12,7 @@ export class KeyHighlightsComponent implements OnInit {
   @Input() formData : any = ''
   @Input() mode: any
   @Output() emptyResponse = new EventEmitter<any>()
+  titleMaxLength = 100
 
   styleData: any = {}  
   contentdata: any = []

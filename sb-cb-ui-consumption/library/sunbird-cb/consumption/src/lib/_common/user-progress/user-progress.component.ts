@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { InsiteDataService } from '../../_services/insite-data.service';
 import { ScrollableItemDirective } from '../../_directives/scrollable-item/scrollable-item.directive';
+import { ConfigurationsService } from '@sunbird-cb/utils-v2';
 
 @Component({
   selector: 'sb-uic-user-progress',
@@ -14,10 +15,10 @@ export class UserProgressComponent implements OnInit {
   insitesData = []
   currentIndex = 0
   styleData: any = {}
-  userProgress: any
+  userProgress: any = {}
   expand: boolean = true
   @ViewChildren(ScrollableItemDirective) scrollableItems: QueryList<ScrollableItemDirective>
-  constructor(public insightSvc: InsiteDataService,
+  constructor(public insightSvc: InsiteDataService, private configSvc: ConfigurationsService,
   ) { }
 
   ngOnInit() {
@@ -30,6 +31,10 @@ export class UserProgressComponent implements OnInit {
     this.insightSvc.fetchUserProgress().subscribe((res: any) => {
       if(res && res.result && res.result.userLeaderBoard) {
         this.userProgress = res.result.userLeaderBoard[0]
+      }
+      if (!this.userProgress.fullname && this.configSvc && this.configSvc.userProfile && this.configSvc.userProfile.firstName) {
+        this.userProgress['fullname'] = this.configSvc.userProfile.firstName
+        this.userProgress['profile_image'] = this.configSvc.userProfile.profileImageUrl
       }
     })
   }

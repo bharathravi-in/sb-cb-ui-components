@@ -1,6 +1,6 @@
 {
   "name": "@sunbird-cb/assessment",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "main": "./src/public-api.ts",
    "peerDependencies": {
     "@angular/animations": "~8.2.1",

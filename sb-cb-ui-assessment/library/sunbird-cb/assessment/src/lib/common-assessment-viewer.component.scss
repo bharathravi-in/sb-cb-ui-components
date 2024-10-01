@@ -1,11 +1,11 @@
 ::ng-deep .assessment-preview .mat-dialog-container {
   padding: 10px !important;
-  overflow: visible
+  overflow-y: auto;
 }
 
 ::ng-deep .assessment-preview-dialog-question-preview  .mat-dialog-container {
   padding: 10px !important;
-  overflow: visible
+  overflow-y: auto;
 }
 
 ::ng-deep .assessment-preview-dialog {
@@ -66,6 +66,8 @@
     .mat-icon {
       height: 16px;
       width: 16px;
+      margin-top: 3px;
+      margin-left: -3px;
     }
 
     .cursor-pointer {

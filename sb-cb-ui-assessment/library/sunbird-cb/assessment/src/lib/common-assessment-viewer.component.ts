@@ -21,6 +21,8 @@ export class CommonAssessmentViewerComponent implements OnInit {
   collectionId = ''
   questionPreview = false
   ngOnInit() {
+    // tslint:disable-next-line
+    console.log('this.data', this.data)
     if (this.data) {
       // tslint:disable-next-line
       console.log('this.data', this.data)

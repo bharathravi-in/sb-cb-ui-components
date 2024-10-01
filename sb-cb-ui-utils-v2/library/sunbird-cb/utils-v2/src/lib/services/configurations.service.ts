@@ -125,5 +125,4 @@ export class ConfigurationsService {
     this.updatePlatformRating.next(state)
   }
 
-
 }

@@ -152,6 +152,7 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
   forPreview = (window.location.href.includes('public') || window.location.href.includes('author') ||
     window.location.href.includes('editMode') || window.location.href.includes('preview'))
   environment!: any
+  questionParagraph = ''
   constructor(
     @Inject('environment') environment: any,
     private events: EventService,
@@ -707,6 +708,12 @@ export class PracticeComponent implements OnInit, OnChanges, OnDestroy {
         //   this.overViewed('start')
         // })
       }
+    }
+
+    if (section && section.questionParagraph) {
+      this.questionParagraph = section.questionParagraph
+    } else {
+      this.questionParagraph = ''
     }
   }
   getMultiQuestions(ids: string[]) {

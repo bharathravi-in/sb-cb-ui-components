@@ -1,5 +1,5 @@
 import {
-    AfterViewInit, Component,
+    Component,
     ElementRef,
     EventEmitter,
     // HostListener,
@@ -7,6 +7,7 @@ import {
     OnChanges, OnInit,
     Output,
     SimpleChanges, ViewEncapsulation, OnDestroy,
+    AfterViewChecked,
 } from '@angular/core'
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser'
 import { NSPractice } from '../../../practice.model'
@@ -21,7 +22,7 @@ import { NsContent } from '../../../../services/widget-content.model'
     // tslint:disable-next-line
     encapsulation: ViewEncapsulation.None
 })
-export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewChecked, OnDestroy {
     @Input() question: NSPractice.IQuestion = {
         multiSelection: false,
         section: '',
@@ -145,11 +146,11 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
     onChange(id: any, _event: any) {
         this.onEntryInBlank(id)
     }
-    ngAfterViewInit(): void {
+    ngAfterViewChecked(): void {
         if (this.question.questionType === 'ftb') {
             if (this.question.choices && this.question.choices.options && this.question.choices.options.length > 1) {
                 for (let i = 0; i < (this.localQuestion.match(/select/g) || []).length; i += 1) {
-                    if (this.elementRef.nativeElement
+                    if (this.elementRef.nativeElement && this.elementRef.nativeElement
                         .querySelector(`#${this.question.questionId}${i}`)) {
                         this.elementRef.nativeElement
                             .querySelector(`#${this.question.questionId}${i}`)
@@ -159,9 +160,13 @@ export class FillInTheBlankComponent implements OnInit, OnChanges, AfterViewInit
                 }
             } else {
                 for (let i = 0; i < (this.localQuestion.match(/matInput/g) || []).length; i += 1) {
-                    this.elementRef.nativeElement
-                        .querySelector(`#${this.question.questionId}${i}`)
-                        .addEventListener('change', this.onChange.bind(this, this.question.questionId + i))
+                    if (this.elementRef.nativeElement && this.elementRef.nativeElement
+                        .querySelector(`#${this.question.questionId}${i}`)) {
+                        this.elementRef.nativeElement
+                            .querySelector(`#${this.question.questionId}${i}`)
+                            .addEventListener('change', this.onChange.bind(this, this.question.questionId + i))
+                    }
+
                 }
             }
 

@@ -28,6 +28,7 @@ export class QuestionComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() showAnswer: any
   @Input() currentQuestion: any
   @Input() selectedAssessmentCompatibilityLevel = 2
+  @Input() questionParagraph ? = ''
   @Input() question: NSPractice.IQuestion = {
     multiSelection: false,
     section: '',

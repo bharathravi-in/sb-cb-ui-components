@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { CommonAssessmentViewerComponent } from './common-assessment-viewer.component'
 import { PracticePlModule } from './practice/practice.module'
-import { MatIconModule, MatProgressSpinnerModule, MatDialogModule } from '@angular/material'
+import { MatIconModule, MatProgressSpinnerModule, MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
 
 @NgModule({
   declarations: [CommonAssessmentViewerComponent],
@@ -12,6 +12,10 @@ import { MatIconModule, MatProgressSpinnerModule, MatDialogModule } from '@angul
     MatDialogModule,
     PracticePlModule,
     CommonModule,
+  ],
+  providers: [
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} },
   ],
   exports: [CommonAssessmentViewerComponent, PracticePlModule],
 })

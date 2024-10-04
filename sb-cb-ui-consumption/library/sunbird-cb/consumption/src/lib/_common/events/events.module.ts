@@ -4,6 +4,7 @@ import { EventsComponent } from './events.component';
 import { EventCardComponent } from './event-card/event-card.component';
 import { RouterModule } from '@angular/router';
 import { SkeletonLoaderLibModule } from '../skeleton-loader-lib/skeleton-loader-lib.module';
+import { MatIconModule } from '@angular/material';
 
 
 
@@ -13,6 +14,7 @@ import { SkeletonLoaderLibModule } from '../skeleton-loader-lib/skeleton-loader-
     CommonModule,
     RouterModule,
     SkeletonLoaderLibModule,
+    MatIconModule
   ],
   exports: [EventsComponent, EventCardComponent]
 })

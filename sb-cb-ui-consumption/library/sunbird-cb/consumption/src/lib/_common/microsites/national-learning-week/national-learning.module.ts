@@ -13,6 +13,7 @@ import { DataPointsModule } from '../../data-points/data-points.module';
 import { HighlightsOfWeekModule } from '../../highlights-of-week/highlights-of-week.module';
 import { SpeakersModule } from '../../speakers/speakers.module';
 import { UserProgressModule } from '../../user-progress/user-progress.module';
+import { ContentStripFacetFilterModule } from '../../strips/content-strip-facet-filter/content-strip-facet-filter.module';
 
 
 
@@ -32,7 +33,8 @@ import { UserProgressModule } from '../../user-progress/user-progress.module';
     MdoLeaderboardModule,
     HighlightsOfWeekModule,
     SpeakersModule,
-    UserProgressModule
+    UserProgressModule,
+    ContentStripFacetFilterModule
   ],
   exports: [
     NationalLearningComponent,

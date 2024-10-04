@@ -92,12 +92,14 @@
                       <div class="flex justify-between item-center flex-wrap gap-4">
                         <div class="">
                           <ng-container *ngFor="let facet of tab?.facets">
+                            <form [formGroup]="facetForm">
                             <div class="facets-select">
-                              <select  (change)="getorgData($event,  stripsResultDataMap[key], tabIndex)">
-                                <option value="" selected disabled>Choose by organisation</option>
+                              <select formControlName="org" (change)="getorgData($event,  stripsResultDataMap[key], tabIndex)">
+                                <option value="0" selected disabled>Choose by organisation</option>
                                 <option value="{{d.name}}" *ngFor="let d of facet.values" >{{d.name}}</option>
                               </select>
                             </div>
+                          </form>
                           </ng-container>
                         </div>
                         <div>

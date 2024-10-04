@@ -24,6 +24,7 @@ import { NsCardContent } from '../../../_models/card-content-v2.model';
 import { ITodayEvents } from '../../../_models/event';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 
 interface IStripUnitContentData {
   key: string;
@@ -104,7 +105,7 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
   enrollInterval: any;
   todaysEvents: any = [];
   enrollmentMapData: any
-
+  facetForm: any
   constructor(
     @Inject('environment') environment: any,
     private contentSvc: WidgetContentService,
@@ -115,7 +116,8 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
     public router: Router,
     private userSvc: WidgetUserService,
     private translate: TranslateService,
-    private langtranslations: MultilingualTranslationsService
+    private langtranslations: MultilingualTranslationsService,
+    private _fb: FormBuilder
   ) {
     super();
     if (localStorage.getItem('websiteLanguage')) {
@@ -127,13 +129,16 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
     this.environment = environment
   }
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
+   
   }
 
   ngOnInit() {
     this.initData();
     this.contentSvc.telemetryData$.subscribe((data: any) => {
       this.telemtryResponse.emit(data)
+    })
+    this.facetForm = this._fb.group({
+      org: ['0']
     })
   }
 
@@ -391,6 +396,7 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
           stripMap.tabs[tabEvent.index].pillsData[pillIndex].fetchTabStatus = 'inprogress';
           stripMap.tabs[tabEvent.index].pillsData[pillIndex].tabLoading = false;
           stripMap.showOnLoader = true;
+          this.resetFilter(stripMap, tabEvent.index ,pillIndex)
         }
         setTimeout(() => {
           if (stripMap && stripMap.tabs && stripMap.tabs[tabEvent.index]) {
@@ -776,6 +782,9 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
     if(pillIndex) {
      pillIndex = this.getSelectedPillIndex(stripMap.tabs[tabIndex], tabIndex)
     }
+    this.facetForm.reset({
+      org: 0
+     });
     if (stripMap && stripMap.tabs && stripMap.tabs[tabIndex]) {
       stripMap.tabs[tabIndex].pillsData[pillIndex].fetchTabStatus = 'inprogress';
       stripMap.tabs[tabIndex].pillsData[pillIndex].tabLoading = false;

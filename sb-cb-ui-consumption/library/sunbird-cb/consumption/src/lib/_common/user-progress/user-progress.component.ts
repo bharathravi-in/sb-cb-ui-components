@@ -28,13 +28,14 @@ export class UserProgressComponent implements OnInit {
   }
 
   getUserProgress() {
+    debugger
     this.insightSvc.fetchUserProgress().subscribe((res: any) => {
       if(res && res.result && res.result.userLeaderBoard) {
-        this.userProgress = res.result.userLeaderBoard[0]
-      }
-      if (!this.userProgress.fullname && this.configSvc && this.configSvc.userProfile && this.configSvc.userProfile.firstName) {
-        this.userProgress['fullname'] = this.configSvc.userProfile.firstName
-        this.userProgress['profile_image'] = this.configSvc.userProfile.profileImageUrl
+        this.userProgress = res.result.userLeaderBoard
+        if (!this.userProgress.fullname && this.configSvc && this.configSvc.userProfile && this.configSvc.userProfile.firstName) {
+          this.userProgress['fullname'] = this.configSvc.userProfile.firstName
+          this.userProgress['profile_image'] = this.configSvc.userProfile.profileImageUrl
+        }
       }
     }, error => {
       this.userProgress['fullname'] = this.configSvc.userProfile.firstName

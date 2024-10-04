@@ -33,6 +33,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { SbUiResolverModule } from '@sunbird-cb/resolver-v2';
 import { HttpLoaderFactory1 } from '../content-strip-with-tabs-pills/content-strip-with-tabs-pills.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { HttpLoaderFactory1 } from '../content-strip-with-tabs-pills/content-str
     MatProgressSpinnerModule,
     MatButtonToggleModule,
     MatTabsModule,
+    ReactiveFormsModule,
     MatAutocompleteModule,
     TranslateModule.forRoot({
       loader: {

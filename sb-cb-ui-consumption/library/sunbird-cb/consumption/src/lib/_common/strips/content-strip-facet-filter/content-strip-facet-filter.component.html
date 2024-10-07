@@ -84,7 +84,7 @@
                   <mat-tab label="{{tab?.label}}" *ngFor="let tab of stripsResultDataMap[key].tabs; let last = last;let tabIndex = index">
                     <ng-template mat-tab-label>
                       <span><span *ngIf="!tab?.disableTranslate">{{ translateLabels(tab?.label, 'home') }}</span>
-                      <span *ngIf="tab?.disableTranslate">{{tab?.label}}</span> &nbsp;</span>
+                      <span class="tab-highlight" *ngIf="tab?.disableTranslate">{{tab?.label}}</span> &nbsp;</span>
                       <span *ngIf="tab?.showTabDataCount && tab?.widgets?.length">({{tab?.widgets?.length}})</span>
                     </ng-template>
 

@@ -28,7 +28,7 @@ export class MdoLeaderboardComponent implements OnInit {
             this.result = res.result
             this.filteredData = this.result.mdoLeaderBoard
                 .filter(user => user.size === this.currentTab) 
-                .map(user => ({ ...user, children: [], selected: false }))
+                .map(user => ({ ...user, children: [], selected: false })).slice(0, 5)
         }
         
     }, error => {
@@ -41,7 +41,7 @@ export class MdoLeaderboardComponent implements OnInit {
     this.searchTerm = ''
     this.filteredData = this.result.mdoLeaderBoard
         .filter(user => user.size === this.currentTab) 
-            .map(user => ({ ...user, children: [], selected: false }))
+            .map(user => ({ ...user, children: [], selected: false })).slice(0, 5)
     let nameStr: any = ''
     switch (name) {
       case 'XL':
@@ -82,11 +82,11 @@ export class MdoLeaderboardComponent implements OnInit {
         this.searchTerm = e.target.value
         this.filteredData = this.result.mdoLeaderBoard
             .filter(user => user.size === this.currentTab && user.org_name.toLowerCase().includes(e.target.value))
-            .map(user => ({ ...user, children: []}))
+            .map(user => ({ ...user, children: []})).slice(0, 5)
     } else {
         this.filteredData = this.result.mdoLeaderBoard
             .filter(user => user.size === this.currentTab)
-            .map(user => ({ ...user, children: []}))
+            .map(user => ({ ...user, children: []})).slice(0, 5)
     }
   }
 

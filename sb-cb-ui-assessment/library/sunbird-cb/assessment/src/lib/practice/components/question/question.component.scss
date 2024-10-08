@@ -117,7 +117,12 @@
   }
 
   width:98%;
-  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.paragraph {
+  width: 98%;
+  word-break: break-word;
 }
 
 .mtf-flag {

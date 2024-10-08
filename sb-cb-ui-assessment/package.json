@@ -1,6 +1,6 @@
 {
   "name": "sb-cb-ui-assessment",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "scripts": {
     "ng": "ng",
     "prebuild": "npm run lint:fix",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@angular/animations": "~8.2.1",
-    "@angular/cdk": "~8.1.2",
+    "@angular/cdk": "~8.2.3",
     "@angular/common": "~8.2.1",
     "@angular/compiler": "~8.2.1",
     "@angular/core": "~8.2.1",

@@ -30,6 +30,11 @@
     color: #555;
   }
 
+  .tab-highlight {
+    color: #1B4CA1 !important;
+    font-weight: bold;
+  }
+
   ::ng-deep mat-chip-list.content-pill-data {
     .mat-chip-selected{
       background-color: #1B4CA1 !important;

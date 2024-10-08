@@ -1,6 +1,6 @@
 {
   "name": "sb-cb-ui-discussion-v2",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "prebuild": "npm run lint:fix",

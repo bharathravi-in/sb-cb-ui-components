@@ -81,7 +81,7 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
   @Input() widgetData!: NsContentStripWithFacets.IContentStripMultiple;
   @Output() emptyResponse = new EventEmitter<any>()
   @Output() viewAllResponse = new EventEmitter<any>()
-  @Output() telemtryResponse = new EventEmitter<any>()
+  @Output() telemtryLearningContentResponse = new EventEmitter<any>()
   @Input() providerId : any = ''
   @Input() emitViewAll : boolean = false
   @Input() channnelName: any = ''
@@ -134,9 +134,9 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
 
   ngOnInit() {
     this.initData();
-    this.contentSvc.telemetryData$.subscribe((data: any) => {
-      this.telemtryResponse.emit(data)
-    })
+    // this.contentSvc.telemetryData$.subscribe((data: any) => {
+    //   this.telemtryLearningContentResponse.emit(data)
+    // })
     this.facetForm = this._fb.group({
       org: ['0']
     })
@@ -326,7 +326,7 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
   }
 
   raiseTelemetry(stripData: any){
-    this.telemtryResponse.emit(stripData)
+    this.telemtryLearningContentResponse.emit(stripData)
   }
   setHiddenForStrip(key: string) {
     this.stripsResultDataMap[key].showStrip = false;
@@ -364,7 +364,7 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
     this.eventSvc.raiseInteractTelemetry(
       {
         type: WsEvents.EnumInteractTypes.CLICK,
-        subType: WsEvents.EnumInteractSubTypes.HOME_PAGE_STRIP_TABS,
+        subType: 'explore-learning-content',
         id: `${_.camelCase(data.label)}-tab`,
       },
       {},
@@ -635,7 +635,7 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
           const response = await this.postRequestMethod(strip, strip.request.requestBody, strip.request.apiUrl, calculateParentStatus);
           let tabIndex=0
           let pillIndex= 0
-          if (response.results && response.results.result) {
+          if (response.results && response.results.result && response.results.result.content && response.results.result.content.length > 0) {
             this.mapAllDataWithFacets(strip, response.results.result.content, response.results.result.facets, calculateParentStatus)
             const widgets = this.transformContentsToWidgets(response.results.result.content, strip);
             let tabResults: any[] = [];
@@ -668,6 +668,8 @@ NsWidgetResolver.IWidgetData<NsContentStripWithFacets.IContentStripMultiple> {
             //   response.viewMoreUrl,
             //   tabResults // tabResults as widgets
             // );
+          } else {
+            this.processStrip(strip, [], 'error', calculateParentStatus, null);
           }
         } catch (error) {
           // Handle errors

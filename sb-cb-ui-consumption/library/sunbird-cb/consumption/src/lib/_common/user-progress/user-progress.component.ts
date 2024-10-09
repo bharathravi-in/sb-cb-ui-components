@@ -28,7 +28,6 @@ export class UserProgressComponent implements OnInit {
   }
 
   getUserProgress() {
-    debugger
     this.insightSvc.fetchUserProgress().subscribe((res: any) => {
       if(res && res.result && res.result.userLeaderBoard) {
         this.userProgress = res.result.userLeaderBoard

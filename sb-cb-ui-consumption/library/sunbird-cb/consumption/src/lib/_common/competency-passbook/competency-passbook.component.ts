@@ -1,7 +1,7 @@
 
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { ConfigurationsService, EventService } from '@sunbird-cb/utils-v2';
-import { WidgetContentService } from '../../_services/widget-content.service';
+import { WidgetContentLibService } from '../../_services/widget-content-lib.service';
 import { CompetencyPassbookService } from './competency-passbook.service';
 import { Router } from '@angular/router';
 import { NsCompentency } from '../../_models/compentencies.model'
@@ -39,7 +39,7 @@ export class CompetencyPassbookComponent implements OnInit {
   // currentCompetencies: any = []
   // competencyData: any
   constructor(public configSvc: ConfigurationsService,
-    public contentSvc:WidgetContentService,
+    public contentSvc:WidgetContentLibService,
     public competencySvc: CompetencyPassbookService,
     public router : Router,
     @Inject('environment') environment: any,

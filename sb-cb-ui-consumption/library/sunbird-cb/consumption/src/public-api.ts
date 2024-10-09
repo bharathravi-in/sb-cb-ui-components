@@ -8,6 +8,9 @@ export * from './lib/consumption.module'
 export * from './lib/registration-lib.config'
 export * from './lib/consumption.config'
 
+export * from './lib/_services/widget-content-lib.service'
+export * from './lib/_services/widget-user-lib.service'
+
 export * from './lib/_common/strips/content-strip-facet-filter/content-strip-facet-filter.module'
 export * from './lib/_common/strips/content-strip-with-tabs-pills/content-strip-with-tabs-pills.module'
 export * from './lib/_common/content-strip-with-tabs-lib/content-strip-with-tabs-lib.module'
@@ -25,7 +28,7 @@ export * from './lib/_common/content-progress/content-progress.module'
 export * from './lib/_common/microsites/mdo-channels/mdo-channel.module'
 export * from './lib/_common/microsites/providers/providers.module'
 export * from './lib/_common/microsites/national-learning-week/national-learning.module'
-export * from './lib/_services/widget-content.service'
+
 
 export * from './lib/_services/common-methods.service'
 export * from './lib/_common/top-learners/top-learners.module'

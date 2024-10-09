@@ -64,19 +64,26 @@ export class NationalLearningComponent implements OnInit {
     )
   }
 
+
   raiseTelemetryInteratEvent(event: any) {
+    let  _subType = 'mandatory-courses'
+    let _id = 'mandatory-courses-card'
+    if (event.typeOfTelemetry === 'learningContent') {
+      _subType = 'explore-learning-content'
+      _id = 'explore-learning-content-card'
+    } 
     this.events.raiseInteractTelemetry(
       {
         type: 'click',
-        subType: 'mandatory-courses',
-        id: `mandatory-courses-card`,
+        subType: _subType,
+        id: _id,
       },
       {
         id: event.identifier,
         type: event.primaryCategory,
       },
       {
-        pageIdExt: `mandatory-courses-card`,
+        pageIdExt: _id,
         module: 'National Learning Week',
       }
     )

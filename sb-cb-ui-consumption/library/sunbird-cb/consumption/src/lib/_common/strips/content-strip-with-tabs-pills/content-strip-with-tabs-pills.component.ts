@@ -1090,6 +1090,15 @@ NsWidgetResolver.IWidgetData<NsContentStripWithTabsAndPills.IContentStripMultipl
                 'viewMoreUrl',
               );
             }
+      } else {
+        this.processStrip(
+          strip,
+          this.transformContentsToWidgets(courses, strip),
+          'done',
+          calculateParentStatus,
+          '',
+          tabResults
+        );
       }
       clearInterval(this.enrollInterval);
     }

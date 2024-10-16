@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EventService, WsEvents } from '@sunbird-cb/utils-v2';
 import * as _ from 'lodash'
@@ -15,7 +15,9 @@ export class NationalLearningComponent implements OnInit {
   providerId: string = '123456789'
   providerName: ''
   descriptionMaxLength = 500
-  constructor(public router: Router, private events: EventService) {
+  environment: any
+  constructor(@Inject('environment') environment: any,public router: Router, private events: EventService) {
+    this.environment = environment
    }
 
    ngOnInit(): void {
@@ -33,7 +35,7 @@ export class NationalLearningComponent implements OnInit {
       const stripData: any = _stripData
         let tabSelected =  stripData.viewMoreUrl && stripData.viewMoreUrl.queryParams && stripData.viewMoreUrl.queryParams.tabSelected && stripData.viewMoreUrl.queryParams.tabSelected || ''
         this.router.navigate(
-          [`app/learn/national-learning-week/see-all`],
+          [`app/learn/karmayogi-saptah/see-all`],
           { queryParams: {  pageDetails: true, tabSelected, key: columnData.sectionKey  } })
 
     } else {

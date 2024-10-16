@@ -640,6 +640,14 @@ export class ContentStripWithTabsLibComponent extends WidgetBaseComponent
         calculateParentStatus,
         viewMoreUrl,
       );
+    } else {
+      this.processStrip(
+        strip,
+       [],
+        'done',
+        calculateParentStatus,
+        viewMoreUrl,
+      );
     }
   }
 
@@ -1792,30 +1800,7 @@ export class ContentStripWithTabsLibComponent extends WidgetBaseComponent
     }
     try {
       const response = await this.getRequestMethod(strip, currentTab.request.playlistRead, currentTab.request.apiUrl, calculateParentStatus);
-      // if (response && response.results.result.content) {  
-      //   let content  = response.results.result.content
-      //   if(strip.key === 'providers'){
-      //     let featuredProviders : any = JSON.parse(content.featuredProviders|| '[]')
-      //     this.processStrip(
-      //       strip,
-      //       this.transformAllContentsToWidgets(featuredProviders, strip),
-      //       'done',
-      //       calculateParentStatus,
-      //       response,
-      //     );
-      //   } else {
-      //     this.processStrip(
-      //       strip,
-      //       this.transformAllContentsToWidgets(content, strip),
-      //       'done',
-      //       calculateParentStatus,
-      //       response,
-      //     );
-      //   }
-      // } else {
-      //   this.processStrip(strip, [], 'error', calculateParentStatus, null);
-      //   this.emptyResponse.emit(true)
-      // }
+      
       if (response.results && response.results.result) {
         let content  = response.results.result.content
         let widgets = []
@@ -1823,6 +1808,9 @@ export class ContentStripWithTabsLibComponent extends WidgetBaseComponent
           let featuredProviders : any = JSON.parse(content.featuredProviders|| '[]')
           widgets = this.transformAllTabContentsToWidgets(featuredProviders, currentTab)
         } else {
+          if(currentTab && currentTab.contentShuffel){
+            content  = content.sort( () => Math.random() - 0.5);
+          }
           widgets = this.transformAllTabContentsToWidgets(content, currentTab)
         }
         let tabResults: any[] = [];

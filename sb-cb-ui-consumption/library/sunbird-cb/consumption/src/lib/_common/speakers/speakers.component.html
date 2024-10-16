@@ -8,7 +8,7 @@
             <mat-icon (click)="toggleWeekHightlits()">expand_more</mat-icon>
         </div>
     </div>
-    <div *ngIf="expand" class="speakers-container margin-bottom-xs" >
+    <div *ngIf="expand" class="speakers-container margin-bottom-xl" >
         <ng-container *ngIf="contentdata.length">
             <sb-uic-sliders-ng-content
                 [title]="'providerName'"
@@ -19,15 +19,24 @@
                 <div sliderbody>
                     <div *ngFor="let item of contentdata; let i = index" [hidden]="i !== currentIndex">
                         <div class="speakers-wrapper">
-                            <div class="flex items-center justify-center pb-2">
-                                <div class="speaker-initial" *ngIf="!item.profileImage">{{item?.initial}}</div>
-                                <img class='speaker-icon' [src]="item?.profileImage" alt="" *ngIf="item.profileImage"/>
+                            <div class="speaker-image-section">
+                                <div class="flex  items-center justify-center">
+                                    <div class="speaker-initial" *ngIf="!item.profileImage">{{item?.initial}}</div>
+                                    <img class='speaker-icon' [src]="item?.profileImage" alt="" *ngIf="item.profileImage"/>
+                                </div>
                             </div>
-                            <div class="flex items-center justify-center pb-2">
-                                <div class="speaker-title">{{item.name}}</div>
-                            </div>
-                            <div class="flex items-center justify-center">
-                                <div class="speaker-description">{{item.description}}</div>
+                            <div class="speaker-details">
+                                <div class="flex items-center justify-center pb-2">
+                                    <div class="speaker-title">{{item.name}}</div>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <div class="speaker-description">{{item.description}}</div>
+                                </div>
+                                <div class="flex items-center justify-center mt-2">
+                                    <button class="view-event-btn" (click)="goToEvent(item)">
+                                        View Event
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

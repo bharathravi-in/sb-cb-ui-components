@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ScrollableItemDirective } from '../../_directives/scrollable-item/scrollable-item.directive';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sb-uic-speakers',
@@ -15,7 +16,7 @@ export class SpeakersComponent implements OnInit {
   
   @ViewChildren(ScrollableItemDirective) scrollableItems: QueryList<ScrollableItemDirective>
 
-  constructor() { }
+  constructor(private route: Router) { }
 
   ngOnInit() {
     this.styleData = this.objectData && this.objectData.sliderData && this.objectData.sliderData.styleData
@@ -27,6 +28,7 @@ export class SpeakersComponent implements OnInit {
         localData['description'] = contentEle.description
         localData['initial'] = this.createInititals(contentEle.title)
         localData['profileImage'] = contentEle.profileImage ? contentEle.profileImage : ''
+        localData['identifier'] = contentEle.identifier ? contentEle.identifier : ''
         this.contentdata.push(localData)
       })
     }
@@ -61,6 +63,12 @@ export class SpeakersComponent implements OnInit {
 
   toggleWeekHightlits() {
     this.expand = !this.expand
+  }
+
+  goToEvent(eventData:any) {
+    if(eventData && eventData.identifier){
+      this.route.navigateByUrl(`/app/event-hub/home/${eventData.identifier}`)
+    }
   }
 
 }

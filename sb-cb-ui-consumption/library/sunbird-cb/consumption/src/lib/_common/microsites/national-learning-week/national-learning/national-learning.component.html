@@ -136,7 +136,16 @@
 
                     <div class="hidden md:block">
                         <div *ngIf="data?.leftContent?.data?.exploreLearningContent?.strips[0]">
-                            <sb-uic-content-strip-facet-filter [widgetData]="data?.leftContent?.data?.exploreLearningContent"></sb-uic-content-strip-facet-filter>
+                            <!-- <sb-uic-content-strip-facet-filter [widgetData]="data?.leftContent?.data?.exploreLearningContent"></sb-uic-content-strip-facet-filter> -->
+                            <sb-uic-content-strip-with-tabs
+                            [emitViewAll]="false"
+                            (viewAllResponse)="''"
+                            (telemtryResponse)="raiseTelemetryInteratEvent($event)"
+                            (emptyResponse)="''"
+                            [providerId]="environment?.spvorgID"
+                            [widgetData]="data?.leftContent?.data?.exploreLearningContent"
+                            [channnelName]="'channnelName'">
+                        </sb-uic-content-strip-with-tabs>
                         </div>
                     </div>
                     <div class="hidden md:block">

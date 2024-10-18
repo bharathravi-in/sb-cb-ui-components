@@ -69,7 +69,8 @@ export class EventsComponent implements OnInit {
     this.insightSvc.fetchTrainingDetails(this.requestBody).subscribe((res: any)=> {
       this.events = []
       if (res && res.result && res.result.count > 0) {
-        this.events = res.result.Event
+
+        this.events = this.sortItemByTime(res.result.Event)
         this.loader = false
       } else {
         this.loader = false
@@ -89,7 +90,7 @@ export class EventsComponent implements OnInit {
     this.insightSvc.fetchTrainingDetails(this.requestBody).subscribe((res: any)=> {
       this.events = []
       if (res && res.result && res.result.count > 0) {
-        this.events = res.result.Event
+        this.events = this.sortItemByTime(res.result.Event)
         this.loader = false
       } else {
         this.loader = false
@@ -97,6 +98,19 @@ export class EventsComponent implements OnInit {
     }, error => {
       this.loader = false
     })
+  }
+
+  sortItemByTime(eventsdata: any) {
+    return eventsdata.sort((a:any, b:any)=> {
+      return (a.startTime === b.startTime)? 0 : b.startTime? -1 : 1;
+    });
+  }
+
+  customDateFormat(date: any, time: any) {
+    const stime = time.split('+')[0]
+    const hour = stime.substr(0, 2)
+    const min = stime.substr(2, 3)
+    return `${date} ${hour}${min}`
   }
 
 }

@@ -2,8 +2,8 @@
 @import '~@sunbird-cb/design-system/src/styles/ws-vars';
 @import '~@sunbird-cb/design-system/src/styles/ws-mixins';
 
-::ng-deep.mat-app-background {
-    background-color: white!important;
+.white-bg {
+    background: white !important;
 }
 
 .nlw-mandatoryCourse {

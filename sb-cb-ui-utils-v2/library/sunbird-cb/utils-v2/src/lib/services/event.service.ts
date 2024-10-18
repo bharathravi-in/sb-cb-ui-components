@@ -211,6 +211,9 @@ export class EventService {
     let isEventRecording : boolean = false
    // console.log('strip comp', data)
     Object.keys(data).forEach((index: any) => {
+      
+      isEventRecording = false
+      isEventLive = false
       const obj = data[index]
       const floor = Math.floor
       const hours = floor(obj.duration / 60)
@@ -266,7 +269,7 @@ export class EventService {
       }
 
       const isToday = this.compareDate(obj.startDate)
-      if (isToday && isEventLive ) {
+      if (isToday && isEventLive) {
         this.todaysEvents.push(eventDataObj)
       }
     })

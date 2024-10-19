@@ -18,17 +18,18 @@
     <div class="actions" *ngIf="cardConfig?.showActions">
         <div class="flex">
             <ng-container *ngIf="cardConfig?.actions?.like?.show ">
-                <span class="mr-2 cursor-pointer">
+                <span class="mr-2 cursor-pointer" (click)="likeUnlikeComment(comment)">
                     <mat-icon class="icon" aria-hidden="false" i18n-aria-label
                         aria-label="Fail">{{cardConfig?.actions?.like?.icon}}</mat-icon>
                 </span>
                 <span class="mr-4" *ngIf="cardConfig?.actions?.like?.showCount">
-                    {{(comment?.likes && comment?.likes?.length) || 0}} {{comment?.likes && comment?.likes?.length > 1 ?
+                    <!-- {{(comment?.like && comment?.like?.length) || 0}} {{comment?.likes && comment?.likes?.length > 1 ? -->
+                    {{(comment?.like && comment?.like) || 0}} {{comment?.like && comment?.like > 1 ?
                     'Likes' : 'Like'}}
                 </span>
             </ng-container>
             <ng-container *ngIf="cardConfig?.actions?.comments?.show">
-                <span class="mr-2 cursor-pointer" (click)="data.replyToggle = !data.replyToggle">
+                <span class="mr-2 cursor-pointer" (click)="expandReplyComment()">
                     <mat-icon class="icon" aria-hidden="false" i18n-aria-label
                         aria-label="Fail">{{cardConfig?.actions?.comments?.icon}}</mat-icon>
                 </span>
@@ -47,10 +48,10 @@
                 </d-v2-new-comment>
             </div>
             <ng-container *ngIf="replyData && replyData?.length > 0; else noReplies">
-                <ng-container *ngFor="let reply of replyData">
+                <ng-container *ngFor="let reply of fetchedReplyData">
                     <d-v2-comment-card [cardType]="cardConfig?.repliesSection?.replyCardConfig?.cardType"
                         [cardConfig]="cardConfig?.repliesSection?.replyCardConfig"
-                        [comment]="reply"></d-v2-comment-card>
+                        [comment]="reply" (likeUnlikeData)="likeUnlikeEvent($event)"></d-v2-comment-card>
                 </ng-container>
             </ng-container>
         </div>

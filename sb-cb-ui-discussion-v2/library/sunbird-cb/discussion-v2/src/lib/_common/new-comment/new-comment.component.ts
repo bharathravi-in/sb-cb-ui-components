@@ -57,7 +57,7 @@ export class NewCommentComponent implements OnInit {
         file: files,
         commentSource: {
           userId: this.loogedInUserProfile.userId,
-          userPic: this.loogedInUserProfile.profileImageUrl,
+          userPic: this.loogedInUserProfile.profileImageUrl || this.loogedInUserProfile.firstName.splice(0,2),
           userName: this.loogedInUserProfile.firstName,
           userRole: 'public', // TODO: replace original roles array
         },

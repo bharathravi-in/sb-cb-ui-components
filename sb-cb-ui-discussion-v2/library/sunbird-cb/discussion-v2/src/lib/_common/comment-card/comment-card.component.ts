@@ -43,9 +43,9 @@ export class CommentCardComponent implements OnInit {
 
   expandReplyComment() {
     this.data.replyToggle = !this.data.replyToggle
-    if(this.data.replyToggle && this.replyData.length) {
+    if (this.data.replyToggle && this.replyData.length) {
       this.discussV2Svc.getListOfCommentsById(this.replyData).subscribe(res => {
-        if(res.result && res.result.comments.length) {
+        if (res.result && res.result.comments.length) {
           const reply = res.result.comments
           this.fetchedReplyData = [...reply]
         }
@@ -58,10 +58,10 @@ export class CommentCardComponent implements OnInit {
   }
 
   likeUnlikeEvent(event: any) {
-    console.log(event);
-    
+    // console.log(event)
+
     this.discussV2Svc.checkIfUserlikedUnlikedComment(event.commentId, event.commentId).subscribe(res => {
-      if(res.result && Object.keys(res.result).length > 0) {
+      if (res.result && Object.keys(res.result).length > 0) {
         this.likeUnlikeCommentApi('unlike', event.commentId)
       } else {
         this.likeUnlikeCommentApi('like', event.commentId)
@@ -72,18 +72,18 @@ export class CommentCardComponent implements OnInit {
 
   likeUnlikeCommentApi(flag: string, commentId: string) {
     const payload = {
-      commentId: commentId,
+      commentId,
+      flag,
       userId: this.loogedInUserProfile.userId,
-      flag: flag,
-    };
+    }
     this.discussV2Svc.likeUnlikeComment(payload).subscribe(res => {
-      if(res.responseCode === 'OK') {
+      if (res.responseCode === 'OK') {
         this._snackBar.open(flag === 'like' ? 'Liked' : 'Unliked')
-        const comment = this.fetchedReplyData.find((comment: any) => comment.commentId === commentId)
-        if(flag === 'like') {
+        const comment = this.fetchedReplyData.find((commentEle: any) => commentEle.commentId === commentId)
+        if (flag === 'like') {
           comment.like = comment.like ? comment.like + 1 : 1
         } else {
-          comment.like = comment.like - 1 
+          comment.like = comment.like - 1
         }
       }
     })

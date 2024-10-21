@@ -10,6 +10,7 @@ import moment from 'moment'
 })
 export class EventService {
   todaysEvents: any = []
+  todaysLiveEvents: any = []
   
   private eventsSubject = new Subject<WsEvents.IWsEvents<any>>()
   public events$ = this.eventsSubject.asObservable()
@@ -201,19 +202,29 @@ export class EventService {
     const min = stime.substr(2, 3)
     return `${date} ${hour}${min}`
  }
+ sortItemByTime(eventsdata: any) {
+  return eventsdata.sort((a:any, b:any)=> {
+    return (a.eventDate === b.eventDate)? 0 : b.eventDate? -1 : 1;
+  });
+}
 
 
  setEventListData(eventObj: any) {
   if (eventObj !== undefined) {
     this.todaysEvents = []
+    this.todaysLiveEvents = []
     const data = eventObj
     let isEventLive : boolean = false
     let isEventRecording : boolean = false
+    let isEventPast : boolean = false
+    let isEventFuture : boolean = false
    // console.log('strip comp', data)
     Object.keys(data).forEach((index: any) => {
       
       isEventRecording = false
       isEventLive = false
+      isEventPast = false
+      isEventFuture = false
       const obj = data[index]
       const floor = Math.floor
       const hours = floor(obj.duration / 60)
@@ -250,9 +261,20 @@ export class EventService {
       } else if (today >= eventendDate) {
         isEventRecording = true
         isEventLive = false
+        if(moment(today).isAfter(eventendDate) && moment(today).isAfter(eventDate)) {
+          isEventPast = true
+        } 
+      } else {
+        if(moment(today).isBefore(eventDate) && moment(today).isBefore(eventendDate)) {
+          isEventFuture = true
+        }
       }
       const eventDataObj = {
+        eventDate,
+        eventendDate,
         isEventLive,
+        isEventFuture,
+        isEventPast,
         isEventRecording,
         event: obj,
         eventName: obj.name,
@@ -267,15 +289,33 @@ export class EventService {
           '/assets/icons/Events_default.png',
         pastevent: false,
       }
-
       const isToday = this.compareDate(obj.startDate)
-      if (isToday && isEventLive) {
+      if (isToday) {
         this.todaysEvents.push(eventDataObj)
       }
+      if(isToday && isEventLive) {
+        this.todaysLiveEvents.push(eventDataObj)
+      }
     })
-    this.todaysEvents = this.todaysEvents.sort((a:any, b:any)=> {
-      return (a.isEventLive === b.isEventLive)? 0 : b.isEventLive? -1 : 1;
-    });
+
+    this.todaysLiveEvents = this.sortItemByTime(this.todaysLiveEvents)
+    this.todaysEvents = this.getTodaysEvents(this.todaysEvents)
   }
-}
+  }
+  getTodaysEvents(eventData: any) {
+    let liveEvents: any = []
+    let pastEvents: any = []
+    let futureEvents: any = []
+
+    liveEvents = this.todaysLiveEvents
+    pastEvents = eventData.filter((pastEvent: any) => pastEvent.isEventPast)
+    futureEvents = eventData.filter((futureEvent: any) => futureEvent.isEventFuture)
+    liveEvents = this.sortItemByTime(liveEvents)
+    futureEvents = this.sortItemByTime(futureEvents)
+    pastEvents = this.sortItemByTime(pastEvents)
+    this.todaysEvents  = [...liveEvents, ...futureEvents, ...pastEvents]
+    
+    return this.todaysEvents
+  }
+  
 }

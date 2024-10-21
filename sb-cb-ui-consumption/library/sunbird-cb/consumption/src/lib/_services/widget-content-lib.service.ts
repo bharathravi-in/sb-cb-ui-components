@@ -476,25 +476,33 @@ export class WidgetContentLibService {
   }
 
   async getResourseLink(content: any) {
-    const enrolledCourse: any = await this.getEnrolledData(content.identifier);
-    if (enrolledCourse && enrolledCourse.length) {
-      const enrolledCourseData = enrolledCourse[0]
-      if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
-        enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
-        enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
-        enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.BLENDED_PROGRAM ||
-        enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.PROGRAM) {
-          if (!this.isBatchInProgress(enrolledCourseData.batch)) {
-            return this.gotoTocPage(content);
-          }
+    if(content.externalId) {
+        const urlData: any = {
+          url: `app/toc/ext/${content.contentId}`,
+          queryParams: { batchId: content.batchId },
+        };
+        return urlData
+    } else {
+      const enrolledCourse: any = await this.getEnrolledData(content.identifier);
+      if (enrolledCourse && enrolledCourse.length) {
+        const enrolledCourseData = enrolledCourse[0]
+        if (enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.BLENDED_PROGRAM ||
+          enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.INVITE_ONLY_PROGRAM ||
+          enrolledCourseData.content.courseCategory ===  NsContent.ECourseCategory.MODERATED_PROGRAM ||
+          enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.BLENDED_PROGRAM ||
+          enrolledCourseData.content.primaryCategory ===  NsContent.EPrimaryCategory.PROGRAM) {
+            if (!this.isBatchInProgress(enrolledCourseData.batch)) {
+              return this.gotoTocPage(content);
+            }
+            const data =  await this.checkForDataToFormUrl(content, enrolledCourseData);
+            return data;
+        }  {
           const data =  await this.checkForDataToFormUrl(content, enrolledCourseData);
           return data;
-      }  {
-        const data =  await this.checkForDataToFormUrl(content, enrolledCourseData);
-        return data;
+        }
       }
+      return this.gotoTocPage(content);
     }
-    return this.gotoTocPage(content);
   }
   async checkForDataToFormUrl(content: any, enrollData: any) {
     let urlData: any;

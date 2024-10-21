@@ -70,6 +70,10 @@ export class EventsComponent implements OnInit {
       this.events = []
       if (res && res.result && res.result.count > 0) {
 
+        res.result.Event.forEach((eveEle) => {
+          eveEle['eventDate'] = this.customDateFormat(eveEle.startDate, eveEle.startTime)
+          eveEle['eventendDate'] = this.customDateFormat(eveEle.endDate, eveEle.endTime)
+        });
         this.events = this.sortItemByTime(res.result.Event)
         this.loader = false
       } else {
@@ -90,6 +94,11 @@ export class EventsComponent implements OnInit {
     this.insightSvc.fetchTrainingDetails(this.requestBody).subscribe((res: any)=> {
       this.events = []
       if (res && res.result && res.result.count > 0) {
+        res.result.Event.forEach((eveEle) => {
+          eveEle['eventDate'] = this.customDateFormat(eveEle.startDate, eveEle.startTime)
+          eveEle['eventendDate'] = this.customDateFormat(eveEle.endDate, eveEle.endTime)
+        });
+       
         this.events = this.sortItemByTime(res.result.Event)
         this.loader = false
       } else {
@@ -101,16 +110,18 @@ export class EventsComponent implements OnInit {
   }
 
   sortItemByTime(eventsdata: any) {
-    return eventsdata.sort((a:any, b:any)=> {
-      return (a.startTime === b.startTime)? 0 : b.startTime? -1 : 1;
-    });
+    return eventsdata.sort((a: any, b: any) => {
+      const firstDate: any = new Date(a.eventDate)
+      const secondDate: any = new Date(b.eventDate)
+      return  secondDate < firstDate  ? 1 : -1
+    })
   }
-
   customDateFormat(date: any, time: any) {
     const stime = time.split('+')[0]
     const hour = stime.substr(0, 2)
     const min = stime.substr(2, 3)
     return `${date} ${hour}${min}`
-  }
+ }
+
 
 }

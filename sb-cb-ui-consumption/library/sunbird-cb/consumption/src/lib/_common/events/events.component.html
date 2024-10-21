@@ -17,7 +17,7 @@
     <div class="events-card-wrapper">
         <div *ngIf="!loader">
             <div *ngIf="events?.length > 0">
-                <div *ngFor="let event of events">
+                <div *ngFor="let event of events | slice:0: object?.maxContent || 5">
                     <sb-uic-event-card [objectData]="object" [eventDetails]="event" [loader]="loader"></sb-uic-event-card>
                 </div>
             </div>

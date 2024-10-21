@@ -14,6 +14,7 @@ import { HighlightsOfWeekModule } from '../../highlights-of-week/highlights-of-w
 import { SpeakersModule } from '../../speakers/speakers.module';
 import { UserProgressModule } from '../../user-progress/user-progress.module';
 import { ContentStripFacetFilterModule } from '../../strips/content-strip-facet-filter/content-strip-facet-filter.module';
+import { PipeSafeSanitizerModule } from '@sunbird-cb/utils-v2';
 
 
 
@@ -34,7 +35,8 @@ import { ContentStripFacetFilterModule } from '../../strips/content-strip-facet-
     HighlightsOfWeekModule,
     SpeakersModule,
     UserProgressModule,
-    ContentStripFacetFilterModule
+    ContentStripFacetFilterModule,
+    PipeSafeSanitizerModule
   ],
   exports: [
     NationalLearningComponent,

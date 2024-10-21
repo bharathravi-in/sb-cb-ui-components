@@ -204,7 +204,16 @@ export class EventService {
  }
  sortItemByTime(eventsdata: any) {
   return eventsdata.sort((a:any, b:any)=> {
-    return (a.eventDate === b.eventDate)? 0 : b.eventDate? -1 : 1;
+    const firstDate: any = new Date(a.eventDate)
+      const secondDate: any = new Date(b.eventDate)
+      return  secondDate > firstDate  ? 1 : -1
+  });
+}
+sortItemByTimeAsc(eventsdata: any) {
+  return eventsdata.sort((a:any, b:any)=> {
+    const firstDate: any = new Date(a.eventDate)
+      const secondDate: any = new Date(b.eventDate)
+      return  secondDate < firstDate  ? 1 : -1
   });
 }
 
@@ -310,8 +319,8 @@ export class EventService {
     liveEvents = this.todaysLiveEvents
     pastEvents = eventData.filter((pastEvent: any) => pastEvent.isEventPast)
     futureEvents = eventData.filter((futureEvent: any) => futureEvent.isEventFuture)
-    liveEvents = this.sortItemByTime(liveEvents)
-    futureEvents = this.sortItemByTime(futureEvents)
+    liveEvents = this.sortItemByTimeAsc(liveEvents)
+    futureEvents = this.sortItemByTimeAsc(futureEvents)
     pastEvents = this.sortItemByTime(pastEvents)
     this.todaysEvents  = [...liveEvents, ...futureEvents, ...pastEvents]
     

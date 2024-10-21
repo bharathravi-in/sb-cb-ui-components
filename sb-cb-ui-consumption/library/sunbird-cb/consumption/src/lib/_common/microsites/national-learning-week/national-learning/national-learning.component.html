@@ -11,6 +11,8 @@
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
                                     <ng-container *ngSwitchCase="'contentSection'" [ngTemplateOutlet]="contentSection"
                                         [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
+                                        <ng-container *ngSwitchCase="'lookerSection'" [ngTemplateOutlet]="lookerTemplate"
+                                            [ngTemplateOutletContext]="{data: column?.data}"></ng-container>
                                 </ng-container>
                             </div>
                         </ng-container>
@@ -203,3 +205,18 @@
 </ng-template>
 
 
+
+
+<ng-template #lookerTemplate let-data="data">
+    <div class="flex items-center justify-center" >
+        <div class="container  mt-8">
+            <div class="key-speakers flex-wrap flex items-center justify-center">
+                <h1 class="featured  text-center">{{data?.header?.headerText}}</h1>
+                <p class="featured-description  p-4 md:p-0 text-center">{{data?.header?.description}}</p>
+            </div>
+            <div class="lookpro" *ngIf="lookerProUrl">
+                <iframe title="{{data?.header?.headerText}}" width="100%" height="520" [src]="lookerProUrl" frameborder="0" style="border:0" sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+            </div>
+        </div>
+    </div>
+</ng-template>

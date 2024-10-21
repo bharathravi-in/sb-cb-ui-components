@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { EventService, WsEvents } from '@sunbird-cb/utils-v2';
+import { EventService, UtilityService } from '@sunbird-cb/utils-v2';
 import * as _ from 'lodash'
 
 @Component({
@@ -16,11 +17,18 @@ export class NationalLearningComponent implements OnInit {
   providerName: ''
   descriptionMaxLength = 500
   environment: any
-  constructor(@Inject('environment') environment: any,public router: Router, private events: EventService) {
+  isMobile: boolean = false
+  lookerProUrl: any
+  constructor(@Inject('environment') environment: any,
+  public router: Router, private events: EventService,
+  private domSanitizer: DomSanitizer,
+public utilitySvc: UtilityService) {
     this.environment = environment
+    this.isMobile = this.utilitySvc.isMobile
    }
 
    ngOnInit(): void {
+    this.getLookerProUrl();
    }
 
 
@@ -90,5 +98,18 @@ export class NationalLearningComponent implements OnInit {
       }
     )
   }
+  getLookerProUrl() {
+    this.sectionList.forEach((ele: any) => {
+      if(ele.key === 'sectionlooker') {
+        ele.column.forEach((colEle: any) => {
+          if(colEle.key === 'lookerSection') {
+            this.lookerProUrl =  this.domSanitizer
+            .bypassSecurityTrustResourceUrl(this.isMobile ? colEle.data.lookerProMobileUrl : colEle.data.lookerProDesktopUrl)
+          }
+        });
+      }
+    });
+  }
+
 
 }

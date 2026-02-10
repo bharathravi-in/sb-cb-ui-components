@@ -8,15 +8,18 @@ import { map } from 'rxjs/operators'
 })
 export class ValueService {
 
+  public isXSmall$: Observable<boolean>
+  public isLtMedium$: Observable<boolean>
+
   constructor(
     private breakpointObserver: BreakpointObserver,
-  ) { }
-
-  public isXSmall$: Observable<boolean> = this.breakpointObserver
-    .observe([Breakpoints.XSmall])
-    .pipe(map((res: BreakpointState) => res.matches))
-  public isLtMedium$: Observable<boolean> = this.breakpointObserver
-    .observe([Breakpoints.XSmall, Breakpoints.Small])
-    .pipe(map((res: BreakpointState) => res.matches))
+  ) {
+    this.isXSmall$ = this.breakpointObserver
+      .observe([Breakpoints.XSmall])
+      .pipe(map((res: BreakpointState) => res.matches))
+    this.isLtMedium$ = this.breakpointObserver
+      .observe([Breakpoints.XSmall, Breakpoints.Small])
+      .pipe(map((res: BreakpointState) => res.matches))
+  }
 
 }

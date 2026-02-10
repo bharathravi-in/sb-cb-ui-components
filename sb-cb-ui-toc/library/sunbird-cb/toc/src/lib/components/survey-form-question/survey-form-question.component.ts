@@ -3,12 +3,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field'
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field'
 import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
@@ -17,13 +16,13 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     CommonModule,
     MatInputModule,
-    MatLegacyRadioModule,
-    MatLegacySelectModule,
-    MatLegacyCheckboxModule,
-    MatLegacyInputModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatInputModule,
     MatDatepickerModule,
     MatIconModule,
-    MatLegacySelectModule,
+    MatSelectModule,
     ReactiveFormsModule, 
     FormsModule,
     MatFormFieldModule,

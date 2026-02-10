@@ -10,15 +10,16 @@ import { IResolveResponse } from './resolver.model'
 @Injectable({
   providedIn: 'root',
 })
-export class ExploreDetailResolve
-   {
-  private baseUrl = this.configSvc.sitePath
+export class ExploreDetailResolve {
+  private baseUrl: any
   isIntranetAllowedSettings = false
   constructor(
     private http: HttpClient,
     private configSvc: ConfigurationsService,
     private utilitySvc: UtilityService,
-  ) { }
+  ) {
+    this.baseUrl = this.configSvc.sitePath
+  }
 
   resolve(
     route: ActivatedRouteSnapshot,

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs'
 import { NsAssessment } from '../../service/assessment.model'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { AssessmentService } from '../../service/assessment.service'
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'sb-uic-assessment-basic-info',

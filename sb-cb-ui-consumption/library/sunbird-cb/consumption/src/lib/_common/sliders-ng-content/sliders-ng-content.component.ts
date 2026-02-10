@@ -18,24 +18,24 @@ export class SlidersNgContentLibComponent extends WidgetBaseComponent
   @Input() autoScroll: boolean = false
   @Input() customBanner: boolean = false
   @Output() currentIndexValue = new EventEmitter<any>()
-  
+
   @HostBinding('id')
   public id = `banner_${Math.random()}`
   private defaultMenuSubscribe: Subscription | null = null
   isLtMedium$ = this.valueSvc.isLtMedium$
-  @Input()  currentIndex = 0
+  @Input() currentIndex = 0
   slideInterval: Subscription | null = null
   isMobile = false
 
   constructor(
     private events: EventService,
-    private valueSvc: ValueService
+    public valueSvc: ValueService
   ) {
     super()
   }
 
   ngOnInit() {
-    if(this.autoScroll) {
+    if (this.autoScroll) {
       this.reInitiateSlideInterval()
     }
     this.defaultMenuSubscribe = this.isLtMedium$.subscribe((isLtMedium: boolean) => {
@@ -73,7 +73,7 @@ export class SlidersNgContentLibComponent extends WidgetBaseComponent
       this.currentIndex = this.widgetData.length + index
       this.currentIndexValue.emit(this.currentIndex)
     }
-    if(this.autoScroll) {
+    if (this.autoScroll) {
       this.reInitiateSlideInterval()
     }
   }
@@ -108,7 +108,7 @@ export class SlidersNgContentLibComponent extends WidgetBaseComponent
       {
         pageIdExt: 'banner',
         module: WsEvents.EnumTelemetrymodules.CONTENT,
-    })
+      })
   }
 
   ngOnDestroy() {

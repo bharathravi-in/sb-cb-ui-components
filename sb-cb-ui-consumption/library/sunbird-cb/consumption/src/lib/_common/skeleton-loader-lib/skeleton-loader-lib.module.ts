@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { SkeletonLoaderLibComponent } from './skeleton-loader-lib.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({

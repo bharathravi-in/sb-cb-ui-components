@@ -7,22 +7,22 @@
         {{retiredLabel | translate }}
       </div>
     </div>
-    <div class="new-version-btn" *ngIf="widgetData?.content?.status === 'Retired' && widgetData?.content?.completionPercentage < 100
+    <div class="new-version-btn" *ngIf="$any(widgetData?.content)?.status === 'Retired' && widgetData?.content?.completionPercentage < 100
       && widgetData?.content?.contentVersionInfo?.identifier" (click)="navigateToNewVersion(widgetData?.content)"
       (keyup)="navigateToNewVersion(widgetData?.content)">
       {{'cardcontentv2.newVersion' | translate }}
     </div>
     <div class="course_widget portrait_widget flex  margin-bottom-xs"
-      [style.gap]="widgetData?.content.difficultyLevel ? '5px' : '0px'"
-      [ngClass]="{'retiredCards': widgetData?.content?.status === 'Retired' && widgetData?.content?.completionPercentage === 100,'margin-bottom-xl':!widgetData?.content?.primaryCategory}">
+      [style.gap]="$any(widgetData?.content).difficultyLevel ? '5px' : '0px'"
+      [ngClass]="{'retiredCards': $any(widgetData?.content)?.status === 'Retired' && widgetData?.content?.completionPercentage === 100,'margin-bottom-xl' : !$any(widgetData?.content).primaryCategory}">
       <!-- Apply difficulty-main class conditionally if widgetData?.content?.difficultyLevel is true-->
-      <div class="flex flex-end flex-middle course_port" *ngIf="widgetData?.content?.primaryCategory">
+      <div class="flex flex-end flex-middle course_port" *ngIf="$any(widgetData?.content).primaryCategory">
         <mat-icon class="mat-icon main_icon  ws-mat-default-text margin-right-xs">video_library</mat-icon>
         <ng-container *ngIf="widgetData?.content?.courseCategory === 'Case Study'">
           <sb-uic-display-content-type i18n-title
             [title]="widgetData.content?.courseCategory || widgetData.content?.primaryCategory"
             class="ws-mat-black60-text font-normal mat-caption"
-            [displayContentType]="widgetData?.content?.courseCategory">
+            [displayContentType]="$any(widgetData?.content).courseCategory">
           </sb-uic-display-content-type>
         </ng-container>
         <ng-container *ngIf="widgetData?.content?.courseCategory !== 'Case Study'">
@@ -30,9 +30,9 @@
             [title]="widgetData.content?.courseCategory || widgetData.content?.primaryCategory"
             [style.max-width]="widgetData?.content?.difficultyLevel?.toLowerCase() === 'intermediate' ? '90px' : (widgetData?.content?.difficultyLevel ? '85px' : 'auto')"
             class="ws-mat-black60-text font-normal mat-caption"
-            [displayContentType]="widgetData?.content?.primaryCategory==='Course Unit'
-            ?'Module'
-            :widgetData?.content?.courseCategory ? widgetData?.content?.courseCategory :widgetData?.content?.primaryCategory">
+            [displayContentType]="$any(widgetData?.content).primaryCategory === 'Course Unit'
+            ? 'Module'
+            : $any(widgetData?.content).courseCategory ? $any(widgetData?.content).courseCategory : $any(widgetData?.content).primaryCategory">
           </sb-uic-display-content-type>
         </ng-container>
       </div>
@@ -89,7 +89,7 @@
       </div>
     </div>
     <div class="flex"
-      [ngClass]="{'retiredCards': widgetData?.content?.status === 'Retired' && widgetData?.content?.completionPercentage === 100}">
+      [ngClass]="{'retiredCards': $any(widgetData?.content)?.status === 'Retired' && widgetData?.content?.completionPercentage === 100}">
       <div class="margin-right-s relative">
         <ng-container *ngIf="widgetData?.content?.posterImage">
           <div class=" img-block-portrait position-relative">
@@ -153,7 +153,7 @@
             widgetData?.content?.organisation[0] : 'Karmayogi Bharat' }}</span>
         </div>
         <div class="mt-2 mb-2">
-          <sb-uic-available-languages [content]="widgetData?.content"></sb-uic-available-languages>
+          <sb-uic-available-languages [content]="$any(widgetData?.content)"></sb-uic-available-languages>
         </div>
       </div>
     </div>
@@ -177,7 +177,7 @@
         <div class="progress-btn">
           <button class="resume-btn flex flex-middle flex-between"
             [routerLink]="['/app/toc/',widgetData?.content?.identifier,'overview']"
-            [queryParams]="{primaryCategory: widgetData?.content?.primaryCategory}" [state]="widgetData?.stateData"
+            [queryParams]="{primaryCategory: $any(widgetData?.content).primaryCategory}" [state]="widgetData?.stateData"
             [matTooltipPosition]="'below'"
             [matTooltipDisabled]="(!widgetData?.content?.completionPercentage ? translateLabels('start', 'cardcontentv2') : translateLabels('resume', 'cardcontentv2')).length < 11"
             matTooltip="{{!widgetData?.content?.completionPercentage ? translateLabels('start', 'cardcontentv2') : translateLabels('resume', 'cardcontentv2')}}">

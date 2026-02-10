@@ -125,78 +125,75 @@
           </div>
 
           <!-- #region (approval section) -->
-            <ng-container *ngIf="designationApprovalField || groupApprovalField">
-              <hr class="w-full">
-              <div class="flex gap-2 flex-col">
-                <div class="slot-header">Approvals</div>
-                <ng-container *ngIf="designationApprovalField">
-                  <div class="flex flex-col gap-2">
-                    <div class="label required">Designation</div>
-                    <div class="flex gap-2 items-center">
-                      <input type="text" class="appr-text-field" [value]="designationApprovalField?.toValue"
-                        [disabled]="true">
-                      <ng-container *ngIf="userForm?.get('approveDesignation')?.value === true">
-                        <mat-icon class="verified-icon margin-left-xs">
-                          check_circle</mat-icon>
-                      </ng-container>
-                      <ng-container *ngIf="userForm?.get('approveDesignation')?.value === false">
-                        <mat-icon class="nonverified-icon margin-left-xs">
-                          cancel</mat-icon>
-                      </ng-container>
-                    </div>
-                    <mat-radio-group aria-label="Select an option"
-                      formControlName="approveDesignation" class="mat-caption">
-                      <mat-radio-button value="approvedesg" class="margin-right-s"
-                        (change)="onClickHandleWorkflow('APPROVE', 'designation')">
-                        Approve
-                      </mat-radio-button>
-                      <mat-radio-button value="rejectdesg" (change)="onClickHandleWorkflow('REJECT', 'designation')">
-                        Reject
-                      </mat-radio-button>
-                      <mat-icon class="margin-left-m editreasonicon cursor-pointer"
-                          *ngIf="designationApprovalField?.action === 'REJECT' && designationApprovalField?.comment !== '' && !htmlDetected"
-                          (click)="updateRejection(designationApprovalField)">chat_bubble</mat-icon>
-                    </mat-radio-group>
+          <ng-container *ngIf="designationApprovalField || groupApprovalField">
+            <hr class="w-full">
+            <div class="flex gap-2 flex-col">
+              <div class="slot-header">Approvals</div>
+              <ng-container *ngIf="designationApprovalField">
+                <div class="flex flex-col gap-2">
+                  <div class="label required">Designation</div>
+                  <div class="flex gap-2 items-center">
+                    <input type="text" class="appr-text-field" [value]="designationApprovalField?.toValue"
+                      [disabled]="true">
+                    <ng-container *ngIf="userForm?.get('approveDesignation')?.value === true">
+                      <mat-icon class="verified-icon margin-left-xs">
+                        check_circle</mat-icon>
+                    </ng-container>
+                    <ng-container *ngIf="userForm?.get('approveDesignation')?.value === false">
+                      <mat-icon class="nonverified-icon margin-left-xs">
+                        cancel</mat-icon>
+                    </ng-container>
                   </div>
-                </ng-container>
-                <ng-container *ngIf="groupApprovalField">
-                  <div class="flex flex-col gap-2">
-                    <div class="label required">Group</div>
-                    <div class="flex gap-2 items-center">
-                      <input type="text" class="appr-text-field" [value]="groupApprovalField?.toValue"
-                        [disabled]="true">
-                      <ng-container *ngIf="userForm?.get('approveGroup')?.value === true">
-                        <mat-icon class="verified-icon margin-left-xs">
-                          check_circle</mat-icon>
-                      </ng-container>
-                      <ng-container *ngIf="userForm?.get('approveGroup')?.value === false">
-                        <mat-icon class="nonverified-icon margin-left-xs">
-                          cancel</mat-icon>
-                      </ng-container>
-                    </div>
-                    <mat-radio-group aria-label="Select an option"
-                      formControlName="approveGroup" class="mat-caption">
-                      <mat-radio-button value="approvegroup" class="margin-right-s"
-                        (change)="onClickHandleWorkflow('APPROVE', 'group')">
-                        Approve
-                      </mat-radio-button>
-                      <mat-radio-button value="rejectgroup" (change)="onClickHandleWorkflow('REJECT', 'group')">
-                        Reject
-                      </mat-radio-button>
-                      <mat-icon class="margin-left-m editreasonicon cursor-pointer"
-                          *ngIf="groupApprovalField?.action === 'REJECT' && groupApprovalField?.comment !== '' && !htmlDetected"
-                          (click)="updateRejection(groupApprovalField)">chat_bubble</mat-icon>
-                    </mat-radio-group>
+                  <mat-radio-group aria-label="Select an option" formControlName="approveDesignation"
+                    class="mat-caption">
+                    <mat-radio-button value="approvedesg" class="margin-right-s"
+                      (change)="onClickHandleWorkflow('APPROVE', 'designation')">
+                      Approve
+                    </mat-radio-button>
+                    <mat-radio-button value="rejectdesg" (change)="onClickHandleWorkflow('REJECT', 'designation')">
+                      Reject
+                    </mat-radio-button>
+                    <mat-icon class="margin-left-m editreasonicon cursor-pointer"
+                      *ngIf="designationApprovalField?.action === 'REJECT' && designationApprovalField?.comment !== '' && !htmlDetected"
+                      (click)="updateRejection(designationApprovalField)">chat_bubble</mat-icon>
+                  </mat-radio-group>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="groupApprovalField">
+                <div class="flex flex-col gap-2">
+                  <div class="label required">Group</div>
+                  <div class="flex gap-2 items-center">
+                    <input type="text" class="appr-text-field" [value]="groupApprovalField?.toValue" [disabled]="true">
+                    <ng-container *ngIf="userForm?.get('approveGroup')?.value === true">
+                      <mat-icon class="verified-icon margin-left-xs">
+                        check_circle</mat-icon>
+                    </ng-container>
+                    <ng-container *ngIf="userForm?.get('approveGroup')?.value === false">
+                      <mat-icon class="nonverified-icon margin-left-xs">
+                        cancel</mat-icon>
+                    </ng-container>
                   </div>
-                </ng-container>
-                <ng-container *ngIf="showApprovalButtons">
-                  <div class="flex justify-end">
-                    <button mat-button class="updateProfileBtn"
-                      (click)="updateApprovals()">Update Approvals</button>
-                  </div>
-                </ng-container>
-              </div>
-            </ng-container>
+                  <mat-radio-group aria-label="Select an option" formControlName="approveGroup" class="mat-caption">
+                    <mat-radio-button value="approvegroup" class="margin-right-s"
+                      (change)="onClickHandleWorkflow('APPROVE', 'group')">
+                      Approve
+                    </mat-radio-button>
+                    <mat-radio-button value="rejectgroup" (change)="onClickHandleWorkflow('REJECT', 'group')">
+                      Reject
+                    </mat-radio-button>
+                    <mat-icon class="margin-left-m editreasonicon cursor-pointer"
+                      *ngIf="groupApprovalField?.action === 'REJECT' && groupApprovalField?.comment !== '' && !htmlDetected"
+                      (click)="updateRejection(groupApprovalField)">chat_bubble</mat-icon>
+                  </mat-radio-group>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="showApprovalButtons">
+                <div class="flex justify-end">
+                  <button mat-button class="updateProfileBtn" (click)="updateApprovals()">Update Approvals</button>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
           <!-- #endregion (approval section) -->
         </mat-card-content>
       </mat-card>
@@ -346,8 +343,9 @@
               <div class="detail-item">
                 <div class="other-details-label required">Mobile Number</div>
                 <mat-form-field appearance="outline" class="w-full">
-                  <input matInput formControlName="mobile" placeholder="Enter Mobile Number" aria-label="Mobile Number input"
-                  (paste)="numericOnly($event)" (keypress)="numericOnly($event)" maxlength="10">
+                  <input matInput formControlName="mobile" placeholder="Enter Mobile Number"
+                    aria-label="Mobile Number input" (paste)="numericOnly($event)" (keypress)="numericOnly($event)"
+                    maxlength="10">
                   <ng-container *ngIf="otherDetailsForm?.controls['mobile'].touched">
                     <mat-error [hidden]="false" *ngIf="otherDetailsForm?.controls['mobile'].errors?.required"
                       aria-label="Please enter your mobile number">
@@ -401,8 +399,9 @@
               <div class="detail-item">
                 <div class="other-details-label">Office Pin Code</div>
                 <mat-form-field appearance="outline" class="w-full">
-                  <input matInput formControlName="pincode" placeholder="Enter Office Pin Code" (paste)="numericOnly($event)"
-                  aria-label="Pin Code input field" autocomplete="off" (keypress)="numericOnly($event)" maxlength="6">
+                  <input matInput formControlName="pincode" placeholder="Enter Office Pin Code"
+                    (paste)="numericOnly($event)" aria-label="Pin Code input field" autocomplete="off"
+                    (keypress)="numericOnly($event)" maxlength="6">
                 </mat-form-field>
               </div>
               <div class="detail-item">
@@ -471,13 +470,12 @@
                 </button>
               </div>
             </div>
-            <mat-chip-list #chipListTags>
-              <mat-chip *ngFor="let tag of selectedtagsList; let i = index" [selectable]="true" [removable]="true"
-                (removed)="removeActivity(i)">
+            <mat-chip-grid #chipListTags>
+              <mat-chip-row *ngFor="let tag of selectedtagsList; let i = index" (removed)="removeActivity(i)">
                 {{ tag }}
                 <mat-icon matChipRemove>cancel</mat-icon>
-              </mat-chip>
-            </mat-chip-list>
+              </mat-chip-row>
+            </mat-chip-grid>
           </form>
         </ng-template>
         <!-- #endregion (other details edit) -->
@@ -494,9 +492,9 @@
     <p mat-dialog-title class="dialog-title">Reason for rejection</p>
     <mat-dialog-content>
       <mat-form-field class="w-full mt-5" appearance="outline">
-        <textarea matInput class="reason-text-area" [(ngModel)]="comment" name="reason"
+        <textarea #rejectReason matInput class="reason-text-area" [(ngModel)]="comment" name="reason"
           placeholder="Type the description in fewer than 100 characters" resizable="none" maxlength="100"
-          (input)="validateText($event.target.value)"></textarea>
+          (input)="validateText(rejectReason.value)"></textarea>
         <mat-error [hidden]="false" aria-label="Budget year Error|Explains name is required" *ngIf="htmlDetected">
           Field is mandatory
         </mat-error>
@@ -519,9 +517,9 @@
     <mat-dialog-content>
       <p class="margin-top-l margin-bottom-l" *ngIf="!showeditText">{{comment}}</p>
       <mat-form-field class="w-full mt-5" appearance="outline" *ngIf="showeditText">
-        <textarea matInput class="reason-text-area" [(ngModel)]="comment" name="reason"
+        <textarea #updateRejectReason matInput class="reason-text-area" [(ngModel)]="comment" name="reason"
           placeholder="Type the description in fewer than 100 characters" resizable="none" maxlength="100"
-          (input)="validateText($event.target.value)"></textarea>
+          (input)="validateText(updateRejectReason.value)"></textarea>
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions class="flex flex-wrap justify-end" *ngIf="showeditText">
@@ -532,4 +530,3 @@
     </mat-dialog-actions>
   </form>
 </ng-template>
-

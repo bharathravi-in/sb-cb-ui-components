@@ -16,28 +16,28 @@ import { SkeletonLoaderContentComponent } from "./_components/skeleton-loader-co
 import { CommonModule } from "@angular/common";
 import { SearchListingRoutingModule } from "./search-listing-routing.module";
 
-import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
-import { MatLegacyCardModule as MatCardModule } from "@angular/material/legacy-card";
-import { MatLegacyCheckboxModule as MatCheckboxModule } from "@angular/material/legacy-checkbox";
-import { MatLegacyChipsModule as MatChipsModule } from "@angular/material/legacy-chips";
-import { MatLegacyFormFieldModule as MatFormFieldModule } from "@angular/material/legacy-form-field";
-import { MatLegacyInputModule as MatInputModule } from "@angular/material/legacy-input";
-import { MatLegacyListModule as MatListModule } from "@angular/material/legacy-list";
-import { MatLegacyMenuModule as MatMenuModule } from "@angular/material/legacy-menu";
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from "@angular/material/legacy-progress-spinner";
-import { MatLegacySelectModule as MatSelectModule } from "@angular/material/legacy-select";
-import { MatLegacySlideToggleModule as MatSlideToggleModule } from "@angular/material/legacy-slide-toggle";
-import { MatLegacyTabsModule as MatTabsModule } from "@angular/material/legacy-tabs";
-import { MatLegacyTooltipModule as MatTooltipModule } from "@angular/material/legacy-tooltip";
+import { MatButtonModule as MatButtonModule } from "@angular/material/button";
+import { MatCardModule as MatCardModule } from "@angular/material/card";
+import { MatCheckboxModule as MatCheckboxModule } from "@angular/material/checkbox";
+import { MatChipsModule as MatChipsModule } from "@angular/material/chips";
+import { MatFormFieldModule as MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule as MatInputModule } from "@angular/material/input";
+import { MatListModule as MatListModule } from "@angular/material/list";
+import { MatMenuModule as MatMenuModule } from "@angular/material/menu";
+import { MatProgressSpinnerModule as MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatSelectModule as MatSelectModule } from "@angular/material/select";
+import { MatSlideToggleModule as MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatTabsModule as MatTabsModule } from "@angular/material/tabs";
+import { MatTooltipModule as MatTooltipModule } from "@angular/material/tooltip";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatNativeDateModule, MatRippleModule } from "@angular/material/core";
-import { MatLegacyOptionModule as MatOptionModule } from "@angular/material/legacy-core";
+import { MatOptionModule as MatOptionModule } from "@angular/material/core";
 import { MatDividerModule } from "@angular/material/divider";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatIconModule } from "@angular/material/icon";
 import { DefaultThumbnailModule, HorizontalScrollerModule, PipeDurationTransformModule, PipePublicURLModule } from "@sunbird-cb/utils-v2";
 import { MatSidenavModule } from "@angular/material/sidenav";
-import { MatLegacyRadioModule as MatRadioModule } from "@angular/material/legacy-radio";
+import { MatRadioModule as MatRadioModule } from "@angular/material/radio";
 import { SkeletonLoaderComponent } from "./_components/skeleton-loader/skeleton-loader.component";
 import { TranslateModule } from "@ngx-translate/core";
 import { SkeletonLoaderPeoplesComponent } from "./_components/skeleton-loader-peoples/skeleton-loader-peoples.component";
@@ -47,7 +47,7 @@ import { TrainingPlansCardComponent } from "./_components/training-plans-card/tr
 import { UsersCardComponent } from "./_components/users-card/users-card.component";
 import { DefaultMatCalendarRangeStrategy, MatDatepickerModule, MatRangeDateSelectionModel } from "@angular/material/datepicker";
 import { UserUpdateModule, DialogComponentsModule } from '@sunbird-cb/consumption'
-import { MatLegacyDialogModule } from "@angular/material/legacy-dialog";
+import { MatDialogModule } from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -106,7 +106,7 @@ import { MatLegacyDialogModule } from "@angular/material/legacy-dialog";
     MatNativeDateModule,
     UserUpdateModule,
     DialogComponentsModule,
-    MatLegacyDialogModule
+    MatDialogModule
   ],
   exports: [SearchListingComponent, SearchInputHomeComponent],
   providers: [importProvidersFrom(MatNativeDateModule), MatRangeDateSelectionModel, DefaultMatCalendarRangeStrategy]

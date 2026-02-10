@@ -1,6 +1,6 @@
 import { Component, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core'
 import { IImageCarouselStyle } from './image-sliders.model'
-import { Subscription, interval } from 'rxjs'
+import { Subscription, interval, Observable } from 'rxjs'
 import { EventService, WsEvents, ValueService } from '@sunbird-cb/utils-v2'
 
 @Component({
@@ -18,7 +18,7 @@ export class ImageSlidersComponent implements OnInit, OnDestroy{
   @HostBinding('id')
   public id = `banner_${Math.random()}`
   private defaultMenuSubscribe: Subscription | null = null
-  isLtMedium$ = this.valueSvc.isLtMedium$
+  isLtMedium$: Observable<boolean> = this.valueSvc.isLtMedium$
   currentIndex = 0
   slideInterval: Subscription | null = null
   isMobile = false

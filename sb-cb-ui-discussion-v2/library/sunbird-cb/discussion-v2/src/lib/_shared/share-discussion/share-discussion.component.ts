@@ -5,9 +5,9 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators'
 import { MultilingualTranslationsService, EventService, WsEvents, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { TranslateService } from '@ngx-translate/core'
 
-import { MatLegacyAutocomplete as MatAutocomplete, MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent } from '@angular/material/legacy-autocomplete'
-import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips'
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete'
+import { MatChipInputEvent } from '@angular/material/chips'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { CommonService } from '../../_services/common.service'
 @Component({
   selector: 'd-v2-share-discussion',
@@ -129,7 +129,7 @@ export class ShareDiscussionComponent implements OnInit {
           input.value = ''
         }
         this.userCtrl.setValue('')
-        const el: any = document.getElementsByClassName('mat-chip-list-wrapper')
+        const el: any = document.getElementsByClassName('mdc-evolution-chip-set__chips')
         if (el != null) {
           setTimeout(() => {
             el[0].scrollTop = el[0].scrollHeight
@@ -164,7 +164,7 @@ export class ShareDiscussionComponent implements OnInit {
       this.userInput.nativeElement.value = ''
     }
     this.userCtrl.setValue('')
-    const el: any = document.getElementsByClassName('mat-chip-list-wrapper')
+    const el: any = document.getElementsByClassName('mdc-evolution-chip-set__chips')
     if (el != null) {
       setTimeout(() => {
         el[0].scrollTop = el[0].scrollHeight

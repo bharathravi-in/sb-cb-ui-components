@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { UserContentDetailedRatingComponent } from './user-content-detailed-rating.component'
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button'
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card'
+import { MatButtonModule as MatButtonModule } from '@angular/material/button'
+import { MatCardModule as MatCardModule } from '@angular/material/card'
 import { MatIconModule } from '@angular/material/icon'
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar'
+import { MatProgressBarModule as MatProgressBarModule } from '@angular/material/progress-bar'
 import { InViewPortModule } from '@sunbird-cb/utils-v2'
 
 @NgModule({

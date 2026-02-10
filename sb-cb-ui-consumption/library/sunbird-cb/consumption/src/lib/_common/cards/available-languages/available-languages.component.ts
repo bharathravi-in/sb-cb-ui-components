@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NsCardContent } from '../../../_models/card-content.model';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { TOCMultiLingualDialogComponent } from '../../toc-multi-lingual-dialog/toc-multi-lingual-dialog.component';
 import { ContentLanguageService } from '../../../_services/content-language.service';
 

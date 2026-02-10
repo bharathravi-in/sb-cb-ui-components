@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router'
 import { NavigationModule, ImageResponsiveModule } from '@sunbird-cb/utils-v2'
 import { SlidersDynamicComponent } from './sliders-dynamic.component'
 import { MatIconModule } from '@angular/material/icon'
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip'
+import { MatTooltipModule } from '@angular/material/tooltip'
 
 @Injectable()
 export class MyHammerConfig extends HammerGestureConfig {

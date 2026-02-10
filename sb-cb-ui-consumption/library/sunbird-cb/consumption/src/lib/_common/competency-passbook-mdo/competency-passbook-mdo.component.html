@@ -1,13 +1,14 @@
-<div class="competency-title" *ngIf="objectData?.title">{{objectData?.title}} 
+<div class="competency-title" *ngIf="objectData?.title">{{objectData?.title}}
     <span class="competency-count">
         ({{competencyStrength}})
     </span>
 </div>
 <div class="flex items-center justify-{{dynamicAlignPills}} gap-8 mt-5 mb-5 competency-filters">
-    <sb-uic-pills [pillsData]="competencyArea" [dynamicColor]="dynamicColor"
-    [isLoading]="loadCompetencyArea" (pillClick)="competencyChange($event)" [selectedValue]="selectedValue"></sb-uic-pills>
+    <sb-uic-pills [pillsData]="competencyArea" [dynamicColor]="dynamicColor" [isLoading]="loadCompetencyArea"
+        (pillClick)="competencyChange($event)" [selectedValue]="selectedValue"></sb-uic-pills>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-{{cardDisplayCount}} w-full grid-flow-row gap-5" *ngIf="!loadCometency">
+<div class="grid grid-cols-1 md:grid-cols-{{cardDisplayCount.toString()}} w-full grid-flow-row gap-5"
+    *ngIf="!loadCometency">
     <div class="competency-card" *ngFor="let obj of competencyTheme| slice:0:competencyThemeLength">
         <div class="flex-1 flex-col">
             <div class="competency-theme"></div>
@@ -15,14 +16,15 @@
                 <div class="flex flex-col p-4">
                     <div class="flex flex-row cursor-pointer">
                         <div class="flex flex-row gap-2 items-center">
-                            <div class="name">{{allcompetencyTheme[obj?.name]?.displayName || allcompetencyTheme[obj?.name]?.name}}</div>
+                            <div class="name">{{allcompetencyTheme[$any(obj)?.name]?.displayName ||
+                                allcompetencyTheme[$any(obj)?.name]?.name}}</div>
                             <!-- <div class="flex items-baseline">
                                 <img src="assets/icons/competency/cp-arrow.svg" class="arrow-img cursor-pointer" alt="cp arrow img" (click)="navigateToCompetency(obj)" />
                             </div> -->
                         </div>
                     </div>
                     <div class="flex flex-row pt-3 pb-3 description">
-                        {{ allcompetencyTheme[obj.name]?.description }} 
+                        {{ allcompetencyTheme[$any(obj).name]?.description }}
                     </div>
                     <!-- <div class="flex flex-row gap-3 items-center">
                         <mat-icon class="content-icon">school</mat-icon>
@@ -30,73 +32,78 @@
                     </div> -->
                     <div class="line mt-3 mt-2"></div>
                     <div class="flex flex-wrap gap-3 pt-4 chip-container">
-                        <ng-container *ngFor="let child of allcompetencyTheme[obj.name]?.children| slice:0: allcompetencyTheme[obj.name]?.viewMore ? allcompetencyTheme[obj.name]?.children?.length : 3; let i = index">
-                            <div class="chip rounded-full p-2 text-xs chip-ellipsis" [title]="child?.displayName || child?.name" >
-                                {{ child?.displayName || child?.name }}
+                        <ng-container
+                            *ngFor="let child of allcompetencyTheme[$any(obj).name]?.children| slice:0: allcompetencyTheme[$any(obj).name]?.viewMore ? allcompetencyTheme[$any(obj).name]?.children?.length : 3; let i = index">
+                            <div class="chip rounded-full p-2 text-xs chip-ellipsis"
+                                [title]="$any(child)?.displayName || $any(child)?.name">
+                                {{ $any(child)?.displayName || $any(child)?.name }}
                             </div>
                         </ng-container>
                         <div class="p-2 info-btn cursor-pointer"
-                            *ngIf="allcompetencyTheme[obj.name]?.children.length > 3 && !allcompetencyTheme[obj.name]?.viewMore" (click)="viewMoreChildren(allcompetencyTheme[obj.name])">
+                            *ngIf="allcompetencyTheme[$any(obj).name]?.children.length > 3 && !allcompetencyTheme[$any(obj).name]?.viewMore"
+                            (click)="viewMoreChildren(allcompetencyTheme[$any(obj).name])">
                             View more
                         </div>
                         <div class="p-2 info-btn cursor-pointer"
-                            *ngIf="allcompetencyTheme[obj.name]?.children.length > 3 && allcompetencyTheme[obj.name]?.viewMore" (click)="viewMoreChildren(allcompetencyTheme[obj.name])">
+                            *ngIf="allcompetencyTheme[$any(obj).name]?.children.length > 3 && allcompetencyTheme[$any(obj).name]?.viewMore"
+                            (click)="viewMoreChildren(allcompetencyTheme[$any(obj).name])">
                             View less
                         </div>
                     </div>
-                </div>        
+                </div>
             </div>
         </div>
     </div>
 </div>
 <ng-container *ngIf="competencyTheme.length > 6 && !loadCometency">
     <div class="flex items-center justify-center gap-8 mt-5 mb-5 competency-filters">
-        <sb-uic-pills [pillsData]="showAllTheme" [requiredTitlecase]="false" [dynamicColor]="dynamicColor" (pillClick)="displayAllTheme($event)"></sb-uic-pills>
+        <sb-uic-pills [pillsData]="showAllTheme" [requiredTitlecase]="false" [dynamicColor]="dynamicColor"
+            (pillClick)="displayAllTheme($event)"></sb-uic-pills>
     </div>
-</ng-container> 
+</ng-container>
 
 <ng-container *ngIf="loadCometency">
 
-<div class="grid grid-cols-1 md:grid-cols-{{cardDisplayCount}} w-full grid-flow-row gap-5">
-    <div *ngFor="let obj of [0,1,2,3,4,5]">
-        <div class="flex-1 flex-col">
-            <div class="competency-theme"></div>
-            <div class="details flex flex-col">
-                <div class="flex flex-col p-4">
-                    <div class="flex flex-row cursor-pointer">
-                        <div class="flex flex-row gap-2 items-center w-full">
-                            <div class="name w-full">
-                                <sb-uic-skeleton-loader [bindingClass]="'flex rounded mb-2'" [width]="'100%'"
-                                [height]="'24px'"></sb-uic-skeleton-loader>
-                                <sb-uic-skeleton-loader [bindingClass]="'flex rounded'" [width]="'80%'"
-                                [height]="'24px'"></sb-uic-skeleton-loader>
+    <div class="grid grid-cols-1 md:grid-cols-{{cardDisplayCount.toString()}} w-full grid-flow-row gap-5">
+        <div *ngFor="let obj of [0,1,2,3,4,5]">
+            <div class="flex-1 flex-col">
+                <div class="competency-theme"></div>
+                <div class="details flex flex-col">
+                    <div class="flex flex-col p-4">
+                        <div class="flex flex-row cursor-pointer">
+                            <div class="flex flex-row gap-2 items-center w-full">
+                                <div class="name w-full">
+                                    <sb-uic-skeleton-loader [bindingClass]="'flex rounded mb-2'" [width]="'100%'"
+                                        [height]="'24px'"></sb-uic-skeleton-loader>
+                                    <sb-uic-skeleton-loader [bindingClass]="'flex rounded'" [width]="'80%'"
+                                        [height]="'24px'"></sb-uic-skeleton-loader>
+                                </div>
                             </div>
                         </div>
+                        <div class="pt-3 pb-3 description">
+                            <sb-uic-skeleton-loader class="w-full" [bindingClass]="'flex rounded mb-2'" [width]="'100%'"
+                                [height]="'24px'"></sb-uic-skeleton-loader>
+                            <sb-uic-skeleton-loader class="w-full" [bindingClass]="'flex rounded'" [width]="'80%'"
+                                [height]="'24px'"></sb-uic-skeleton-loader>
+                        </div>
+                        <div class="flex flex-row gap-3 items-center">
+                            <mat-icon class="content-icon"><sb-uic-skeleton-loader [bindingClass]="'flex rounded mb-2'"
+                                    [width]="'24px'" [height]="'24px'"></sb-uic-skeleton-loader></mat-icon>
+                            <div class="no-of-contents"><sb-uic-skeleton-loader [bindingClass]="'flex rounded '"
+                                    [width]="'100px'" [height]="'24px'"></sb-uic-skeleton-loader></div>
+                        </div>
+                        <div class="line mt-3 mt-2"></div>
+                        <div class="flex flex-wrap gap-3 pt-4 chip-container">
+                            <sb-uic-skeleton-loader class="w-2/5" [bindingClass]="'flex rounded '" [width]="'100px'"
+                                [height]="'24px'"></sb-uic-skeleton-loader>
+                            <sb-uic-skeleton-loader class="w-2/5" [bindingClass]="'flex rounded '" [width]="'100px'"
+                                [height]="'24px'"></sb-uic-skeleton-loader>
+                            <sb-uic-skeleton-loader class="w-2/5" [bindingClass]="'flex rounded '" [width]="'100px'"
+                                [height]="'24px'"></sb-uic-skeleton-loader>
+                        </div>
                     </div>
-                    <div class="pt-3 pb-3 description">
-                        <sb-uic-skeleton-loader class="w-full" [bindingClass]="'flex rounded mb-2'" [width]="'100%'"
-                        [height]="'24px'"></sb-uic-skeleton-loader>
-                        <sb-uic-skeleton-loader class="w-full" [bindingClass]="'flex rounded'" [width]="'80%'"
-                        [height]="'24px'"></sb-uic-skeleton-loader>
-                    </div>
-                    <div class="flex flex-row gap-3 items-center">
-                        <mat-icon class="content-icon"><sb-uic-skeleton-loader  [bindingClass]="'flex rounded mb-2'" [width]="'24px'"
-                            [height]="'24px'"></sb-uic-skeleton-loader></mat-icon>
-                        <div class="no-of-contents"><sb-uic-skeleton-loader  [bindingClass]="'flex rounded '" [width]="'100px'"
-                            [height]="'24px'"></sb-uic-skeleton-loader></div>
-                    </div>
-                    <div class="line mt-3 mt-2"></div>
-                    <div class="flex flex-wrap gap-3 pt-4 chip-container">
-                        <sb-uic-skeleton-loader class="w-2/5" [bindingClass]="'flex rounded '" [width]="'100px'"
-                        [height]="'24px'"></sb-uic-skeleton-loader>
-                        <sb-uic-skeleton-loader class="w-2/5"  [bindingClass]="'flex rounded '" [width]="'100px'"
-                        [height]="'24px'"></sb-uic-skeleton-loader>
-                        <sb-uic-skeleton-loader class="w-2/5" [bindingClass]="'flex rounded '" [width]="'100px'"
-                        [height]="'24px'"></sb-uic-skeleton-loader>
-                    </div>
-                </div>        
+                </div>
             </div>
         </div>
     </div>
-</div>
 </ng-container>

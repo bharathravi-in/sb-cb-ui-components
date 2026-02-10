@@ -12,13 +12,15 @@ import { NsContent } from '../services/widget-content.model'
 @Injectable({
   providedIn: 'root',
 })
-export class PageResolve  {
-  private baseUrl = this.configSvc.sitePath
+export class PageResolve {
+  private baseUrl: any
   constructor(
     private configSvc: ConfigurationsService,
     private http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
-  ) { }
+  ) {
+    this.baseUrl = this.configSvc.sitePath
+  }
   resolve(
     route: ActivatedRouteSnapshot,
   ): Observable<IResolveResponse<NsPage.IPage>> | IResolveResponse<NsPage.IPage> {

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core'
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms'
-import { MatLegacyDialog } from '@angular/material/legacy-dialog'
-import { MatLegacySnackBar } from '@angular/material/legacy-snack-bar'
+import { MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { Router, ActivatedRoute } from '@angular/router'
 import { CreateRequestService } from '../../services/create-request.service'
 
@@ -29,8 +29,8 @@ export class CreateRequestFormComponent implements OnInit {
     private router: Router,
     private fb: UntypedFormBuilder,
     private createRequestSvc: CreateRequestService,
-    public dialog: MatLegacyDialog,
-    private snackBar: MatLegacySnackBar,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private activatedRoute: ActivatedRoute,
   ) { }
 

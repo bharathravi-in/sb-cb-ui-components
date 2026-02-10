@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FrameworkService } from '../../services/framework.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { CreateTermComponent } from '../create-term/create-term.component';
 import { ConnectorComponent } from '../connector/connector.component';
 import { LocalConnectionService } from '../../services/local-connection.service';
@@ -8,7 +8,7 @@ import { IConnectionType } from '../../models/connection-type.model';
 import { Subscription } from 'rxjs';
 import { ConnectorService } from '../../services/connector.service';
 import { ApprovalService } from '../../services/approval.service';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar as MatSnackBar } from '@angular/material/snack-bar';
 import { defaultConfig, headerLineConfig } from '../../constants/app-constant';
 import { labels } from '../../labels/strings';
 import { Card } from '../../models/variable-type.model';

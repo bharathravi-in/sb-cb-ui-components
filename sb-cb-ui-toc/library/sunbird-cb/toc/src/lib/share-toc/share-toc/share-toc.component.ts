@@ -7,9 +7,9 @@ import { TranslateService } from '@ngx-translate/core'
 import { AppTocService } from '../../services/app-toc.service'
 
 
-import { MatLegacyAutocomplete as MatAutocomplete, MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent } from '@angular/material/legacy-autocomplete'
-import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips'
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { MatAutocomplete as MatAutocomplete, MatAutocompleteSelectedEvent as MatAutocompleteSelectedEvent } from '@angular/material/autocomplete'
+import { MatChipInputEvent as MatChipInputEvent } from '@angular/material/chips'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { UserAutocompleteService } from '../../_collection/_common/user-autocomplete/user-autocomplete.service'
 @Component({
   selector: 'ws-app-share-toc',

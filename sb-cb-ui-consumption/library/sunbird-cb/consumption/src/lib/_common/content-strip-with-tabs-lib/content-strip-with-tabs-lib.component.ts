@@ -20,7 +20,7 @@ import { WidgetUserServiceLib } from '../../_services/widget-user-lib.service'
 // import { environment } from 'src/environments/environment'
 // tslint:disable-next-line
 import * as _ from 'lodash'
-import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs'
+import { MatTabChangeEvent as MatTabChangeEvent } from '@angular/material/tabs'
 import { NsCardContent } from '../../_models/card-content-v2.model'
 import { ITodayEvents } from '../../_models/event'
 import { TranslateService } from '@ngx-translate/core'

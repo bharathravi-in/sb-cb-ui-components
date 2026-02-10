@@ -9,6 +9,7 @@ import { LoggerService } from './logger.service'
 import { NsContent } from './widget-content.model'
 import { Router, NavigationStart } from '@angular/router'
 import { NPSGridService } from './nps-grid.service'
+import * as _ from 'lodash'
 
 declare var $t: any
 
@@ -90,7 +91,7 @@ export class TelemetryService {
           id: `${this.environment.name}.${this.telemetryConfig.pdata.id}`,
         },
         uid: (this.configSvc.userProfile && this.configSvc.userProfile.userId) ?
-              this.configSvc.userProfile.userId : '',
+          this.configSvc.userProfile.userId : '',
         // authtoken: this.authSvc.token,
         // tslint:disable-next-line: no-non-null-assertion
         channel: this.rootOrgId || this.telemetryConfig.channel,
@@ -151,7 +152,7 @@ export class TelemetryService {
               ...(data) && data,
             },
             ...(this.configSvc.userProfile && this.configSvc.userProfile.userId ?
-               null : { actor: { id: '', type: 'AnonymousUser' } }),
+              null : { actor: { id: '', type: 'AnonymousUser' } }),
           }
         )
       } else {
@@ -347,8 +348,8 @@ export class TelemetryService {
             type: event.data.type || WsEvents.WsTimeSpentType.Player,
             mode: event.data.mode || WsEvents.WsTimeSpentMode.Play,
           },
-                   event.data.object,
-                   event.pageContext
+            event.data.object,
+            event.pageContext
           )
         }
         if (
@@ -410,8 +411,8 @@ export class TelemetryService {
             type: event.data.type || WsEvents.WsTimeSpentType.Player,
             mode: event.data.mode || WsEvents.WsTimeSpentMode.Play,
           },
-                   event.data.object,
-                   event.pageContext
+            event.data.object,
+            event.pageContext
           )
         }
         if (
@@ -473,8 +474,8 @@ export class TelemetryService {
             type: event.data.type || WsEvents.WsTimeSpentType.Player,
             mode: event.data.mode || WsEvents.WsTimeSpentMode.Play,
           },
-                   {},
-                   event.pageContext
+            {},
+            event.pageContext
           )
         }
         if (
@@ -556,8 +557,8 @@ export class TelemetryService {
             type: event.data.type || WsEvents.WsTimeSpentType.Player,
             mode: event.data.mode || WsEvents.WsTimeSpentMode.Play,
           },
-                   {},
-                   event.pageContext
+            {},
+            event.pageContext
           )
         }
       })

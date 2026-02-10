@@ -13,9 +13,9 @@ import { HighlightsOfWeekModule } from '../../highlights-of-week/highlights-of-w
 import { SpeakersModule } from '../../speakers/speakers.module';
 import { UserProgressModule } from '../../user-progress/user-progress.module';
 import { ContentStripFacetFilterModule } from '../../strips/content-strip-facet-filter/content-strip-facet-filter.module';
-import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { PipeSafeSanitizerModule } from '@sunbird-cb/utils-v2';
 
 

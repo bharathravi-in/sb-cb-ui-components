@@ -13,9 +13,9 @@ import {
   // SimpleChange,
   ViewChild,
 } from '@angular/core'
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator'
+import { MatPaginator as MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table'
+import { MatTableDataSource as MatTableDataSource } from '@angular/material/table'
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver-v2'
 import { IColums, ITable } from './card-table.model'
 /* tslint:disable */

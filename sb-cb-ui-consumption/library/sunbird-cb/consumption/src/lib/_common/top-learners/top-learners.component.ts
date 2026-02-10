@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core'
-import moment from 'moment'
+import * as moment from 'moment'
 import { InsiteDataService } from '../../_services/insite-data.service'
 @Component({
   selector: 'sb-uic-top-learners',

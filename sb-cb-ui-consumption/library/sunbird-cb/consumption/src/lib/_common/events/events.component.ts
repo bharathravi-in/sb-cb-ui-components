@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, Injector } from '@angular/core'
 import { InsiteDataService } from '../../_services/insite-data.service'
-import moment from 'moment'
+import * as moment from 'moment'
 
 
 @Component({

@@ -113,7 +113,7 @@ describe('AppTocBatchAssignmentsComponent', () => {
       navigateByUrl: jest.fn().mockReturnValue(Promise.resolve(true))
     };
 
-    // Mock MatLegacySnackBar
+    // Mock MatSnackBar
     mockSnackBar = {
       open: jest.fn().mockReturnValue({
         afterDismissed: jest.fn().mockReturnValue(of({}))
@@ -149,7 +149,7 @@ describe('AppTocBatchAssignmentsComponent', () => {
       })
     };
 
-    // Mock MatLegacyDialog
+    // Mock MatDialog
     mockDialogLegacy = {
       open: jest.fn().mockReturnValue({
         afterClosed: jest.fn().mockReturnValue(of(true))

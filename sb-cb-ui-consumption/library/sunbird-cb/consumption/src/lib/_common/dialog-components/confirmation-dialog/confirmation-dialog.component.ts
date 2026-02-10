@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core'
-import { MatLegacyDialogRef, MAT_LEGACY_DIALOG_DATA } from '@angular/material/legacy-dialog'
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 
 type DialogData = {
   title?: string // title of the dialog
@@ -29,8 +29,8 @@ export class ConfirmationDialogComponent {
   dialgoData: DialogData = {};
 
   constructor(
-    private dialogRef: MatLegacyDialogRef<ConfirmationDialogComponent>,
-    @Inject(MAT_LEGACY_DIALOG_DATA) public data: DialogData,
+    private dialogRef: MatDialogRef<ConfirmationDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {
     this.dialgoData = data
   }

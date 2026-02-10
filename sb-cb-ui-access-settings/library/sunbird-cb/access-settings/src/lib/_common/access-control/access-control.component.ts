@@ -8,7 +8,7 @@ import { EntitySelectionsComponent } from "../dialogs/entity-selections/entity-s
 import { v4 as uuidv4 } from "uuid";
 import { CadreMappingService } from "../../_services/cadre-mapping.service";
 import { SnackbarComponent } from "../../components/snackbar/snackbar.component";
-import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
+import { MatSnackBar as MatSnackBar } from "@angular/material/snack-bar";
 import { ConfirmDialogComponent } from "../dialogs/confirm-dialog/confirm-dialog.component";
 import { AccessControlGuideComponent } from "../dialogs/access-control-guide/access-control-guide.component";
 import { Subject } from "rxjs";

@@ -4,12 +4,12 @@ import { RouterModule } from '@angular/router'
 import { ContentStripVerticalComponent } from './content-strip-vertical.component'
 import { HorizontalScrollerModule } from '@sunbird-cb/utils-v2'
 import { SbUiResolverModule } from '@sunbird-cb/resolver-v2'
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button'
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card'
-import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips'
+import { MatButtonModule as MatButtonModule } from '@angular/material/button'
+import { MatCardModule as MatCardModule } from '@angular/material/card'
+import { MatChipsModule as MatChipsModule } from '@angular/material/chips'
 import { MatIconModule } from '@angular/material/icon'
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner'
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip'
+import { MatProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { MatTooltipModule as MatTooltipModule } from '@angular/material/tooltip'
 
 @NgModule({
     declarations: [ContentStripVerticalComponent],

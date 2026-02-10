@@ -5,7 +5,7 @@ import { SkeletonLoaderLibModule } from '../skeleton-loader-lib/skeleton-loader-
 import { InsiteDataService } from '../../_services/insite-data.service';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 

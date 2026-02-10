@@ -6,7 +6,7 @@ import { EventService } from '@sunbird-cb/utils-v2'
 /* tslint:disable*/
 import _ from 'lodash'
 import { CertificateDialogComponent } from '../../_collection/_common/certificate-dialog/certificate-dialog.component'
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog'
+import { MatDialog as MatDialog } from '@angular/material/dialog'
 
 @Component({
   selector: 'ws-app-toc-content-card',

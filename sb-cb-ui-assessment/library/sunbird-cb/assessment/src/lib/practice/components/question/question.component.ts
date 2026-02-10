@@ -9,7 +9,7 @@ import { PracticeService } from '../../practice.service'
 // tslint:disable-next-line
 import _ from 'lodash'
 import { NsContent } from '../../../services/widget-content.model'
-import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar as MatSnackBar, MatSnackBarConfig as MatSnackBarConfig } from '@angular/material/snack-bar'
 @Component({
   selector: 'viewer-question',
   templateUrl: './question.component.html',

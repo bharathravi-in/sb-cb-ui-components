@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from "@angular/core";
 import { ConfigurationsService, EventService, NsContent, WsEvents } from "@sunbird-cb/utils-v2";
-import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatDialog as MatDialog } from "@angular/material/dialog";
 import { MatSnackBar as MatSnackbarNew } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { WidgetContentLibService } from "@sunbird-cb/consumption";

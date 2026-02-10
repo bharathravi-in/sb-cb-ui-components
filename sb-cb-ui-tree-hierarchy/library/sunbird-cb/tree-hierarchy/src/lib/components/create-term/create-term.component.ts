@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialogRef as MatDialogRef, MAT_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FrameworkService } from '../../services/framework.service';
 import { startWith, map } from 'rxjs/operators';
 import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
@@ -9,7 +9,7 @@ import * as appConstants from '../../constants/app-constant';
 import { labels } from '../../labels/strings';
 import { Card } from '../../models/variable-type.model';
 import { OdcsService } from '../../services/odcs.service';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar as MatSnackBar } from '@angular/material/snack-bar';
 import * as _ from 'lodash'
 
 @Component({

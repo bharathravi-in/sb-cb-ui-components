@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Inject } from '@angular/core'
 import { UntypedFormGroup, FormControl, Validators, UntypedFormControl } from '@angular/forms'
-import { MatLegacyDialog } from '@angular/material/legacy-dialog'
+import { MatDialog } from '@angular/material/dialog'
 import * as _ from 'lodash'
 import { debounceTime, distinctUntilChanged, startWith } from 'rxjs/operators'
 import { CreateRequestService } from '../../services/create-request.service'
@@ -66,7 +66,7 @@ export class CreateRequestAdditionalDetailsComponent implements OnInit {
 
 
   constructor(
-    private dialog: MatLegacyDialog,
+    private dialog: MatDialog,
     private createRequestSvc: CreateRequestService,
     private competencySvc: CompetencyPassbookService,
     @Inject('environment') environment: any,

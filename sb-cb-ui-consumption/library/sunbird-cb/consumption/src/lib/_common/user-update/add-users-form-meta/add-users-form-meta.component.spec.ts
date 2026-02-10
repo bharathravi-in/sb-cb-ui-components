@@ -1,5 +1,5 @@
 import { UntypedFormBuilder, UntypedFormGroup, UntypedFormControl } from '@angular/forms'
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { AddUsersFormMetaComponent } from './add-users-form-meta.component'
 import { ConfigurationsService } from '@ws-widget/utils/src/public-api'
 import { MyContentService } from '../../services/my-content.service'

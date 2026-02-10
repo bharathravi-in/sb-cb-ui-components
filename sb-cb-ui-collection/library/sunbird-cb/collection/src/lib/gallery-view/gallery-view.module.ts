@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'
 import { GalleryViewComponent } from './gallery-view.component'
 import { SbUiResolverModule } from '@sunbird-cb/resolver-v2'
 import { HorizontalScrollerModule } from '@sunbird-cb/utils-v2'
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card'
+import { MatCardModule as MatCardModule } from '@angular/material/card'
 import { MatIconModule } from '@angular/material/icon'
 
 @NgModule({

@@ -26,7 +26,7 @@ export class TopSectionComponent implements OnInit {
     this.stripWidth = `${(window.innerWidth - 1200 + 135) / 2}px`
   }
 
-  emitEvent(action: string, id: string, data?: any) {
+  emitEvent(action: string, id: any, data?: any) {
     this.eventCallback({
       action,
       source: 'topSection',

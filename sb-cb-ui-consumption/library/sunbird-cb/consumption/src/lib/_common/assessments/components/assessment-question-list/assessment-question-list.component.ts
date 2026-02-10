@@ -3,7 +3,7 @@ import { MultipleChoiceQuestionComponent } from '../multiple-choice-question/mul
 import { MatchTheFollowingComponent } from '../match-the-following/match-the-following.component'
 import { FillUpTheBlanksComponent } from '../fill-up-the-blanks/fill-up-the-blanks.component'
 import { AssessmentService } from '../../service/assessment.service'
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog'
+import { MatDialog } from '@angular/material/dialog'
 import { ConfirmationDialogComponent } from '../../../dialog-components/confirmation-dialog/confirmation-dialog.component'
 
 @Component({

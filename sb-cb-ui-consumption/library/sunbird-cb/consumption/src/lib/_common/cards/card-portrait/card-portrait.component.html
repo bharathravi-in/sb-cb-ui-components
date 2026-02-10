@@ -127,15 +127,15 @@
                     <ng-container *ngIf="widgetData.content?.resourceType === 'Samuhik Charcha'">
                       <img class="margin-right-xs" src="assets/icons/handshake.svg" />
                     </ng-container>
-                    <ng-container *ngIf="widgetData.content?.primaryCategory">
+                    <ng-container *ngIf="$any(widgetData.content)?.primaryCategory">
                       <sb-uic-display-content-type i18n-title
-                        [title]="widgetData.content?.courseCategory || widgetData.content?.primaryCategory"
+                        [title]="$any(widgetData.content)?.courseCategory || $any(widgetData.content)?.primaryCategory"
                         [style.max-width]="widgetData?.content?.difficultyLevel?.toLowerCase() === 'intermediate' ? '58px' : (widgetData?.content?.difficultyLevel ? '79px' : 'auto')"
                         class="ws-mat-black60-text font-normal mat-caption"
                         [ngClass]="{'course-category-text': widgetData.content?.difficultyLevel}"
-                        [displayContentType]="widgetData.content?.primaryCategory==='Course Unit'
+                        [displayContentType]="$any(widgetData.content)?.primaryCategory==='Course Unit'
                                       ?'Module'
-                                      :widgetData.content?.courseCategory ? widgetData.content?.courseCategory: widgetData.content?.primaryCategory">
+                                      :$any(widgetData.content)?.courseCategory ? $any(widgetData.content)?.courseCategory: $any(widgetData.content)?.primaryCategory">
 
                       </sb-uic-display-content-type>
                     </ng-container>
@@ -144,7 +144,7 @@
                         [style.max-width]="widgetData?.content?.difficultyLevel?.toLowerCase() === 'intermediate' ? '58px' : (widgetData?.content?.difficultyLevel ? '79px' : 'auto')"
                         class="ws-mat-black60-text font-normal mat-caption"
                         [ngClass]="{'white-text': widgetData.content?.resourceType === 'Samuhik Charcha'}"
-                        [displayContentType]="widgetData.content?.resourceType">
+                        [displayContentType]="$any(widgetData.content?.resourceType)">
                       </sb-uic-display-content-type>
                     </ng-container>
 
@@ -233,12 +233,12 @@
                   </div>
                 </ng-container>
                 <div class="mt-2">
-                  <sb-uic-available-languages [content]="widgetData?.content"></sb-uic-available-languages>
+                  <sb-uic-available-languages [content]="$any(widgetData?.content)"></sb-uic-available-languages>
                 </div>
                 <div class="flex flex-middle rating-session margin-top-m" *ngIf="!widgetData?.sakshamAIGenerated">
                   <div class="flex flex-middle" *ngIf="widgetData?.content?.avgRating">
                     <mat-icon class="mr-1">star</mat-icon>
-                    <span>{{widgetData.content.avgRating}}</span>
+                    <span>{{$any(widgetData.content).avgRating}}</span>
                   </div>
                   <!-- <span class="most-enrolled-text margin-left-m">{{ 'cardcontentv2.mostEnrolled' | translate }}</span> -->
                   <ng-container

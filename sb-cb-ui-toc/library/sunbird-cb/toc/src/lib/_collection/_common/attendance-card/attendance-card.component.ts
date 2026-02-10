@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog'
+import { MatDialog as MatDialog } from '@angular/material/dialog'
 // import { ActivatedRoute } from '@angular/router'
 import { NsContent } from '@sunbird-cb/utils-v2'
 // tslint:disable

@@ -38,8 +38,8 @@
 
                   <!-- Pills Navigation -->
                   <div class="pills-section flex justify-between items-center ws-mat-default-text">
-                    <mat-chip-list class="pills-container" aria-label="Content filter pills">
-                      <mat-chip *ngFor="let pill of tab.pillsData; let pillIndex = index"
+                    <mat-chip-listbox class="pills-container" aria-label="Content filter pills">
+                      <mat-chip-option *ngFor="let pill of tab.pillsData; let pillIndex = index"
                         [selected]="isPillSelected(pill, tab, strip, pillIndex, context.tabIndex)"
                         (click)="onPillClick(pill, tab, strip, pillIndex, context.tabIndex, stripIndex)"
                         (keydown.enter)="onPillClick(pill, tab, strip, pillIndex, context.tabIndex, stripIndex)"
@@ -48,8 +48,8 @@
                         <span class="pill-name"
                           [class.active]="isPillSelected(pill, tab, strip, pillIndex, context.tabIndex)">{{
                           pill.label }}</span>
-                      </mat-chip>
-                    </mat-chip-list>
+                      </mat-chip-option>
+                    </mat-chip-listbox>
                     <!-- View More Button -->
                     <div *ngIf="shouldShowViewMore(tab, strip, context.tabIndex)"
                       class="flex items-center cursor-pointer" (click)="handleViewMore(strip)"

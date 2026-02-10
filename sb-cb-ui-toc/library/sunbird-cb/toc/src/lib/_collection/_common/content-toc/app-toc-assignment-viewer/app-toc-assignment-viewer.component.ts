@@ -1,7 +1,6 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog'
-import { MatLegacyDialog } from '@angular/material/legacy-dialog'
-import { MatLegacySnackBar } from '@angular/material/legacy-snack-bar'
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 import { Router } from '@angular/router'
 import { ConfirmationDialogComponent } from '@sunbird-cb/consumption'
@@ -30,8 +29,8 @@ export class AssignmentViewerComponent implements OnInit {
     private sanitizer: DomSanitizer,
     public dialogRef: MatDialogRef<AssignmentViewerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogLegacy: MatLegacyDialog,
-    private snackBar: MatLegacySnackBar,
+    private dialogLegacy: MatDialog,
+    private snackBar: MatSnackBar,
   ) { }
 
   ngOnInit() {

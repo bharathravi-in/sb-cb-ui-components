@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common'
 import { CommunitySuggestionsComponent } from './community-suggestions.component';
 import { PluralModule } from '../../_pipes/plural/plural.module';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { NumberShortenerModule } from '../../_pipes/number-shortener/number-shortener.module';
@@ -15,7 +15,7 @@ import { SkeletonLoaderLibModule } from '../skeleton-loader-lib/skeleton-loader-
   declarations: [CommunitySuggestionsComponent],
   imports: [
     CommonModule,
-    MatLegacyCardModule,
+    MatCardModule,
     TranslateModule,
     NumberShortenerModule,
     PluralModule,

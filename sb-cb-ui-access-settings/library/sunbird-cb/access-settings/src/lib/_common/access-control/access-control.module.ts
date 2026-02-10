@@ -11,16 +11,16 @@ import { MatTableModule } from "@angular/material/table";
 import { MatSortModule } from "@angular/material/sort";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
-import { MatLegacyFormFieldModule as MatFormFieldModule } from "@angular/material/legacy-form-field";
-import { MatLegacyInputModule as MatInputModule } from "@angular/material/legacy-input";
-import { MatLegacyMenuModule as MatMenuModule } from "@angular/material/legacy-menu";
-import { MatLegacyRadioModule as MatRadioModule } from "@angular/material/legacy-radio";
-import { MatLegacySelectModule as MatSelectModule } from "@angular/material/legacy-select";
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from "@angular/material/legacy-progress-spinner";
-import { MatLegacySnackBarModule as MatSnackBarModule } from "@angular/material/legacy-snack-bar";
-import { MatLegacyCheckboxModule as MatCheckboxModule } from "@angular/material/legacy-checkbox";
-import { MatLegacySlideToggleModule as MatSlideToggleModule } from "@angular/material/legacy-slide-toggle";
-import { MatLegacyButtonModule as MatButtonModule } from "@angular/material/legacy-button";
+import { MatFormFieldModule as MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule as MatInputModule } from "@angular/material/input";
+import { MatMenuModule as MatMenuModule } from "@angular/material/menu";
+import { MatRadioModule as MatRadioModule } from "@angular/material/radio";
+import { MatSelectModule as MatSelectModule } from "@angular/material/select";
+import { MatProgressSpinnerModule as MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatSnackBarModule as MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatCheckboxModule as MatCheckboxModule } from "@angular/material/checkbox";
+import { MatSlideToggleModule as MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { MatButtonModule as MatButtonModule } from "@angular/material/button";
 
 import { DragDropDirective } from "../../_directives/drag-drop.directive";
 

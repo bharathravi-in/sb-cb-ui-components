@@ -102,7 +102,7 @@ export class ContentStripWithTabsPillsComponent extends WidgetBaseComponent
   noDataCount = 0;
   successDataCount = 0;
   contentAvailable = true;
-  baseUrl = this.configSvc.sitePath || '';
+  baseUrl = '';
   veifiedKarmayogi = false;
   environment!: any
   changeEventSubscription: Subscription | null = null;
@@ -151,6 +151,7 @@ export class ContentStripWithTabsPillsComponent extends WidgetBaseComponent
       this.translate.use(lang)
     }
     this.environment = environment
+    this.baseUrl = this.configSvc.sitePath || ''
   }
 
   ngOnInit() {

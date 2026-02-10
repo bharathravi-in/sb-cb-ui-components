@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { AccessControlService } from "../../_services/access-control.service";
 import { NsAccessControlConfig } from "../../_models/access-control.model";
 import { SnackbarComponent } from "../snackbar/snackbar.component";
-import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
+import { MatSnackBar as MatSnackBar } from "@angular/material/snack-bar";
 
 const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100 MB
 @Component({

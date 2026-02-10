@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { PipesModule } from '../../_pipes/pipes.module';
 import { NoDataModule } from '../../_common/no-data/no-data.module';
 import { WidgetDiscussionv2LandingPageComponent } from './widget-discussionv2-landing-page.component';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs'
+import { MatTabsModule } from '@angular/material/tabs'
 import { TrendingDiscussionsModule } from '../../../public-api';
 import { CommunityDetailsModule } from '../../_common/community-details/community-details.module';
 import { DiscoverModule } from '../../_common/discover/discover.module';

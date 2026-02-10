@@ -6,7 +6,7 @@ import { SearchListingService } from "../../_services/search-listing.service";
 import * as _ from "lodash";
 import { MatSnackBar as MatSnackbarNew } from "@angular/material/snack-bar";
 import { ConfirmationDialogComponent } from "@sunbird-cb/consumption";
-import { MatLegacyDialog } from "@angular/material/legacy-dialog";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: "sb-cb-search-users-card",
@@ -30,7 +30,7 @@ export class UsersCardComponent {
     private translate: TranslateService,
     private searchListingService: SearchListingService,
     private matSnackbarNew: MatSnackbarNew,
-    private dialog: MatLegacyDialog
+    private dialog: MatDialog
   ) {
     if (localStorage.getItem("websiteLanguage")) {
       this.translate.setDefaultLang("en");

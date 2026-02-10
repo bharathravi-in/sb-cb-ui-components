@@ -43,91 +43,91 @@
 </div>
 
 <ng-template #cardPortraitLibSkeleton>
-  <sb-uic-card-portrait [widgetData]="widgetData" [isCardLoading]="true"></sb-uic-card-portrait>
+  <sb-uic-card-portrait [widgetData]="$any(widgetData)" [isCardLoading]="true"></sb-uic-card-portrait>
 </ng-template>
 <ng-template #cardPortraitLib>
   <sb-uic-card-portrait [cbPlanMapData]="cbPlanMapData" (contentData)="getRedirectUrlData($event)"
-    [widgetData]="widgetData" [isCardLoading]="false"></sb-uic-card-portrait>
+    [widgetData]="$any(widgetData)" [isCardLoading]="false"></sb-uic-card-portrait>
 </ng-template>
 <ng-template #cardLandscapeLibSkeleton>
-  <sb-uic-card-landscape [widgetData]="widgetData" [cbPlanMapData]="cbPlanMapData"
+  <sb-uic-card-landscape [widgetData]="$any(widgetData)" [cbPlanMapData]="cbPlanMapData"
     [isCardLoading]="true"></sb-uic-card-landscape>
 </ng-template>
 <ng-template #cardLandscapeLib>
   <sb-uic-card-landscape (contentData)="getRedirectUrlData($event)" (triggerTelemetry)="raiseCardClick($event)"
-    [widgetData]="widgetData" [cbPlanMapData]="cbPlanMapData" [isCardLoading]="false">
+    [widgetData]="$any(widgetData)" [cbPlanMapData]="cbPlanMapData" [isCardLoading]="false">
   </sb-uic-card-landscape>
 </ng-template>
 
 <ng-template #cardWideLib>
-  <sb-uic-card-wide (contentData)="getRedirectUrlData($event)" [widgetData]="widgetData"></sb-uic-card-wide>
+  <sb-uic-card-wide (contentData)="getRedirectUrlData($event)" [widgetData]="$any(widgetData)"></sb-uic-card-wide>
 </ng-template>
 <ng-template #cardWideLibSkeleton>
-  <sb-uic-card-wide [widgetData]="widgetData"></sb-uic-card-wide>
+  <sb-uic-card-wide [widgetData]="$any(widgetData)"></sb-uic-card-wide>
 </ng-template>
 
 <ng-template #cardWideV2Skeleton>
-  <sb-uic-card-wide-v2 [widgetData]="widgetData" [isCardLoading]="true"></sb-uic-card-wide-v2>
+  <sb-uic-card-wide-v2 [widgetData]="$any(widgetData)" [isCardLoading]="true"></sb-uic-card-wide-v2>
 </ng-template>
 <ng-template #cardWideV2>
   <sb-uic-card-wide-v2 (contentData)="getRedirectUrlData($event)" (triggerTelemetry)="raiseCardClick($event)"
-    [cbPlanMapData]="cbPlanMapData" [isCardLoading]="false" [widgetData]="widgetData">
+    [cbPlanMapData]="cbPlanMapData" [isCardLoading]="false" [widgetData]="$any(widgetData)">
   </sb-uic-card-wide-v2>
 </ng-template>
 
 <ng-template #cardUser>
-  <sb-uic-card-user [widgetData]="widgetData"></sb-uic-card-user>
+  <sb-uic-card-user [widgetData]="$any(widgetData)"></sb-uic-card-user>
 </ng-template>
 <ng-template #cardMdoHome>
-  <sb-uic-card-mdo-channel-v1 [isCardLoading]="false" [widgetData]="widgetData"></sb-uic-card-mdo-channel-v1>
+  <sb-uic-card-mdo-channel-v1 [isCardLoading]="false" [widgetData]="$any(widgetData)"></sb-uic-card-mdo-channel-v1>
 </ng-template>
 <ng-template #cardMdoHomeSkeleton>
-  <sb-uic-card-mdo-channel-v1 [isCardLoading]="true" [widgetData]="widgetData"></sb-uic-card-mdo-channel-v1>
+  <sb-uic-card-mdo-channel-v1 [isCardLoading]="true" [widgetData]="$any(widgetData)"></sb-uic-card-mdo-channel-v1>
 </ng-template>
 <ng-template #cardMdo>
-  <sb-uic-card-mdo-channel [isCardLoading]="true" [widgetData]="widgetData"></sb-uic-card-mdo-channel>
+  <sb-uic-card-mdo-channel [isCardLoading]="true" [widgetData]="$any(widgetData)"></sb-uic-card-mdo-channel>
 </ng-template>
 <ng-template #cardMdoSkeleton>
-  <sb-uic-card-mdo-channel [isCardLoading]="true" [widgetData]="widgetData"></sb-uic-card-mdo-channel>
+  <sb-uic-card-mdo-channel [isCardLoading]="true" [widgetData]="$any(widgetData)"></sb-uic-card-mdo-channel>
 </ng-template>
 <ng-template #cardKarmaProgramSkeleton>
   <sb-uic-card-karma-programs [randomColorApply]="true" [isCardLoading]="true"
-    [widgetData]="widgetData"></sb-uic-card-karma-programs>
+    [widgetData]="$any(widgetData)"></sb-uic-card-karma-programs>
 </ng-template>
 <ng-template #cardKarmaProgram>
   <sb-uic-card-karma-programs [randomColorApply]="true" [isCardLoading]="false"
-    [widgetData]="widgetData"></sb-uic-card-karma-programs>
+    [widgetData]="$any(widgetData)"></sb-uic-card-karma-programs>
 </ng-template>
 <ng-template #cardScheduledAssessmentSkelton>
-  <sb-uic-card-assessment [widgetData]="widgetData" [isCardLoading]="true"></sb-uic-card-assessment>
+  <sb-uic-card-assessment [widgetData]="$any(widgetData)" [isCardLoading]="true"></sb-uic-card-assessment>
 </ng-template>
 <ng-template #cardScheduledAssessment>
-  <sb-uic-card-assessment [widgetData]="widgetData" (contentData)="getRedirectUrlData($event)"
+  <sb-uic-card-assessment [widgetData]="$any(widgetData)" (contentData)="getRedirectUrlData($event)"
     [isCardLoading]="false"></sb-uic-card-assessment>
 </ng-template>
 <ng-template #cardProgressLibSkeleton>
   <sb-uic-card-progress-portrait-lib [isCardLoading]="true"
-    [widgetData]="widgetData"></sb-uic-card-progress-portrait-lib>
+    [widgetData]="$any(widgetData)"></sb-uic-card-progress-portrait-lib>
 </ng-template>
 <ng-template #cardProgressLib>
   <sb-uic-card-progress-portrait-lib [isCardLoading]="false" (contentData)="getRedirectUrlData($event)"
-    (redirectToNewVersion)="redirectToNewVersion($event)" [widgetData]="widgetData"></sb-uic-card-progress-portrait-lib>
+    (redirectToNewVersion)="redirectToNewVersion($event)" [widgetData]="$any(widgetData)"></sb-uic-card-progress-portrait-lib>
 </ng-template>
 <ng-template #cardKarmaProgramV2>
-  <!-- <sb-uic-card-karma-programs-v2 [widgetData]="widgetData"><sb-uic-card-karma-programs-v2> -->
+  <!-- <sb-uic-card-karma-programs-v2 [widgetData]="$any(widgetData)"><sb-uic-card-karma-programs-v2> -->
 </ng-template>
 <ng-template #cardProvider>
-  <sb-uic-provider-card [isCardLoading]="false" [widgetData]="widgetData"></sb-uic-provider-card>
+  <sb-uic-provider-card [isCardLoading]="false" [widgetData]="$any(widgetData)"></sb-uic-provider-card>
 </ng-template>
 <ng-template #cardProviderSkeleton>
-  <sb-uic-provider-card [isCardLoading]="true" [widgetData]="widgetData"></sb-uic-provider-card>
+  <sb-uic-provider-card [isCardLoading]="true" [widgetData]="$any(widgetData)"></sb-uic-provider-card>
 </ng-template>
 
 <!-- cios card -->
 <ng-template #cardPortraitExtLibSkeleton>
-  <sb-uic-card-portrait-ext [widgetData]="widgetData" [isCardLoading]="true"></sb-uic-card-portrait-ext>
+  <sb-uic-card-portrait-ext [widgetData]="$any(widgetData)" [isCardLoading]="true"></sb-uic-card-portrait-ext>
 </ng-template>
 <ng-template #cardPortraitExtLib>
   <sb-uic-card-portrait-ext [cbPlanMapData]="cbPlanMapData" (contentData)="getRedirectUrlData($event)"
-    [widgetData]="widgetData" [isCardLoading]="false"></sb-uic-card-portrait-ext>
+    [widgetData]="$any(widgetData)" [isCardLoading]="false"></sb-uic-card-portrait-ext>
 </ng-template>

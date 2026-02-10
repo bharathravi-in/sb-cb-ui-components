@@ -20,38 +20,38 @@
                     <div class="mat-body-2">
                         <div class="md-5">
                             <mat-form-field appearance="outline" class="w-full">
-                                <mat-chip-list #chipList aria-label="user selection" appearance="outline">
-                                    <mat-chip *ngFor="let user of users" [selectable]="selectable"
-                                        [removable]="removable" (removed)="remove(user)" class="nodtranslate">
+                                <mat-chip-grid #chipList aria-label="user selection">
+                                    <mat-chip-row *ngFor="let user of users" (removed)="remove(user)"
+                                        class="nodtranslate">
                                         {{user}}
                                         <mat-icon matChipRemove *ngIf="removable">close</mat-icon>
-                                    </mat-chip>
+                                    </mat-chip-row>
                                     <input tabindex="-1" class="inputTextBox"
                                         placeholder="{{users.length === 0 ? translateLabels('placehoderText', 'contentSharing') : ''}}"
                                         #userInput formControlName="review" [formControl]="userCtrl"
                                         [matAutocomplete]="auto" [matChipInputFor]="chipList"
                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                         [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
-                                </mat-chip-list>
-                                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                                    <mat-option *ngFor="let user of filteredUsers" [value]="user.name">
-                                        <div class="flex">
-                                            <div class="iconDiv">
-                                                <span class="iconText">{{user.iconText.substring(0,2)}}</span>
-                                            </div>
-                                            <div>
-                                                <div>{{user.name}}</div>
-                                                <div class="emailText">{{user.maskedEmail}}</div>
-                                            </div>
-                                        </div>
-                                    </mat-option>
-                                </mat-autocomplete>
+                                </mat-chip-grid>
                                 <mat-hint align="start" class="left-over-emails nodtranslate">{{'contentSharing.note' |
                                     translate}}</mat-hint>
                                 <mat-hint align="end" class="left-over-emails nodtranslate">{{ users.length }}
                                     /{{maxEmailsLimit}}
                                     {{'contentSharing.remaingEmails' | translate}}</mat-hint>
                             </mat-form-field>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                                <mat-option *ngFor="let user of filteredUsers" [value]="user.name">
+                                    <div class="flex">
+                                        <div class="iconDiv">
+                                            <span class="iconText">{{user.iconText.substring(0,2)}}</span>
+                                        </div>
+                                        <div>
+                                            <div>{{user.name}}</div>
+                                            <div class="emailText">{{user.maskedEmail}}</div>
+                                        </div>
+                                    </div>
+                                </mat-option>
+                            </mat-autocomplete>
                         </div>
                         <div class="flex mt-5">
                             <div class="flex flex-1 flex-end">

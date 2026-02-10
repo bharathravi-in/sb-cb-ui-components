@@ -6,7 +6,7 @@
     [routerLink]=" !isOpenInNewTab && widgetData[currentIndex].redirectUrl? widgetData[currentIndex].redirectUrl : null" class="banner-overlay"
     [ngClass]="{'cursor-auto': !widgetData[currentIndex].redirectUrl}">
       <div class="banner WidgetInstanceId" *ngFor="let slide of widgetData; let i = index" [hidden]="i !== currentIndex">
-        <img i18n-alt alt="Page Banner" [src]="slide.banners" wsUtilsImageResponsive class="banner-image" />
+        <img i18n-alt alt="Page Banner" [src]="$any(slide).banners" wsUtilsImageResponsive class="banner-image" />
       </div>
     </a>
     <ng-container *ngIf="isMobile && styleData?.responsive?.dots !== 'hidden' || !isMobile && styleData?.dots !== 'hidden'">

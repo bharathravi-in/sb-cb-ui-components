@@ -1,8 +1,8 @@
 <div class="snackbar-wrapper">
   <div class="flex items-center justify-between">
     <div class="message flex items-center gap-4">
-      <mat-icon *ngIf="data?.type === 'success'" class="text-white">check</mat-icon>
-      <ng-container *ngIf="data?.type === 'error'">
+      <mat-icon *ngIf="$any(data)?.type === 'success'" class="text-white">check</mat-icon>
+      <ng-container *ngIf="$any(data)?.type === 'error'">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: brightness(0) invert(1)">
           <path
             fill-rule="evenodd"

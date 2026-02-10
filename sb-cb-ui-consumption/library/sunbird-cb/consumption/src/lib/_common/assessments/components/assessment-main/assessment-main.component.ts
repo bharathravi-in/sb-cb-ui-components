@@ -2,7 +2,7 @@ import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angu
 import { MatStepper } from '@angular/material/stepper'
 import { AssessmentService } from '../../service/assessment.service'
 import { map, switchMap } from 'rxjs/operators'
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { AssessmentSessionsComponent } from '../assessment-sessions/assessment-sessions.component'
 import { NsAssessment } from '../../service/assessment.model'
 

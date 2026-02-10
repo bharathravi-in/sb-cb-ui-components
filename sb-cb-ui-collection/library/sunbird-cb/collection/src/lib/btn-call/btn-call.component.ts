@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver-v2'
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog'
+import { MatDialog as MatDialog } from '@angular/material/dialog'
 import {
   BtnCallDialogComponent,
   IWidgetBtnCallDialogData,

@@ -4,7 +4,7 @@ import { UserProgressComponent } from './user-progress.component';
 import { ScrollableItemModule } from '../../_directives/scrollable-item/scrollable-item.module';
 import { SlidersNgContentLibModule } from '../sliders-ng-content/sliders-ng-content.module';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 

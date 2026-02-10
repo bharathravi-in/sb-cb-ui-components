@@ -1,12 +1,17 @@
 <ng-container *ngIf="contentdata.length">
     <div class="user-rating-section">
-        <sb-uic-sliders-ng-content [title]="'providerName'"  [currentIndex]="currentIndex" (currentIndexValue)="getCurrentIndex($event)" [loadNgContentData]="true" [widgetData]="contentdata" [styleData]="styleData">
+        <sb-uic-sliders-ng-content [title]="'providerName'" [currentIndex]="currentIndex"
+            (currentIndexValue)="getCurrentIndex($event)" [loadNgContentData]="true" [widgetData]="$any(contentdata)"
+            [styleData]="styleData">
             <div sliderbody>
                 <div class="flex users-block">
                     <ng-container *ngFor="let userData of contentdata; let j = index">
-                        <div class="avatar-block mr-1" [sbUicScrollableItem]="j"
-                        [ngClass]="{'user-active': j === currentIndex}" (click)="handleScrollClick(currentIndex);currentIndex = j">
-                            <sb-uic-avatar-photo [defaulfColor]="'#1B2133'" [datalen]="1" [randomColor]="true" [name]="userData?.userDetails?.firstName" [photoUrl]="userData?.userDetails?.profileImageUrl" size="m-side-rating">
+                        <div class="avatar-block mr-1" [sbUicScrollableItem]="j.toString()"
+                            [ngClass]="{'user-active': j === currentIndex}"
+                            (click)="handleScrollClick(currentIndex);currentIndex = j">
+                            <sb-uic-avatar-photo [defaulfColor]="'#1B2133'" [datalen]="1" [randomColor]="true"
+                                [name]="userData?.userDetails?.firstName"
+                                [photoUrl]="userData?.userDetails?.profileImageUrl" size="m-side-rating">
                             </sb-uic-avatar-photo>
                         </div>
                     </ng-container>
@@ -32,4 +37,3 @@
         </sb-uic-sliders-ng-content>
     </div>
 </ng-container>
-

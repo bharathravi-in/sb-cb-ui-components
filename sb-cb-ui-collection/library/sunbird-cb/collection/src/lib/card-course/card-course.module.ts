@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core'
 import { CardCourseComponent } from './card-course.component'
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button'
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card'
-import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips'
+import { MatButtonModule as MatButtonModule } from '@angular/material/button'
+import { MatCardModule as MatCardModule } from '@angular/material/card'
+import { MatChipsModule as MatChipsModule } from '@angular/material/chips'
 import { MatDividerModule } from '@angular/material/divider'
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatIconModule } from '@angular/material/icon'
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner'
+import { MatProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { BrowserModule } from '@angular/platform-browser'
 import { AvatarPhotoModule } from '../_common/avatar-photo/avatar-photo.module'
 import { HorizontalScrollerModule, PipeNameTransformModule } from '@sunbird-cb/utils-v2'
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar'
+import { MatProgressBarModule as MatProgressBarModule } from '@angular/material/progress-bar'
 
 @NgModule({
     declarations: [CardCourseComponent],

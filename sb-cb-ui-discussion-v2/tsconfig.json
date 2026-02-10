@@ -22,6 +22,12 @@
     "noUnusedParameters": true,
     "outDir": "./dist/out-tsc",
     "paths": {
+      "rxjs": [
+        "node_modules/rxjs"
+      ],
+      "rxjs/*": [
+        "node_modules/rxjs/*"
+      ],
       "@sunbird-cb/resolver": [
         "library/sunbird-cb/resolver"
       ],

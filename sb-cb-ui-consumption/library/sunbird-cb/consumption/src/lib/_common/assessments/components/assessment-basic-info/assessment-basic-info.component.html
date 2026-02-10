@@ -99,7 +99,7 @@
               </button>
             </div>
             <div class="paragraph-toggle flex flex-middle gap-2 margin-left-auto">
-              <mat-slide-toggle [formControl]="sections.at(selectedSectionIndex).get('paragraph')">
+              <mat-slide-toggle [formControl]="$any(sections.at(selectedSectionIndex).get('paragraph'))">
                 Paragraph
               </mat-slide-toggle>
             </div>

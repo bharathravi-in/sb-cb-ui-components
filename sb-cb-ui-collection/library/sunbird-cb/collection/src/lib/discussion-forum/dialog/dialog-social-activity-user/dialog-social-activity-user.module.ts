@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { DialogSocialActivityUserComponent } from './dialog-social-activity-user.component'
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog'
+import { MatDialogModule as MatDialogModule } from '@angular/material/dialog'
 import { MatDividerModule } from '@angular/material/divider'
 import { MatIconModule } from '@angular/material/icon'
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner'
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs'
+import { MatProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/progress-spinner'
+import { MatTabsModule as MatTabsModule } from '@angular/material/tabs'
 import { UserImageModule } from '../../../_common/user-image/user-image.module'
 
 @NgModule({

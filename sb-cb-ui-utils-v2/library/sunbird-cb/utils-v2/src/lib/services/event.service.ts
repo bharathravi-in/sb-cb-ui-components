@@ -3,8 +3,8 @@ import { Subject } from 'rxjs'
 import { WsEvents } from './event.model'
 import { UtilityService } from './utility.service'
 /* tslint:disable*/
-import _ from 'lodash'
-import moment from 'moment'
+import * as _ from 'lodash'
+import * as moment from 'moment'
 @Injectable({
   providedIn: 'root',
 })

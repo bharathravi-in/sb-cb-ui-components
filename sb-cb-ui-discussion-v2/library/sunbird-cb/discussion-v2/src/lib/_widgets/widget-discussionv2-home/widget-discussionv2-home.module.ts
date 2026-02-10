@@ -10,7 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs'
+import { MatTabsModule } from '@angular/material/tabs'
 import { MatBadgeModule } from '@angular/material/badge';
 import { CommunityCardModule } from '../../_common/community-card/community-card.module';
 import { ShortcutsModule } from '../../_common/shortcuts/shortcuts.module';

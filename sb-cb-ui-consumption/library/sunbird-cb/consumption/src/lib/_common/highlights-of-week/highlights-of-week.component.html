@@ -19,7 +19,7 @@
     </div>
     <div *ngIf="expand && contentdata?.length > 0" class="week-highlights-content">
         <sb-uic-sliders-ng-content [title]="'providerName'" [currentIndex]="currentIndex"
-            (currentIndexValue)="getCurrentIndex($event)" [loadNgContentData]="true" [widgetData]="contentdata"
+            (currentIndexValue)="getCurrentIndex($event)" [loadNgContentData]="true" [widgetData]="$any(contentdata)"
             [styleData]="styleData">
             <div sliderbody>
                 <div *ngFor="let item of contentdata; let i = index" [hidden]="i !== currentIndex">

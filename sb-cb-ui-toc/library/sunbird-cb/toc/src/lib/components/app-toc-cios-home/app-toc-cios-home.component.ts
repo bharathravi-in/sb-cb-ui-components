@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core'
 import { CommonMethodsService } from '@sunbird-cb/consumption'
 import { ConfigurationsService, EventService, MultilingualTranslationsService, WidgetContentService, WsEvents } from '@sunbird-cb/utils-v2'
 import { LoaderService } from '../../services/loader.service'
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { MatDialog } from '@angular/material/dialog'
 import { CertificateService } from '../../services/certificate.service'
 import { NsDiscussionV2 } from '@sunbird-cb/discussion-v2'
@@ -42,6 +42,8 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
   rootOrgId: any
   currentLang: any = 'en'
   discussWidgetData!: NsDiscussionV2.ICommentWidgetData
+  sourceEllipsis = false
+  get content() { return this.extContentReadData }
 
   @HostListener('window:scroll', ['$event'])
   handleScroll() {

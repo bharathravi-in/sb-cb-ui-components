@@ -10,9 +10,9 @@ import {
   ViewChild, ViewChildren,
   Renderer2,
 } from '@angular/core'
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog'
+import { MatDialog as MatDialog } from '@angular/material/dialog'
 import { MatSidenav } from '@angular/material/sidenav'
-import { MatLegacySnackBar as MatSnackBar, MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar as MatSnackBar, MatSnackBarConfig as MatSnackBarConfig } from '@angular/material/snack-bar'
 import { Subscription, interval } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 import { NSPractice } from './practice.model'

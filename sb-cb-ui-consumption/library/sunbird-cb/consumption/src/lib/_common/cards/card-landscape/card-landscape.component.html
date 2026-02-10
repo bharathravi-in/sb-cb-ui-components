@@ -3,12 +3,12 @@
   role="link" i18n-aria-label>
   <mat-card class="card-portrait mr-2 card-portrait-clickable min-height-remove" [ngClass]="widgetData.cardCustomeClass ? widgetData.cardCustomeClass : ''">
      <div class="course_widget portrait_widget flex  margin-bottom-xs">
-        <div class="flex flex-end flex-middle course_port margin-right-xs" *ngIf="widgetData.content?.primaryCategory">
+        <div class="flex flex-end flex-middle course_port margin-right-xs" *ngIf="$any(widgetData.content)?.primaryCategory">
            <mat-icon class="mat-icon main_icon  ws-mat-default-text margin-right-xs">video_library</mat-icon>
            <sb-uic-display-content-type i18n-title title="Content Type" 
-           class="ws-mat-black60-text font-normal mat-caption " [useTranslation]="false" [displayContentType]="widgetData.content?.primaryCategory==='Course Unit'
+           class="ws-mat-black60-text font-normal mat-caption " [useTranslation]="false" [displayContentType]="$any(widgetData.content)?.primaryCategory==='Course Unit'
            ?'Module'
-           :widgetData.content?.primaryCategory">
+           :$any(widgetData.content)?.primaryCategory">
            </sb-uic-display-content-type>
         </div>
         <sb-uic-knowledge-level [content]="widgetData?.content"></sb-uic-knowledge-level>
@@ -19,7 +19,7 @@
               <div class=" img-block-portrait position-relative">
                  <img mat-card-image [src]="widgetData?.content?.posterImage | pipePublicURL" loading="lazy"
                  class="card-image ws-mat-primary-lite-background margin-remove" [wsUtilsDefaultThumbnail]="defaultThumbnail"
-                 [alt]="widgetData.content.name" />
+                 [alt]="$any(widgetData.content).name" />
                  <div class="duration-box right-corner-portrait" *ngIf="widgetData?.content?.duration > 0; else programDurationSpan">
                     <mat-icon class="mat-icon main_icon mr-1">access_time</mat-icon>
                     <span class=" ws-mat-white-text duration">
@@ -43,9 +43,9 @@
            </ng-container>
            <ng-container *ngIf="!widgetData?.content?.posterImage">
               <ng-container *ngIf="widgetData?.content?.appIcon; else defaultImg">
-                 <img mat-card-image [src]="widgetData.content.appIcon | pipePublicURL" loading="lazy"
+                 <img mat-card-image [src]="$any(widgetData.content).appIcon | pipePublicURL" loading="lazy"
                  class="card-image ws-mat-primary-lite-background margin-remove"  [wsUtilsDefaultThumbnail]="defaultThumbnail"
-                 [alt]="widgetData.content.name" />
+                 [alt]="$any(widgetData.content).name" />
               </ng-container>
               <ng-template #defaultImg>
                  <img mat-card-image [src]="defaultThumbnail" loading="lazy"
@@ -59,25 +59,25 @@
               class="portrait-subheading mat-subheading-2 title-text">
               {{ widgetData?.content?.name }}
            </div>
-           <div class="flex w-full  flex-middle" *ngIf="!(widgetData?.content?.courseProvider?.length && widgetData.content?.courseProvider[0]?.name)">
+           <div class="flex w-full  flex-middle" *ngIf="!(widgetData?.content?.courseProvider?.length && $any(widgetData.content)?.courseProvider[0]?.name)">
               <div class="portrait_course_logo_box margin-right-xs">
                  <img [src]="widgetData?.content?.creatorLogo || widgetData?.content?.contentPartner?.link | pipePublicURL " class="source-icon"  loading="lazy" [wsUtilsDefaultThumbnail]="defaultSLogo"
                  [alt]="(widgetData?.content?.sourceName + '_' + widgetData?.content?.identifier)" />
               </div>
-              <span class="portrait-org-name font-normal mat-caption">By {{ (widgetData.content.organisation && widgetData.content.organisation[0]) ? widgetData.content.organisation[0] : widgetData?.content?.contentPartner?.contentPartnerName || 'Karmayogi Bharat' }}</span>
-              <!-- <span class="portrait-org-name font-normal mat-caption">{{'cardcontentv2.by' | translate}} {{ (widgetData.content.organisation && widgetData.content.organisation[0]) ? widgetData.content.organisation[0] : 'Karmayogi Bharat' }}</span> -->
+              <span class="portrait-org-name font-normal mat-caption">By {{ ($any(widgetData.content).organisation && $any(widgetData.content).organisation[0]) ? $any(widgetData.content).organisation[0] : widgetData?.content?.contentPartner?.contentPartnerName || 'Karmayogi Bharat' }}</span>
+              <!-- <span class="portrait-org-name font-normal mat-caption">{{'cardcontentv2.by' | translate}} {{ ($any(widgetData.content).organisation && $any(widgetData.content).organisation[0]) ? $any(widgetData.content).organisation[0] : 'Karmayogi Bharat' }}</span> -->
            </div>
            
-            <div class="flex w-full flex-middle provider-wrapper" *ngIf="widgetData?.content?.courseProvider?.length && widgetData.content?.courseProvider[0]?.name">
+            <div class="flex w-full flex-middle provider-wrapper" *ngIf="widgetData?.content?.courseProvider?.length && $any(widgetData.content)?.courseProvider[0]?.name">
               <div class="portrait_course_logo_box margin-right-xs">
                  <img [src]="widgetData?.content?.courseProvider[0]?.logoUrl" class="source-icon"  loading="lazy" [wsUtilsDefaultThumbnail]="defaultSLogo"
                  [alt]="(widgetData?.content?.sourceName + '_' + widgetData?.content?.identifier)" />
               </div>
               <span class="font-normal mat-caption">By&nbsp;</span>
-              <span class="provider-name font-normal mat-caption">{{ widgetData.content?.courseProvider[0]?.name }}</span>
-              <span *ngIf="widgetData.content?.courseProvider?.length > 1" 
+              <span class="provider-name font-normal mat-caption">{{ $any(widgetData.content)?.courseProvider[0]?.name }}</span>
+              <span *ngIf="$any(widgetData.content)?.courseProvider?.length > 1" 
                     class="provider-count font-normal mat-caption cursor-pointer"
-                    [matTooltip]="getProviderNames(widgetData.content?.courseProvider)"
+                    [matTooltip]="getProviderNames($any(widgetData.content)?.courseProvider)"
                     matTooltipPosition="above">
                   &nbsp;+{{ widgetData?.content?.courseProvider?.length - 1 }}
               </span>
@@ -85,7 +85,7 @@
            <div class="flex flex-middle rating-session margin-top-xs">
             <div class="flex flex-middle" *ngIf="widgetData?.content?.avgRating">
               <mat-icon class="mr-1">star</mat-icon>
-              <span>{{widgetData.content.avgRating}}</span>
+              <span>{{$any(widgetData.content).avgRating}}</span>
             </div>
             <!-- <ng-container *ngIf="widgetData?.content?.additionalTags && widgetData?.content?.additionalTags.includes('mostEnrolled')">
               <span class="most-enrolled-text margin-left-xs">{{ 'cardcontentv2.mostEnrolled' | translate }}</span>

@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { UserContentRatingLibComponent } from './user-content-rating-lib.component';
 import { SkeletonLoaderLibModule } from '../skeleton-loader-lib/skeleton-loader-lib.module';

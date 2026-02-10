@@ -522,21 +522,21 @@
           </ng-container>
           <ng-container>
             <div class="flex flex-row gap-2" *ngIf="languageList?.length > 1">
-              <mat-chip-list class="lang-chips">
+              <mat-chip-listbox class="lang-chips">
                 <!-- Show up to 6 chips -->
                 <ng-container *ngFor="let lang of languageList | slice:0:5; let i = index">
-                  <mat-chip class="matchip-custom" selectable="true"
-                    [selected]="lang?.identifier === selectedLanguage?.identifier" (click)="onLanguageSelect(lang)">
+                  <mat-chip-option class="matchip-custom" [selected]="lang?.identifier === selectedLanguage?.identifier"
+                    (click)="onLanguageSelect(lang)">
                     {{ lang.name || lang.value }}
-                  </mat-chip>
+                  </mat-chip-option>
                 </ng-container>
 
                 <!-- "More" chip if there are more than 6 languages -->
                 <ng-container *ngIf="languageList.length > 5">
-                  <mat-chip [matMenuTriggerFor]="moreLanguagesMenu" selectable="false" class="more-chip matchip-custom"
+                  <mat-chip-option [matMenuTriggerFor]="moreLanguagesMenu" class="more-chip matchip-custom"
                     [selected]="isSelectedInMoreDropdown()">
                     More <mat-icon class="mat-icon">keyboard_arrow_down</mat-icon>
-                  </mat-chip>
+                  </mat-chip-option>
                   <mat-menu #moreLanguagesMenu="matMenu">
                     <mat-radio-group class="mat-radio-group flex flex-col gap-2 p-3" [value]="selectedLanguage">
                       <mat-radio-button *ngFor="let lang of languageList | slice:5" [value]="lang"
@@ -546,7 +546,7 @@
                     </mat-radio-group>
                   </mat-menu>
                 </ng-container>
-              </mat-chip-list>
+              </mat-chip-listbox>
             </div>
           </ng-container>
         </div>
@@ -990,11 +990,11 @@
 <ng-template #authViewBtn i18n>
   <ng-container *ngIf="displayViewBtn">
     <a (click)="raiseTelemetryForPublic($event)"
-    [routerLink]="shouldShowSurveyPopup() ? null : ((resumeData && !certData) ? resumeDataLink?.url : firstResourceLink?.url)"
-    [queryParams]="shouldShowSurveyPopup() ? null : ((resumeData && !certData) ? generateQuery('RESUME') : generateQuery('START'))"
-    class="flex action-button justify-center">
-    {{'apptochome.view' | translate}}
-  </a>
+      [routerLink]="shouldShowSurveyPopup() ? null : ((resumeData && !certData) ? resumeDataLink?.url : firstResourceLink?.url)"
+      [queryParams]="shouldShowSurveyPopup() ? null : ((resumeData && !certData) ? generateQuery('RESUME') : generateQuery('START'))"
+      class="flex action-button justify-center">
+      {{'apptochome.view' | translate}}
+    </a>
   </ng-container>
 </ng-template>
 <ng-template #authViewForInviteOnlyAssessment>

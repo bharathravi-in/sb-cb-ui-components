@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialogRef as MatDialogRef, MAT_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FrameworkService } from '../../services/framework.service';
 import _ from 'lodash';
 import { MatSelect } from '@angular/material/select';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar as MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'sb-cb-tree-org-hierarchy-add-modal',

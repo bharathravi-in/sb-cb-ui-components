@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, TemplateRef, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import * as _ from 'lodash'
-import { MatLegacySnackBar } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { debounceTime, distinctUntilChanged, map, startWith } from 'rxjs/operators'
 import { UserService } from '../user.service'
-import { MatLegacyDialog } from '@angular/material/legacy-dialog'
+import { MatDialog } from '@angular/material/dialog'
 import { ConfirmationDialogComponent } from '../../dialog-components/confirmation-dialog/confirmation-dialog.component'
 import { DatePipe } from '@angular/common'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
@@ -92,8 +92,8 @@ export class UserUpdateComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private dialog: MatLegacyDialog,
-    private snackBar: MatLegacySnackBar,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
     private datePipe: DatePipe,
     private configSvc: ConfigurationsService
   ) {

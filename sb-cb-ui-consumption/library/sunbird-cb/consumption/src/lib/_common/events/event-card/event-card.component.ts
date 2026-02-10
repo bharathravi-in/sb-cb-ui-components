@@ -1,6 +1,6 @@
 import { Component, Inject, Input } from '@angular/core'
 import { Router } from '@angular/router'
-import moment from 'moment'
+import * as moment from 'moment'
 
 @Component({
   selector: 'sb-uic-event-card',

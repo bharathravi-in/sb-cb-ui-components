@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilterComponent } from './filter.component';
 import { MatCardModule } from '@angular/material/card';
-import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../_pipes/pipes.module';
@@ -19,7 +19,7 @@ import { MultiLineEllipsisModule } from '../../_directives/multi-line-ellipsis/m
     FormsModule,
     CommonModule,
     MatCardModule,
-    MatLegacyCheckboxModule,
+    MatCheckboxModule,
     MatIconModule,
     TranslateModule,
     PipesModule,

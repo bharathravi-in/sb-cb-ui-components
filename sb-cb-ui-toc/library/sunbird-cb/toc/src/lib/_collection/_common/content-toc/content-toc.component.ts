@@ -4,10 +4,10 @@ import { ConfigurationsService, EventService, NsContent, UtilityService, WsEvent
 import { Subscription } from 'rxjs'
 
 import { LoadCheckService } from '../../../services/load-check.service'
-import { MatLegacyTabGroup as MatTabGroup, MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs'
+import { MatTabGroup as MatTabGroup, MatTabChangeEvent as MatTabChangeEvent } from '@angular/material/tabs'
 import { NsDiscussionV2 } from '@sunbird-cb/discussion-v2'
 import { AiTutorConfirmPopupComponent } from './ai-tutor-confirm-popup/ai-tutor-confirm-popup.component'
-import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog'
+import { MatDialog as MatDialog, MatDialogConfig as MatDialogConfig } from '@angular/material/dialog'
 import { viewerRouteGenerator } from '../../../_services/viewer-route-util'
 import { AppTocService } from '../../../services/app-toc.service'
 import { ActionService } from '../../../services/action.service'

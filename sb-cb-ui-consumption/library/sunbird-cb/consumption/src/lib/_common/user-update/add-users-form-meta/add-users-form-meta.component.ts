@@ -1,7 +1,7 @@
 
 import { Component, OnDestroy, OnInit, AfterViewInit, Output, EventEmitter, ViewChild, ElementRef, Input, ChangeDetectorRef, Inject } from '@angular/core'
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms'
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 
 /* tslint:disable */

@@ -3,8 +3,8 @@
   <!-- <div *ngIf="showParentLoader" class="text-center my-2">
     <mat-spinner class="inline-block"></mat-spinner>
   </div> -->
-  <ng-container *ngIf="showParentError" [sbUiResolverWidget]="widgetData.errorWidget"></ng-container>
-  <ng-container *ngIf="showParentNoData" [sbUiResolverWidget]="widgetData.noDataWidget"></ng-container>
+  <ng-container *ngIf="showParentError" [sbUiResolverWidget]="$any(widgetData.errorWidget)"></ng-container>
+  <ng-container *ngIf="showParentNoData" [sbUiResolverWidget]="$any(widgetData.noDataWidget)"></ng-container>
   <ng-container *ngFor="let key of stripsKeyOrder; let i = index; trackBy: identify">
     <ng-container *ngIf="isStripShowing(stripsResultDataMap[key]) && canShowHeading(stripsResultDataMap[key])">
       <a name="{{stripsResultDataMap[key]?.stripTitle}}" [class]="key">
@@ -40,8 +40,8 @@
                   <mat-icon>{{ stripsResultDataMap[key]?.stripInfo?.icon.icon }}</mat-icon>
                 </button>
                 <a *ngIf="stripsResultDataMap[key]?.stripTitleLink?.link"
-                  [routerLink]="stripsResultDataMap[key]?.stripTitleLink?.link"
-                  [queryParams]="stripsResultDataMap[key]?.stripTitleLink?.link?.queryParams">
+                  [routerLink]="$any(stripsResultDataMap[key]?.stripTitleLink?.link)"
+                  [queryParams]="$any(stripsResultDataMap[key]?.stripTitleLink?.link?.queryParams)">
                   <mat-icon class="ws-mat-primary-primary-text ws-mat-default-text" [color]="'accent'">{{
                     stripsResultDataMap[key]?.stripTitleLink?.icon }}</mat-icon>
                 </a>
@@ -50,7 +50,7 @@
                 <div *ngIf="checkCondition(widgetData , stripsResultDataMap[key])" class="block md:hidden">
                   <div class="ml-4 pl-2 view-more ws-mat-default-text  ">
                     <a class="flex ws-mat-default-text items-center justify-center mat-body-1 cursor-pointer"
-                      (click)="raiseTelemetry(stripsResultDataMap[key]);redirectViewAll(stripsResultDataMap[key], stripsResultDataMap[key]?.viewMoreUrl?.path, stripsResultDataMap[key]?.viewMoreUrl?.queryParams )">
+                      (click)="raiseTelemetry(stripsResultDataMap[key]);redirectViewAll($any(stripsResultDataMap[key]), $any(stripsResultDataMap[key]?.viewMoreUrl?.path), $any(stripsResultDataMap[key]?.viewMoreUrl?.queryParams) )">
                       <span i18n
                         class="ws-mat-default-text">{{translateLabels(widgetData.strips[0]?.viewMoreUrl?.viewMoreText,'home')
                         || 'See all'}}</span>
@@ -70,13 +70,13 @@
             </div>
 
             <div class="mb-4" *ngIf="checkVisible(stripsResultDataMap[key])">
-              <ng-container [sbUiResolverWidget]="getdata(stripsResultDataMap[key])">
+              <ng-container [sbUiResolverWidget]="$any(getdata(stripsResultDataMap[key]))">
               </ng-container>
             </div>
             <ng-container *ngIf="stripsResultDataMap[key]?.showOnNoData"
-              [sbUiResolverWidget]="stripsResultDataMap[key]?.noDataWidget"></ng-container>
+              [sbUiResolverWidget]="$any(stripsResultDataMap[key]?.noDataWidget)"></ng-container>
             <ng-container *ngIf="stripsResultDataMap[key]?.showOnError"
-              [sbUiResolverWidget]="stripsResultDataMap[key]?.errorWidget"></ng-container>
+              [sbUiResolverWidget]="$any(stripsResultDataMap[key]?.errorWidget)"></ng-container>
             <!-- IF no errors then proceed to show tabs or non tabs strip -->
             <ng-container *ngIf="!stripsResultDataMap[key]?.showOnNoData && !stripsResultDataMap[key]?.showOnError">
               <ng-container *ngIf="stripsResultDataMap[key].tabs && stripsResultDataMap[key].tabs.length">
@@ -108,13 +108,13 @@
                         <div class="pt-3 flex justify-between item-center">
                           <ng-container *ngIf="tab?.value !== sakshamAIEnum.SakshamAI">
                             <div class=" flex items-center">
-                              <mat-chip-list class="content-pill" aria-label="Fish selection">
+                              <mat-chip-listbox class="content-pill" aria-label="Fish selection">
                                 <ng-container *ngFor="let pill of tab?.pillsData;let p = index">
-                                  <mat-chip [selected]="pill?.selected"
+                                  <mat-chip-option [selected]="pill?.selected"
                                     (click)="pillClicked($event, stripsResultDataMap[key], key, p, tabIndex)">
-                                    <span class="pill-name">{{pill?.label}}</span></mat-chip>
+                                    <span class="pill-name">{{pill?.label}}</span></mat-chip-option>
                                 </ng-container>
-                              </mat-chip-list>
+                              </mat-chip-listbox>
                             </div>
                           </ng-container>
                           <!-- viewAll start-->
@@ -123,7 +123,7 @@
                             class=" hidden md:block">
                             <div class="ml-4 pl-2 view-more ws-mat-default-text">
                               <a class="flex ws-mat-default-text items-center justify-center mat-body-1 cursor-pointer"
-                                (click)="raiseTelemetry(stripsResultDataMap[key]);redirectViewAll(stripsResultDataMap[key], stripsResultDataMap[key]?.viewMoreUrl?.path, stripsResultDataMap[key]?.viewMoreUrl?.queryParams, tabIndex )">
+                                (click)="raiseTelemetry(stripsResultDataMap[key]);redirectViewAll($any(stripsResultDataMap[key]), $any(stripsResultDataMap[key]?.viewMoreUrl?.path), $any(stripsResultDataMap[key]?.viewMoreUrl?.queryParams), tabIndex )">
                                 <span i18n
                                   class="ws-mat-default-text">{{translateLabels(widgetData.strips[0]?.viewMoreUrl?.viewMoreText,'home')
                                   || 'See all'}}</span>
@@ -143,7 +143,7 @@
                             [stripConfig]="stripsResultDataMap[key]?.stripConfig">
                             <ng-container
                               *ngFor="let widget of stripsResultDataMap[key]?.loaderWidgets; trackBy: tracker">
-                              <ng-container [sbUiResolverWidget]="widget"></ng-container>
+                              <ng-container [sbUiResolverWidget]="$any(widget)"></ng-container>
                             </ng-container>
                           </sb-uic-horizontal-scroller-v2>
                         </div>
@@ -193,15 +193,14 @@
                                stripsResultDataMap[key]?.sliderConfig?.maxWidgets || defaultMaxWidgets); trackBy: tracker">
                                 <ng-container [sbUiResolverWidget]="widget"></ng-container>
                               </ng-container> -->
-                              <ng-container
-                                *ngFor="let widget of tab?.pillsData[getSelectedPillIndex(tab ,tabIndex)]?.widgets | slice:0:(
+                              <ng-container *ngFor="let widget of tab?.pillsData[getSelectedPillIndex(tab ,tabIndex)]?.widgets | slice:0:(
                                   tab?.value === sakshamAIEnum.SakshamAI 
                                     ? maxWidgetsSakshamAI 
                                     : tab?.pillsData[getSelectedPillIndex(tab ,tabIndex)]?.maxWidgets ||
                                       stripsResultDataMap[key]?.sliderConfig?.maxWidgets || 
                                       defaultMaxWidgets
                                 ); trackBy: tracker">
-                                <ng-container [sbUiResolverWidget]="widget"></ng-container>
+                                <ng-container [sbUiResolverWidget]="$any(widget)"></ng-container>
                               </ng-container>
 
                             </sb-uic-horizontal-scroller-v2>
@@ -220,13 +219,14 @@
                             </div>
                           </ng-container>
 
-                          <ng-container *ngIf="sakshamFeedbackPopup" >
+                          <ng-container *ngIf="sakshamFeedbackPopup">
                             <div class="greet-overlay feedback-overlay" @fadeInOut>
                               <div class="overlay-text mt-4 text-white">
                                 {{'home.sakshamaifeedbackText' | translate}}
                               </div>
                               <mat-form-field class="feedback-text w-4/5 mt-4" appearance="outline">
-                                <textarea matInput placeholder="Enter your feedback..." rows="4" #feedback [maxLength]="500"></textarea>
+                                <textarea matInput placeholder="Enter your feedback..." rows="4" #feedback
+                                  [maxLength]="500"></textarea>
                               </mat-form-field>
                               <div class="action-feedback mt-4 flex gap-4 justify-center items-center">
                                 <button mat-raised-button class="overlay-button"

@@ -4,7 +4,7 @@ import { viewerRouteGenerator } from '../../../../_services/viewer-route-util'
 import { NsAppToc } from '../../../../models/app-toc.model'
 import { EventService, WsEvents, ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { CertificateDialogComponent } from '../../certificate-dialog/certificate-dialog.component'
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog'
+import { MatDialog as MatDialog } from '@angular/material/dialog'
 import { animate, style, transition, trigger } from '@angular/animations'
 /* tslint:disable*/
 import _ from 'lodash'
@@ -14,7 +14,7 @@ import { AppTocService } from '../../../../services/app-toc.service'
 import { Subscription } from 'rxjs'
 import { ContentLanguageService } from '@sunbird-cb/consumption'
 import { ResourceDownloadHelperService } from '../../../../services/resource-download-helper.service'
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { MatSnackBar } from '@angular/material/snack-bar'
 
 @Component({
   selector: 'ws-widget-app-toc-content-card-v2',

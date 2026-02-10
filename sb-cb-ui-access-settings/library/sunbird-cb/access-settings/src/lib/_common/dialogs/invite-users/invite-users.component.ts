@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit } from "@angular/core";
 import { FormControl } from "@angular/forms";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { AccessControlService } from "../../../_services/access-control.service";
-import { MatLegacySnackBar as MatSnackBar } from "@angular/material/legacy-snack-bar";
+import { MatSnackBar as MatSnackBar } from "@angular/material/snack-bar";
 import { PageChangeEmitter } from "../../../_models/pagination.model";
 import { NsAccessControlConfig } from "../../../_models/access-control.model";
 import { SnackbarComponent } from "../../../components/snackbar/snackbar.component";

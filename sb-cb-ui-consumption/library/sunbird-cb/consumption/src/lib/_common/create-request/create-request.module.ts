@@ -7,17 +7,17 @@ import { AddAuthorsComponent } from './dialogs/add-authors/add-authors.component
 import { HttpClientModule } from '@angular/common/http'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { MatIconModule } from '@angular/material/icon'
-import { MatLegacyButtonModule } from '@angular/material/legacy-button'
-import { MatLegacyCardModule } from '@angular/material/legacy-card'
-import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox'
-import { MatLegacyChipsModule } from '@angular/material/legacy-chips'
-import { MatLegacyOptionModule } from '@angular/material/legacy-core'
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog'
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field'
-import { MatLegacyInputModule } from '@angular/material/legacy-input'
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio'
-import { MatLegacySelectModule } from '@angular/material/legacy-select'
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip'
+import { MatButtonModule } from '@angular/material/button'
+import { MatCardModule } from '@angular/material/card'
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatChipsModule } from '@angular/material/chips'
+import { MatOptionModule } from '@angular/material/core'
+import { MatDialogModule } from '@angular/material/dialog'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatInputModule } from '@angular/material/input'
+import { MatRadioModule } from '@angular/material/radio'
+import { MatSelectModule } from '@angular/material/select'
+import { MatTooltipModule } from '@angular/material/tooltip'
 import { HorizontalDynamicStepperModule } from '../horizontal-dynamic-stepper/horizontal-dynamic-stepper.module'
 import { OrderByPipeModule } from '../../_pipes/order-by/order-by.pipe.module'
 
@@ -34,18 +34,18 @@ import { OrderByPipeModule } from '../../_pipes/order-by/order-by.pipe.module'
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    MatLegacyFormFieldModule,
+    MatFormFieldModule,
     MatIconModule,
-    MatLegacyChipsModule,
-    MatLegacyOptionModule,
-    MatLegacySelectModule,
-    MatLegacyInputModule,
-    MatLegacyButtonModule,
-    MatLegacyCheckboxModule,
-    MatLegacyDialogModule,
-    MatLegacyCardModule,
-    MatLegacyRadioModule,
-    MatLegacyTooltipModule,
+    MatChipsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatCardModule,
+    MatRadioModule,
+    MatTooltipModule,
     HttpClientModule,
     HorizontalDynamicStepperModule,
     OrderByPipeModule,

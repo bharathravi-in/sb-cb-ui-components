@@ -1,13 +1,13 @@
 <ng-container *ngIf="!isLoading">
-    <mat-chip-list >
+    <mat-chip-listbox >
         <ng-container *ngFor="let pill of pillsData">
-            <mat-chip class="competency-chip" (click)="selectedPill(pill)" [style.color]="dynamicColor"   [style.borderColor]="'#999999'"
+            <mat-chip-option class="competency-chip" (click)="selectedPill(pill)" [style.color]="dynamicColor"   [style.borderColor]="'#999999'"
             [ngClass]="{'active': selectedValue === pill?.name}">
                 <span [style.color]="dynamicColor" class="pill-name" *ngIf="requiredTitlecase">{{pill?.name | titlecase}} <span *ngIf="pill?.count">({{pill?.count}})</span></span>
                 <span [style.color]="dynamicColor" class="pill-name" *ngIf="!requiredTitlecase">{{pill?.name }} <span *ngIf="pill?.count">({{pill?.count}})</span></span>
-            </mat-chip>
+            </mat-chip-option>
         </ng-container>
-    </mat-chip-list>
+    </mat-chip-listbox>
 </ng-container>
 <ng-container *ngIf="isLoading">
     <div class="flex gap-4">

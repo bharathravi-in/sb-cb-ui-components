@@ -4,20 +4,20 @@
     <div class="flex flex-col gap-1 round-control cra-languages-dropdown">
       <span class="round-control-label">Course Language</span>
       <mat-form-field appearance="outline" class="w-full">
-        <mat-select class="placeholder-text" placeholder="Select Language" (openedChange)="onDropdownToggle($event)" formControlName="courseLanguage"
-          multiple [compareWith]="compareByValue">
+        <mat-select class="placeholder-text" placeholder="Select Language" (openedChange)="onDropdownToggle($event)"
+          formControlName="courseLanguage" multiple [compareWith]="compareByValue">
           <mat-select-trigger>
             <span class="placeholder-text">Select Language</span>
           </mat-select-trigger>
           <mat-optgroup class="round-control">
-            <mat-form-field floatLabel="never" appearance="outline" class="w-full">
+            <mat-form-field floatLabel="always" appearance="outline" class="w-full">
               <button [disableRipple]="true" matPrefix mat-icon-button aria-label="Clear">
                 <mat-icon class="search-icon flex items-center justify-center">search</mat-icon>
               </button>
-              <input #search autocomplete="off" placeholder="Search" (keydown.space)="$event.stopPropagation()" formControlName="searchLanguage"
-                matInput (input)="onSearchChange($event)">
-              <button [disableRipple]="true" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()"
-                class="search-close-btn"><mat-icon>close</mat-icon></button>
+              <input #searchInput autocomplete="off" placeholder="Search" (keydown.space)="$event.stopPropagation()"
+                formControlName="searchLanguage" matInput (input)="onSearchChange($event)">
+              <button [disableRipple]="true" *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear"
+                (click)="clearSearch()" class="search-close-btn"><mat-icon>close</mat-icon></button>
             </mat-form-field>
           </mat-optgroup>
           <mat-optgroup *ngIf="filteredLanguages.length === 0">
@@ -31,19 +31,20 @@
           Please select Course Language
         </mat-error>
       </mat-form-field>
-      <mat-chip-list>
-        <mat-chip *ngFor="let item of additionalDetailsForm?.get('courseLanguage')?.value || []" [removable]="true"
+      <mat-chip-listbox>
+        <mat-chip-option *ngFor="let item of additionalDetailsForm?.get('courseLanguage')?.value || []"
           (removed)="onLanguageRemoved(item)" class="cra-chips">
           {{ item.name }}
           <mat-icon *ngIf="viewMode.toLowerCase() !== 'view'" matChipRemove>cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
+        </mat-chip-option>
+      </mat-chip-listbox>
     </div>
 
     <!-- MDO -->
     <div class="flex flex-col gap-1 round-control user-type-checkboxes">
       <span class="round-control-label required">Sectoral Subject Matter Expert Available with MDO</span>
-      <mat-radio-group formControlName="availableWithMDO" (change)="onAvailableWithMDOChange($event)" class="flex gap-3 flex-wrap">
+      <mat-radio-group formControlName="availableWithMDO" (change)="onAvailableWithMDOChange($event)"
+        class="flex gap-3 flex-wrap">
         <ng-container *ngFor="let option of yesNoOptions">
           <mat-radio-button class="rounded-outline-radio" [value]="option.value">
             {{ option.displayName }}
@@ -60,7 +61,8 @@
       <div class="flex flex-col gap-1">
         <div class="flex justify-between">
           <span class="authors required">Authors</span>
-          <button *ngIf="viewMode.toLowerCase() !== 'view'" mat-button class="cra-add-button" (click)="openAddAuthorDialog()" type="button">
+          <button *ngIf="viewMode.toLowerCase() !== 'view'" mat-button class="cra-add-button"
+            (click)="openAddAuthorDialog()" type="button">
             Add
           </button>
         </div>
@@ -94,7 +96,8 @@
             <div class="w-12 flex justify-center">
               <ng-container *ngIf="addedAuthersList.length > 1">
                 <mat-icon tabindex="0" role="button" (click)="removeAuthor(i)" (keydown.enter)="removeAuthor(i)"
-                  (keydown.space)="$event.preventDefault(); removeAuthor(i)" class="author-delete-icon">delete</mat-icon>
+                  (keydown.space)="$event.preventDefault(); removeAuthor(i)"
+                  class="author-delete-icon">delete</mat-icon>
               </ng-container>
             </div>
           </div>
@@ -110,7 +113,8 @@
     <!-- Karmayogi Bharat -->
     <div class="flex flex-col gap-1 round-control user-type-checkboxes">
       <span class="round-control-label required">Course Digitisation Agency Required From Karmayogi Bharat</span>
-      <mat-radio-group formControlName="requiredFromKB" class="flex gap-3 flex-wrap" (change)="onRequiredFromKBChange($event)">
+      <mat-radio-group formControlName="requiredFromKB" class="flex gap-3 flex-wrap"
+        (change)="onRequiredFromKBChange($event)">
         <ng-container *ngFor="let option of yesNoOptions">
           <mat-radio-button class="rounded-outline-radio" [value]="option.value">
             {{ option.displayName }}
@@ -130,7 +134,8 @@
         <mat-radio-group formControlName="requestType" class="flex gap-3 flex-wrap">
           <ng-container *ngFor="let type of requestTypeList">
             <mat-radio-button class="rounded-outline-radio" [value]="type.type" (change)="selectRequestType(type.type)">
-              {{ type.type }}<mat-icon class="info-icon" [matTooltip]="type.description" matTooltipClass="tooltip-sec">info_outline</mat-icon>
+              {{ type.type }}<mat-icon class="info-icon" [matTooltip]="type.description"
+                matTooltipClass="tooltip-sec">info_outline</mat-icon>
             </mat-radio-button>
           </ng-container>
         </mat-radio-group>
@@ -146,9 +151,9 @@
             <mat-form-field appearance="outline" class="w-full">
               <mat-select class=" placeholder-text" placeholder="Choose the Assignee" formControlName="assignee">
                 <mat-optgroup class="round-control">
-                  <mat-form-field floatLabel="never" class="w-full">
-                    <input #search autocomplete="off" placeholder="Search" class="assigneeSearch" (keydown.space)="$event.stopPropagation()"
-                      formControlName="assigneeText" matInput>
+                  <mat-form-field floatLabel="always" class="w-full">
+                    <input #searchAssignee autocomplete="off" placeholder="Search" class="assigneeSearch"
+                      (keydown.space)="$event.stopPropagation()" formControlName="assigneeText" matInput>
                   </mat-form-field>
                 </mat-optgroup>
 
@@ -175,22 +180,23 @@
           </div>
           <div class="round-control">
             <mat-form-field appearance="outline" class="w-full field-height" fxFlex="40">
-              <mat-select class=" placeholder-text" placeholder="Choose the provider" (openedChange)="providersOpenedChange($event,'providerText')"
-                formControlName="providers" multiple>
+              <mat-select class=" placeholder-text" placeholder="Choose the provider"
+                (openedChange)="providersOpenedChange($event,'providerText')" formControlName="providers" multiple>
                 <mat-select-trigger>
-                  <mat-chip-list>
-                    <mat-chip *ngFor="let item of additionalDetailsForm.get('providers').value" [removable]="true"
+                  <mat-chip-listbox>
+                    <mat-chip-option *ngFor="let item of additionalDetailsForm.get('providers').value"
                       (removed)="onProviderRemoved(item)">
                       {{ item.orgName }}
                       <mat-icon *ngIf="viewMode.toLowerCase() !== 'view'" matChipRemove>cancel</mat-icon>
-                    </mat-chip>
-                  </mat-chip-list>
+                    </mat-chip-option>
+                  </mat-chip-listbox>
                 </mat-select-trigger>
                 <mat-optgroup class="round-control">
-                  <mat-form-field floatLabel="never" class="w-full">
-                    <input #search autocomplete="off" placeholder="Search" (keydown.space)="$event.stopPropagation()" formControlName="providerText"
-                      matInput>
-                    <button [disableRipple]="true" *ngIf="search.value" matSuffix mat-icon-button aria-label="Clear"
+                  <mat-form-field floatLabel="always" class="w-full">
+                    <input #searchProviders autocomplete="off" placeholder="Search"
+                      (keydown.space)="$event.stopPropagation()" formControlName="providerText" matInput>
+                    <button [disableRipple]="true" *ngIf="searchProviders.value" matSuffix mat-icon-button
+                      aria-label="Clear"
                       (click)="clearProviderSearch($event,'providerText')"><mat-icon>close</mat-icon></button>
                   </mat-form-field>
                 </mat-optgroup>
@@ -198,8 +204,8 @@
                   <div>No results found!</div>
                 </mat-optgroup>
                 <ng-container *ngFor="let option of filteredRequestType">
-                  <mat-option [ngClass]="{'hideOptions': (option.hideOption && option.hideOption === 'hide')}" [disabled]="isOptionDisabled(option)"
-                    [value]="option">{{option.orgName}}</mat-option>
+                  <mat-option [ngClass]="{'hideOptions': (option.hideOption && option.hideOption === 'hide')}"
+                    [disabled]="isOptionDisabled(option)" [value]="option">{{option.orgName}}</mat-option>
                 </ng-container>
               </mat-select>
               <mat-error *ngIf="controlValidationStatus('providers', 'required')">
@@ -228,8 +234,9 @@
         <div class="margin-bottom-m mt-2">
           <p class="mat-subheading-2">Competency Area</p>
           <mat-radio-group name="competencyArea" class="flex flex-row tgl-group margin-top-s flex-wrap">
-            <mat-radio-button *ngFor="let option of filteredallCompetencies" [value]="option.name" (change)="compAreaSelected(option)"
-              class="flex flex-row itm-center ws-mat-accent-border margin-right-s" [disabled]="viewMode.toLowerCase() === 'view'">
+            <mat-radio-button *ngFor="let option of filteredallCompetencies" [value]="option.name"
+              (change)="compAreaSelected(option)" class="flex flex-row itm-center ws-mat-accent-border margin-right-s"
+              [disabled]="viewMode.toLowerCase() === 'view'">
               <span class="mat-body-2">{{ option.name }}</span>
             </mat-radio-button>
           </mat-radio-group>
@@ -240,7 +247,8 @@
           <div class="flex flex-1 flex-row margin-fix search relative">
             <mat-form-field appearance="outline" class="autocomplete-form w-full stakeholders" color="primary">
               <!-- <mat-icon matPrefix class="search-home flex items-center justify-center">search</mat-icon> -->
-              <input type="search" class="ml-2 flex-1" [placeholder]="'Search'" matInput [formControl]="queryThemeControl" maxlength="50"
+              <input type="search" class="ml-2 flex-1" [placeholder]="'Search'" matInput
+                [formControl]="queryThemeControl" maxlength="50"
                 (keyup)="updateQuery(queryThemeControl.value, 'theme')" />
             </mat-form-field>
             <button class="margin-top-s" mat-icon-button type="button" (click)="resetSearch('theme')">
@@ -249,8 +257,9 @@
           </div>
           <div class="mt-4">
             <span class="display-inline-block complabels mat-caption cursor-pointer"
-              [ngClass]="{active: (seletedCompetencyTheme && option.name === seletedCompetencyTheme.name)}" (click)="compThemeSelected(option)"
-              (keyup)="compThemeSelected(option)" *ngFor="let option of filteredallCompetencyTheme | orderBy: 'name'">
+              [ngClass]="{active: (seletedCompetencyTheme && option.name === seletedCompetencyTheme.name)}"
+              (click)="compThemeSelected(option)" (keyup)="compThemeSelected(option)"
+              *ngFor="let option of filteredallCompetencyTheme | orderBy: 'name'">
               {{ option.name }}
             </span>
           </div>
@@ -261,7 +270,8 @@
           <div class="flex flex-1 flex-row margin-fix search">
             <mat-form-field appearance="outline" class="autocomplete-form w-full stakeholders" color="primary">
               <!-- <mat-icon matPrefix class="search-home flex items-center justify-center">search</mat-icon> -->
-              <input type="search" class="ml-2 flex-1" [placeholder]="'Search'" matInput [formControl]="querySubThemeControl" maxlength="50"
+              <input type="search" class="ml-2 flex-1" [placeholder]="'Search'" matInput
+                [formControl]="querySubThemeControl" maxlength="50"
                 (keyup)="updateQuery(querySubThemeControl.value, 'subtheme')" />
             </mat-form-field>
             <button class="margin-top-s" mat-icon-button type="button" (click)="resetSearch('subtheme')">
@@ -280,7 +290,8 @@
 
         <div class="margin-bottom-l">
           <button mat-raised-button type="button" class="ws-mat-default-text compbutton"
-            [ngClass]="!enableCompetencyAdd ? '' : 'ws-mat-accent-border-active'" [disabled]="!enableCompetencyAdd" (click)="addCompetency()">
+            [ngClass]="!enableCompetencyAdd ? '' : 'ws-mat-accent-border-active'" [disabled]="!enableCompetencyAdd"
+            (click)="addCompetency()">
             <span class="mat-subheading-2 padding-xs">Add</span>
           </button>
         </div>
@@ -296,8 +307,9 @@
                   <th class="padding-xs mat-body-1 bold-text font-bold">Theme</th>
                   <th class="padding-xs mat-body-1 flex justify-between bold-text font-bold">
                     Sub theme
-                    <img *ngIf="additionalDetailsForm?.controls?.competencies_v6?.value.length > 10" class="arrow-down cursor-pointer"
-                      src="assets/icons/collections/arrow-down.svg" alt="icon" [ngClass]="{'rotate-icon': !listView}" (click)="listView = !listView"
+                    <img *ngIf="additionalDetailsForm?.controls?.competencies_v6?.value.length > 10"
+                      class="arrow-down cursor-pointer" src="assets/icons/collections/arrow-down.svg" alt="icon"
+                      [ngClass]="{'rotate-icon': !listView}" (click)="listView = !listView"
                       (keyup)="listView = !listView" />
                   </th>
                   <th class="mat-body-1 bold-text actions-header"></th>
@@ -307,7 +319,8 @@
                     <ng-container *ngFor="let theme of getUniqueThemesForArea(area); let i = index">
                       <ng-container *ngFor="let subtheme of getSubthemesForAreaAndTheme(area, theme); let j = index">
                         <tr>
-                          <td class="padding-xs mat-body-1 cursor-pointer" *ngIf="i === 0 && j === 0" [attr.rowspan]="getTotalRowsForArea(area)">
+                          <td class="padding-xs mat-body-1 cursor-pointer" *ngIf="i === 0 && j === 0"
+                            [attr.rowspan]="getTotalRowsForArea(area)">
                             {{ area }}
                           </td>
                           <td class="padding-xs mat-body-1 cursor-pointer" *ngIf="j === 0"
@@ -318,8 +331,8 @@
                             {{ subtheme }}
                           </td>
                           <td class="actions-column">
-                            <button mat-icon-button type="button" (click)="removeCompetencyV2(area, theme, subtheme)" aria-label="Remove competency"
-                              *ngIf="viewMode.toLowerCase() !== 'view'">
+                            <button mat-icon-button type="button" (click)="removeCompetencyV2(area, theme, subtheme)"
+                              aria-label="Remove competency" *ngIf="viewMode.toLowerCase() !== 'view'">
                               <mat-icon>close</mat-icon>
                             </button>
                           </td>

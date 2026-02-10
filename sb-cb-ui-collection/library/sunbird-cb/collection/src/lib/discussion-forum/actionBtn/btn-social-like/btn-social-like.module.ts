@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { BtnSocialLikeComponent } from './btn-social-like.component'
 import { MatBadgeModule } from '@angular/material/badge'
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button'
+import { MatButtonModule as MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip'
+import { MatTooltipModule as MatTooltipModule } from '@angular/material/tooltip'
 import { DialogSocialActivityUserModule } from '../../dialog/dialog-social-activity-user/dialog-social-activity-user.module'
 
 @NgModule({

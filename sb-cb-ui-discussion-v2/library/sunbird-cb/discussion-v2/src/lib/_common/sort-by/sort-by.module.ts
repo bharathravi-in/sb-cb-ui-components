@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SortByComponent } from './sort-by.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio'
+import { MatRadioModule } from '@angular/material/radio'
 
 
 

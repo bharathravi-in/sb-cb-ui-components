@@ -24,10 +24,10 @@
       <div class="course_widget flex flex-between margin-remove">
         <div class="flex flex-end course_v2">
           <ng-container
-            *ngIf="widgetData?.content?.contentType === 'Resource' || widgetData?.content?.contentType === 'Course' || widgetData?.content?.contentType === 'Module'">
+            *ngIf="$any(widgetData?.content)?.contentType === 'Resource' || $any(widgetData?.content)?.contentType === 'Course' || $any(widgetData?.content)?.contentType === 'Module'">
             <mat-icon class="mat-icon main_icon ws-mat-default-text margin-right-xs">video_library</mat-icon>
             <span class="ws-mat-black60-text font-normal mat-caption ">
-              {{widgetData?.content?.courseCategory || widgetData?.content?.contentType}}
+              {{$any(widgetData?.content)?.courseCategory || $any(widgetData?.content)?.contentType}}
               <!-- {{ translateLabel(widgetData.content.primaryCategory || widgetData.content.contentType, 'searchfilters') }} -->
             </span>
           </ng-container>
@@ -52,7 +52,7 @@
           </div>
           <span class="org-text">By&nbsp;
             <!-- {{'cardcontentv2.by' | translate}}  -->
-            {{widgetData?.content?.organisation[0] }}</span>
+            {{$any(widgetData?.content)?.organisation?.[0] }}</span>
         </div>
         <div class="flex flex-middle rating-session margin-top-xs">
           <div class="flex flex-middle" *ngIf="widgetData?.content?.avgRating">

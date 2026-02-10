@@ -10,7 +10,7 @@ import { NSSearch } from '../_models/widget-search.model'
 import * as _ from 'lodash'
 import { viewerRouteGenerator } from './viewer-route-util'
 import { WidgetUserServiceLib } from './widget-user-lib.service'
-import moment from 'moment'
+import * as moment from 'moment'
 import { ContentLanguageService } from './content-language.service'
 // tslint:enable
 

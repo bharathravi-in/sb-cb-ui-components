@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NotificationComponent } from './notification/notification.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PipeLimitToModule } from '@sunbird-cb/utils-v2';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyListModule } from '@angular/material/legacy-list';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 
 
@@ -20,11 +20,11 @@ import { MatDividerModule } from '@angular/material/divider';
     CommonModule,
     MatToolbarModule,
     MatIconModule,
-    MatLegacyButtonModule,
-    MatLegacyListModule,
-    MatLegacyCardModule,
+    MatButtonModule,
+    MatListModule,
+    MatCardModule,
     MatDividerModule,
-    MatLegacyProgressSpinnerModule,
+    MatProgressSpinnerModule,
     PipeLimitToModule,
   ]
 })

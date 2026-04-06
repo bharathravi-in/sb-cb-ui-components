@@ -256,8 +256,13 @@ export class AppTocService {
       content.children.map(child => {
         const foundContent = dataResult.find((el: any) => el.contentId === child.identifier)
         if (foundContent) {
-          child.completionPercentage = foundContent.completionPercentage || foundContent.progress
-          child.completionStatus = this.safeCompletionStatus(foundContent.status)
+          if(Number(foundContent?.status) === 2) {
+            child.completionPercentage = 100
+            child.completionStatus = 2
+          } else {
+            child.completionPercentage = foundContent.completionPercentage || foundContent.progress
+            child.completionStatus = this.safeCompletionStatus(foundContent.status)
+          }
         } else {
           this.mapCompletionPercentage(child, dataResult)
         }
@@ -629,13 +634,11 @@ export class AppTocService {
             const parentChild = content.children[i]
             if (parentChild.primaryCategory === NsContent.EPrimaryCategory.COURSE) {
               const foundContent = this.findEnrolmentByCollectionId(enrolmentList, parentChild?.identifier)
-              // tslint:disable-next-line: max-line-length
-              // totalCount = foundContent && foundContent.completionPercentage ? totalCount + foundContent.completionPercentage : totalCount + 0
-              // content.completionPercentage = Math.round(totalCount / leafnodeCount)
               if (foundContent && foundContent.completionPercentage === 100) {
                 this.contentLoader.next(true)
                 totalCount = totalCount += parentChild.leafNodesCount
                 completedLeafNodes = [...completedLeafNodes, ...parentChild.leafNodes]
+                debugger
                 if (foundContent.issuedCertificates.length > 0) {
                   const certificate: any = foundContent.issuedCertificates.sort((a: any, b: any) =>
                     new Date(a.lastIssuedOn).getTime() - new Date(b.lastIssuedOn).getTime())
@@ -652,6 +655,13 @@ export class AppTocService {
                 parentChild.completionPercentage = 100
                 parentChild.completionStatus = 2
                 await this.mapCompletionChildPercentageProgram(parentChild)
+              } else {
+                if(foundContent && foundContent.completionPercentage === 0) {
+                foundContent.completionPercentage = 0
+                foundContent.completionStatus = 1
+                if(foundContent?.contentList?.length > 0) {
+                  this.mapCompletionPercentage(parentChild, foundContent.contentList)
+                }
               } else {
                 if (foundContent) {
                   this.contentLoader.next(true)
@@ -690,40 +700,8 @@ export class AppTocService {
                   this.contentLoader.next(false)
                 }
               }
+              }
             }
-            //  else {
-            //   if (content.primaryCategory !== NsContent.EPrimaryCategory.BLENDED_PROGRAM) {
-            //     this.contentLoader.next(true)
-            //     const foundContent = enrolmentList && enrolmentList.find((el: any) => el.collectionId === content.identifier)
-            //     if (foundContent) {
-            //       const req = {
-            //         request: {
-            //           batchId: foundContent.batch.batchId,
-            //           userId: foundContent.userId,
-            //           courseId: foundContent.collectionId,
-            //           contentIds: [],
-            //           fields: [
-            //             'progressdetails',
-            //           ],
-            //         },
-            //       }
-            //       await this.fetchContentHistoryV2(req).toPromise().then((progressdata: any) => {
-            //         const data: any  = progressdata
-            //         if (data.result && data.result.contentList.length > 0) {
-            //           const completedCount = data.result.contentList.filter((ele: any) => ele.progress === 100)
-            //           this.checkCompletedLeafnodes(completedLeafNodes, completedCount)
-            //           totalCount = completedLeafNodes.length
-            //           inprogressDataCheck = inprogressDataCheck ? inprogressDataCheck :  data.result.contentList
-            //           this.updateResumaData(inprogressDataCheck)
-            //           this.mapCompletionPercentage(content, data.result.contentList)
-            //         }
-            //         this.contentLoader.next(false)
-            //         return progressdata
-            //       })
-            //     }
-            //     this.contentLoader.next(false)
-            //   }
-            // }
             this.contentLoader.next(false)
           }
         }
@@ -843,15 +821,15 @@ export class AppTocService {
     return enrolmentList && enrolmentList?.length && enrolmentList.find((el: any) => el?.collectionId === identifier)
   }
 
-  async mapCompletionChildPercentageProgram(course: any) {
+  async mapCompletionChildPercentageProgram(course: any, completionPercentage?: number, completionStatus?: number) {
     if (course && course.children) {
       await course.children.map(async (courseChild: any) => {
         if ((courseChild && courseChild.children) || courseChild.primaryCategory === NsContent.EPrimaryCategory.MODULE) {
-          this.mapCompletionChildPercentageProgram(courseChild)
+          this.mapCompletionChildPercentageProgram(courseChild, completionPercentage, completionStatus)
           course['moduleCount'] = course['moduleCount'] ? course['moduleCount'] + 1 : 1
         } else {
-          courseChild['completionPercentage'] = 100
-          courseChild['completionStatus'] = 2
+          courseChild['completionPercentage'] = completionPercentage || 100
+          courseChild['completionStatus'] = completionStatus || 2
         }
       })
     }

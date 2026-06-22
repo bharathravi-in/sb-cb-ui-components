@@ -18,8 +18,8 @@
 
   <ng-container *ngIf="filterValue === 'add_karmayogis'">
     <!-- Search Box -->
-    <div class="search-container flex items-center gap-4 mb-4">
-      <div class="mat-full-radius flex-grow">
+    <div class="search-container access-settings-search-container flex items-center gap-4 mb-4">
+      <div class="mat-full-radius flex-grow mt-6">
         <mat-form-field appearance="outline" class="w-full">
           <mat-icon matPrefix>search</mat-icon>
           <input matInput placeholder="Search by Name, Email and Phone Number" [formControl]="searchControl" (keyup.enter)="search()" />

@@ -37,10 +37,10 @@ interface IStripUnitContentData {
   description?: string | null
 }
 @Component({
-    selector: 'ws-widget-network-strip-multiple',
-    templateUrl: './network-strip-multiple.component.html',
-    styleUrls: ['./network-strip-multiple.component.scss'],
-    standalone: false
+  selector: 'ws-widget-network-strip-multiple',
+  templateUrl: './network-strip-multiple.component.html',
+  styleUrls: ['./network-strip-multiple.component.scss'],
+  standalone: false
 })
 export class NetworkStripMultipleComponent extends WidgetBaseComponent
   implements
@@ -296,7 +296,7 @@ export class NetworkStripMultipleComponent extends WidgetBaseComponent
     return this.contentSvc
       .fetchContentLikes(contentIds)
       .then(likeHash => {
-        const likes = likeHash
+        const likes: any = likeHash
         results.forEach(result => {
           result.widgetData.likes = likes[result.widgetData.content.identifier] || 0
         })

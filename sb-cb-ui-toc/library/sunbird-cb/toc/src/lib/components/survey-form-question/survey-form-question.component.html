@@ -27,11 +27,17 @@
             </ng-container>
         </ng-container>
         <ng-container *ngSwitchCase="'date'">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="w-half-2">
                 <input matInput [matDatepicker]="picker" formControlName="answer">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <!-- <mat-datepicker-toggle matSuffix [for]="picker">
+                    <mat-icon>calendar_month</mat-icon>
+                </mat-datepicker-toggle> -->
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                    <mat-icon class="mr-2" matDatepickerToggleIcon>calendar_today</mat-icon>
+                </mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
+
         </ng-container>
         <ng-container *ngSwitchCase="'boolean'">
             <mat-radio-group class="pt-2" formControlName="answer">

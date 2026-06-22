@@ -9,6 +9,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule as MatFormFieldModule } from '@angular/material/form-field'
 import { TranslateModule } from '@ngx-translate/core';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
     selector: 'ws-app-survey-form-question',
@@ -25,8 +26,11 @@ import { TranslateModule } from '@ngx-translate/core';
         ReactiveFormsModule,
         FormsModule,
         MatFormFieldModule,
-        TranslateModule
+        TranslateModule,
     ],
+     providers: [
+    provideNativeDateAdapter()
+  ],
     templateUrl: './survey-form-question.component.html',
     styleUrls: ['./survey-form-question.component.scss']
 })

@@ -1,5 +1,4 @@
-@import "ws-vars";
-@import "ws-common";
+@use 'ws-common' as *;
 
 .quiz-question {
     overflow-x: auto;
@@ -14,16 +13,16 @@
     font-weight: 700;
 }
 
-.mat-radio-label {
+.mdc-form-field {
     padding: 3px 10px;
 }
 
-:host .mat-radio-label-content {
+:host .mdc-label {
     width: 340px;
     word-wrap: break-word;
 }
 
-::ng-deep .mat-radio-button {
+::ng-deep .mat-mdc-radio-button {
     background: #F5F5F5 !important;
 }
 
@@ -68,20 +67,20 @@
     border-color: rgb(29, 137, 35) !important;
     background-color: rgb(219, 236, 220) !important;
 
-    .mat-pseudo-checkbox-checked {
+    .mat-mdc-pseudo-checkbox-checked {
         background-color: rgb(29, 137, 35) !important;
     }
 
-    .mat-radio-container {
-        .mat-radio-inner-circle {
+    .mdc-radio {
+        .mdc-radio__inner-circle {
             background-color: rgb(29, 137, 35) !important;
         }
 
-        .mat-radio-outer-circle {
+        .mdc-radio__outer-circle {
             border-color: rgb(29, 137, 35) !important;
         }
 
-        .mat-radio-outer-circle:after {
+        .mdc-radio__outer-circle:after {
             border-color: #1d8923 !important;
             content: '\2714';
             position: absolute;
@@ -105,20 +104,20 @@
     border-color: rgb(209, 57, 36) !important;
     background-color: rgb(248, 223, 220) !important;
 
-    .mat-pseudo-checkbox-checked {
+    .mat-mdc-pseudo-checkbox-checked {
         background-color: rgb(209, 57, 36) !important;
     }
 
-    .mat-radio-container {
-        .mat-radio-inner-circle {
+    .mdc-radio {
+        .mdc-radio__inner-circle {
             background-color: rgb(209, 57, 36) !important;
         }
 
-        .mat-radio-outer-circle {
+        .mdc-radio__outer-circle {
             border-color: rgb(209, 57, 36) !important;
         }
 
-        .mat-radio-outer-circle:after {
+        .mdc-radio__outer-circle:after {
             border-color: red !important;
             content: '\2715';
             position: absolute;
@@ -200,7 +199,7 @@
 }
 
 
-::ng-deep .mat-radio-button {
+::ng-deep .mat-mdc-radio-button {
     background-color: rgb(245, 245, 245) !important;
 }
 

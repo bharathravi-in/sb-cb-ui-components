@@ -4,6 +4,7 @@ import { NSQuiz } from '../../plugins/quiz/quiz.model'
 import { ActivatedRoute } from '@angular/router'
 
 @Component({
+  standalone: false,
   selector: 'viewer-quiz-container',
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.scss'],

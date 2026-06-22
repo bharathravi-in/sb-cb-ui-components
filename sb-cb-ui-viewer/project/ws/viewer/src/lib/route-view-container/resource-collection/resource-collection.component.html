@@ -6,10 +6,12 @@
           <mat-card-content>
             <div id="fullScreenContainer" class="video-player">
               <!-- <viewer-plugin-resource-collection></viewer-plugin-resource-collection> -->
-              <viewer-plugin-web-module *ngIf="isFetchingDataComplete"
-                [widgetData]="resourceCollectionData | pipePartialContent: ['identifier','artifactUrl','mimeType']"
-                [webModuleManifest]="resourceCollectionManifest" [theme]="{ className: 'indigo' }"
+              @if (isFetchingDataComplete) {
+                <viewer-plugin-web-module
+                  [widgetData]="resourceCollectionData | pipePartialContent: ['identifier','artifactUrl','mimeType']"
+                  [webModuleManifest]="resourceCollectionManifest" [theme]="{ className: 'indigo' }"
                 [collectionId]="collectionId"></viewer-plugin-web-module>
+              }
             </div>
             <div class="flex justify-end mt-3">
               <ws-widget-btn-content-download [forPreview]="forPreview" [widgetData]="
@@ -46,9 +48,9 @@
     </div>
   </div>
   <!-- <div class="padding-m" *ngIf="discussionForumWidget && isRestricted">
-    <div class="video-discussion-forum-in">
-      <h2 class="mat-toolbar discussion-head">Discussion Forum</h2>
-      <ng-container [sbUiResolverWidget]="discussionForumWidget"></ng-container>
-    </div>
-  </div> -->
+  <div class="video-discussion-forum-in">
+    <h2 class="mat-toolbar discussion-head">Discussion Forum</h2>
+    <ng-container [sbUiResolverWidget]="discussionForumWidget"></ng-container>
+  </div>
+</div> -->
 </div>

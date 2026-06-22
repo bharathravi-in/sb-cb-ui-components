@@ -1,6 +1,6 @@
 <mat-card class="margin-m">
   <div class="flex flex-left margin-top-s">
-    <h3 class="mat-title">{{ contentName }}</h3>
+    <h3 class="mat-headline-6">{{ contentName }}</h3>
     <span class="spacer"></span>
     <h3 class="mat-h3">{{ clsDiagramTimeRemaining / 1000 | pipeDurationTransform: 'hms' }}</h3>
   </div>
@@ -33,11 +33,13 @@
           </mat-form-field>
           <div id="card-pile" class="text-center card-slots">
             <h3 class="mat-h3" i18n>Options</h3>
-            <div *ngFor="let item of classOptions" draggable="true" (dragstart)="drag($event)">
-              <span>
-                {{ item }}
-              </span>
-            </div>
+            @for (item of classOptions; track item) {
+              <div draggable="true" (dragstart)="drag($event)">
+                <span>
+                  {{ item }}
+                </span>
+              </div>
+            }
           </div>
         </div>
         <div>
@@ -58,7 +60,7 @@
             color="primary"
             (click)="submit()"
             i18n="button submit"
-          >
+            >
             Submit
           </button>
           <button
@@ -67,7 +69,7 @@
             color="primary"
             (click)="reset()"
             i18n="button reset"
-          >
+            >
             Reset
           </button>
         </div>
@@ -77,26 +79,32 @@
       </div>
     </div>
   </div>
-  <mat-error class="mat-caption" *ngIf="!userOptions.classes.length && isSubmitted" i18n>
+  @if (!userOptions.classes.length && isSubmitted) {
+    <mat-error class="mat-caption" i18n>
     Please add a class to submit and see the result!
   </mat-error>
-  <mat-error class="mat-caption" *ngIf="isSubmitted && error" i18n>
+  }
+  @if (isSubmitted && error) {
+    <mat-error class="mat-caption" i18n>
     Some error occurred. Please try again later!
   </mat-error>
-  <div
-    class="margin-top-s"
-    *ngIf="!isSubmitted && userOptions.classes.length"
+  }
+  @if (!isSubmitted && userOptions.classes.length) {
+    <div
+      class="margin-top-s"
     [ngClass]="{
       notSubmitted: !result?.submitResult?.submitionStatus,
       submitted: result?.submitResult?.submitionStatus
     }"
-  >
-    {{ result?.submitResult?.submissionMessage }}
-  </div>
+      >
+      {{ result?.submitResult?.submissionMessage }}
+    </div>
+  }
 </mat-card>
 
-<viewer-class-diagram-result
-  *ngIf="result?.verifyResult && !error"
-  [userData]="userOptions"
-  [result]="result?.verifyResult"
-></viewer-class-diagram-result>
+@if (result?.verifyResult && !error) {
+  <viewer-class-diagram-result
+    [userData]="userOptions"
+    [result]="result?.verifyResult"
+  ></viewer-class-diagram-result>
+}

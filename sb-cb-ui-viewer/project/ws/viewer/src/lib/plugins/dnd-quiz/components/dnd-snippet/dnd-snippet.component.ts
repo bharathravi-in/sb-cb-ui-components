@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 
 @Component({
+  standalone: false,
   selector: 'viewer-dnd-snippet',
   templateUrl: './dnd-snippet.component.html',
   styleUrls: ['./dnd-snippet.component.scss'],

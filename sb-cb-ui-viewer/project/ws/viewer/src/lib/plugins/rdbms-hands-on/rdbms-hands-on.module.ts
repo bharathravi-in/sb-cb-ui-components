@@ -59,7 +59,6 @@ import { SubmissionDialogComponent } from './components/submission-dialog/submis
     MatExpansionModule,
     AceEditorModule,
   ],
-  entryComponents: [SubmissionDialogComponent],
   exports: [
     RdbmsHandsOnComponent,
   ],

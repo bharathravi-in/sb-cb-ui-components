@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs'
 import { NsContent } from '@sunbird-cb/utils-v2'
 
 @Component({
+  standalone: false,
     selector: 'viewer-mtf-question',
     templateUrl: './mtf.component.html',
     styleUrls: ['./mtf.component.scss'],

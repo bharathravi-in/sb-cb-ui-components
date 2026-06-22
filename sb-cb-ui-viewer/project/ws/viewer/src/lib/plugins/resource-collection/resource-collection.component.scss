@@ -1,5 +1,4 @@
-@import 'ws-mixins';
-@import 'ws-vars';
+@use 'ws-mixins' as *;
 
 
 
@@ -20,10 +19,10 @@
     }
 }
 
-td.mat-cell{
+td.mat-mdc-cell{
   padding:10px !important;
 }
-th.mat-header-cell{
+th.mat-mdc-header-cell{
    padding:10px !important;
 }
 

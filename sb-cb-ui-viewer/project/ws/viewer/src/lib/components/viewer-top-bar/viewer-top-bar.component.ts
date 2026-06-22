@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Optional, Output } from '@angular/core'
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'
 import { ActivatedRoute, NavigationExtras } from '@angular/router'
 import { ConfigurationsService, NsPage, ValueService } from '@sunbird-cb/utils'
@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs'
 import { ViewerDataService } from '../../viewer-data.service'
 
 @Component({
+  standalone: false,
   selector: 'viewer-viewer-top-bar',
   templateUrl: './viewer-top-bar.component.html',
   styleUrls: ['./viewer-top-bar.component.scss'],
@@ -40,7 +41,7 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
     private configSvc: ConfigurationsService,
     private viewerDataSvc: ViewerDataService,
     private valueSvc: ValueService,
-    @Inject('environment') private environment: any,
+    @Optional() @Inject('environment') private environment: any,
   ) {
     this.valueSvc.isXSmall$.subscribe(isXSmall => {
       this.logo = !isXSmall
@@ -121,6 +122,14 @@ export class ViewerTopBarComponent implements OnInit, OnDestroy {
     this.courseName = this.activatedRoute.snapshot.queryParams.courseName
   }
   generateUrl(oldUrl: string) {
+    if (!this.environment || !this.environment.azureHost) {
+      try {
+        const urlObj = new URL(oldUrl)
+        return `${window.location.origin}${urlObj.pathname}`
+      } catch {
+        return oldUrl
+      }
+    }
     const chunk = oldUrl ? oldUrl.split('/') : []
     const newChunk = this.environment.azureHost.split('/')
     const newLink = []

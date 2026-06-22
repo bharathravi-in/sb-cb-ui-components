@@ -1,5 +1,5 @@
-import { Component, ElementRef, Inject, Input, OnChanges, OnInit, ViewChild, OnDestroy } from '@angular/core'
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar'
+import { Component, ElementRef, Inject, Input, OnChanges, OnInit, ViewChild, OnDestroy, Optional } from '@angular/core'
+import { MatSnackBar } from '@angular/material/snack-bar'
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'
 import { Router } from '@angular/router'
 import { NsContent } from '@sunbird-cb/collection'
@@ -12,6 +12,7 @@ import _ from 'lodash'
 /* tslint:enable */
 
 @Component({
+  standalone: false,
   selector: 'viewer-plugin-html',
   templateUrl: './html.component.html',
   styleUrls: ['./html.component.scss'],
@@ -37,7 +38,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
     private configSvc: ConfigurationsService,
     private snackBar: MatSnackBar,
     private events: EventService,
-    @Inject('environment') private environment: any,
+    @Optional() @Inject('environment') private environment: any,
   ) {
     (window as any).API = this.scormAdapterService
     // if (window.addEventListener) {
@@ -154,8 +155,15 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         //   )
         // }
         if (this.htmlContent && this.htmlContent.streamingUrl) {
-          if (this.htmlContent.streamingUrl.includes(this.environment.azureHost)) {
+          if (this.environment && this.htmlContent.streamingUrl.includes(this.environment.azureHost)) {
             this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.htmlContent.streamingUrl)
+          } else if (!this.environment) {
+            try {
+              const urlObj = new URL(this.htmlContent.streamingUrl)
+              this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(`${window.location.origin}${urlObj.pathname}`)
+            } catch {
+              this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.htmlContent.streamingUrl)
+            }
           } else {
             if (this.htmlContent.streamingUrl && this.htmlContent.initFile) {
               this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
@@ -180,7 +188,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
               }
             }
           }
-        } else {
+        } else if (this.environment) {
           if (this.htmlContent.initFile) {
             this.iframeUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
               // tslint:disable-next-line: max-line-length
@@ -311,7 +319,7 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   getUrl(url: string) {
-    if (url && url.length > 0) {
+    if (url && url.length > 0 && this.environment && this.environment.mdoPath) {
       const tempData = url.split('content')
       if (url.indexOf(`/collection`) > 0) {
         return `${this.environment.mdoPath}${this.environment.contentBucket}${tempData[tempData.length - 1]}`
@@ -320,10 +328,26 @@ export class HtmlComponent implements OnInit, OnChanges, OnDestroy {
         return `${this.environment.mdoPath}${this.environment.contentBucket}/content${tempData[tempData.length - 1]}`
       }
     }
+    if (url && url.length > 0) {
+      try {
+        const urlObj = new URL(url)
+        return `${window.location.origin}${urlObj.pathname}`
+      } catch {
+        return url
+      }
+    }
     return url
   }
 
   generateUrl(oldUrl: string) {
+    if (!this.environment || !this.environment.azureHost) {
+      try {
+        const urlObj = new URL(oldUrl)
+        return `${window.location.origin}${urlObj.pathname}`
+      } catch {
+        return oldUrl
+      }
+    }
     const chunk = oldUrl.split('/')
     const newChunk = this.environment.azureHost.split('/')
     const newLink = []

@@ -1,5 +1,4 @@
-// @import 'ws-vars';
-// @import 'ws-mixins';
+// @use 'ws-mixins' as *;
 
 // .video-container {
 //   height: auto;
@@ -47,8 +46,7 @@
 //   width: 100%;
 // }
 
-// @import 'ws-vars';
-// @import 'ws-mixins';
+// @use 'ws-mixins' as *;
 
 // .video-player-summary-container {
 //   height: auto;
@@ -91,8 +89,7 @@
 //   width: 100%;
 // }
 
-@import 'ws-vars';
-@import 'ws-mixins';
+@use 'ws-mixins' as *;
 
 .video-player-summary-container {
   height: auto;
@@ -240,7 +237,7 @@
   width: 100vw;
 }
 
-.audio-player-container .mat-card {
+.audio-player-container .mat-mdc-card {
   background: transparent;
   box-shadow: none;
   // padding: 0 16px;

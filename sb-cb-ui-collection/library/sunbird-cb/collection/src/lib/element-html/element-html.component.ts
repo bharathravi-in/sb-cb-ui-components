@@ -5,10 +5,10 @@ import { SafeHtml, DomSanitizer } from '@angular/platform-browser'
 import mustache from 'mustache'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 @Component({
-    selector: 'ws-widget-element-html',
-    templateUrl: './element-html.component.html',
-    styleUrls: ['./element-html.component.scss'],
-    standalone: false
+  selector: 'ws-widget-element-html',
+  templateUrl: './element-html.component.html',
+  styleUrls: ['./element-html.component.scss'],
+  standalone: false
 })
 export class ElementHtmlComponent extends WidgetBaseComponent
   implements OnInit, NsWidgetResolver.IWidgetData<IWidgetElementHtml> {
@@ -31,7 +31,7 @@ export class ElementHtmlComponent extends WidgetBaseComponent
       } catch (er) { }
     } else if (this.widgetData.templateUrl && this.widgetData.templateData) {
       // For template, response needs to be modiefed
-      const template = await this.http
+      const template: any = await this.http
         .get<string>(this.widgetData.templateUrl, {
           headers,
         })
@@ -39,7 +39,7 @@ export class ElementHtmlComponent extends WidgetBaseComponent
       this.render(template, this.widgetData.templateData)
     } else if (this.widgetData.templateUrl && this.widgetData.templateDataUrl) {
       try {
-        const [template, data] = await Promise.all([
+        const [template, data]: any = await Promise.all([
           this.http.get<string>(this.widgetData.templateUrl, { headers }).toPromise(),
           this.http.get<any>(this.widgetData.templateDataUrl).toPromise(),
         ])

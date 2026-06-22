@@ -77,10 +77,10 @@ export class AppTocService {
    */
   private safeCompletionStatus(value: any): number {
     const numValue = Number(value)
-    if (isNaN(numValue) || typeof value === 'string') {
+    if (isNaN(numValue)) {
       return 0
     }
-    return numValue
+    return Math.min(Math.max(Math.round(numValue), 0), 2)
   }
   setWFDataSubject: Subject<any> = new Subject()
   resumeData: Subject<NsContent.IContinueLearningData | null> = new Subject<any>()
@@ -1046,9 +1046,8 @@ export class AppTocService {
         }
       }
       this.createHirarchyProgressHashmap(hierarchyData, rootCourseCategory)
-      // NOTE: computeMilestoneLockingStatus is called AFTER progress data is populated
-      // in mapCompletionPercentageProgram, not here where completion data is still 0
       this.hashmap = { ...this.hashmap }
+      this.hashmapUpdated.next({ timestamp: Date.now(), hashmap: this.hashmap })
     }
   }
 

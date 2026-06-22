@@ -4,6 +4,7 @@ import { LoggerService } from '@sunbird-cb/utils'
 import { NsContent } from '@sunbird-cb/collection'
 
 @Component({
+  standalone: false,
   selector: 'viewer-plugin-iap',
   templateUrl: './iap.component.html',
   styleUrls: ['./iap.component.scss'],

@@ -1,6 +1,6 @@
-@import 'ws-vars';
+@use 'ws-vars' as *;
 
-.app-class .mat-list-option {
+.app-class .mat-mdc-list-option {
   padding-top: $size-m;
   padding-bottom: $size-m;
   height: auto;

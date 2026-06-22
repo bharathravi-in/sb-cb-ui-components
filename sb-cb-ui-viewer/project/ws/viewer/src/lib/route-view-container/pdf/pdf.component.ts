@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { PdfScormDataService } from '../../pdf-scorm-data-service'
 @Component({
+  standalone: false,
   selector: 'viewer-pdf-container',
   templateUrl: './pdf.component.html',
   styleUrls: ['./pdf.component.scss'],

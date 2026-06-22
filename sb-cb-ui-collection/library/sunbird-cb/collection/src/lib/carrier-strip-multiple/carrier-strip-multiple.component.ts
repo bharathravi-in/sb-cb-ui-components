@@ -36,10 +36,10 @@ interface IStripUnitContentData {
   description?: string | null
 }
 @Component({
-    selector: 'ws-widget-carrier-strip-multiple',
-    templateUrl: './carrier-strip-multiple.component.html',
-    styleUrls: ['./carrier-strip-multiple.component.scss'],
-    standalone: false
+  selector: 'ws-widget-carrier-strip-multiple',
+  templateUrl: './carrier-strip-multiple.component.html',
+  styleUrls: ['./carrier-strip-multiple.component.scss'],
+  standalone: false
 })
 export class CarrierStripMultipleComponent extends WidgetBaseComponent
   implements
@@ -279,7 +279,7 @@ export class CarrierStripMultipleComponent extends WidgetBaseComponent
     return this.contentSvc
       .fetchContentLikes(contentIds)
       .then(likeHash => {
-        const likes = likeHash
+        const likes: any = likeHash
         results.forEach(result => {
           result.widgetData.likes = likes[result.widgetData.content.identifier] || 0
         })

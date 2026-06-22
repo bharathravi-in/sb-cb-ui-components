@@ -1,15 +1,15 @@
 <h2 mat-dialog-title >{{ 'practiceoverview.submitQuiz' | translate }}</h2>
 <mat-dialog-content>
-  <ng-container *ngIf="submissionState === 'answered'">
+  @if (submissionState === 'answered') {
     {{ 'practiceoverview.answeredMsg' | translate }}
-  </ng-container>
-  <ng-container *ngIf="submissionState === 'unanswered'">
+  }
+  @if (submissionState === 'unanswered') {
     <!-- You have not answered all the questions! Do you still want to submit? -->
     {{ 'practiceoverview.unansweredMsg' | translate }}
-  </ng-container>
-  <ng-container *ngIf="submissionState === 'marked'">
+  }
+  @if (submissionState === 'marked') {
     {{ 'practiceoverview.markedMsg' | translate }}
-  </ng-container>
+  }
 </mat-dialog-content>
 <mat-dialog-actions class="flex-row">
   <button class="secondary-blue-border-btn" mat-button mat-dialog-close >{{ 'dialogconfirm.no' | translate }}</button>

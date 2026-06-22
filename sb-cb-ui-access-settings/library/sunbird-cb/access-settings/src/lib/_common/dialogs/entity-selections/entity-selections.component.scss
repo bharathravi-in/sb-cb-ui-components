@@ -7,7 +7,7 @@
 }
 
 ::ng-deep .mat-mdc-dialog-container .mdc-dialog__title {
-  margin-bottom: 8px !important;
+  margin-top: 24px !important;
   font-family: Montserrat;
   font-weight: 600;
   font-size: 16px;
@@ -35,6 +35,8 @@
   .mat-radio-button {
     margin-right: 24px;
   }
+
+ 
 }
 
 .org-container {
@@ -245,3 +247,9 @@
     cursor: not-allowed;
   }
 }
+
+:host ::ng-deep  .mat-mdc-checkbox .mdc-label {
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }

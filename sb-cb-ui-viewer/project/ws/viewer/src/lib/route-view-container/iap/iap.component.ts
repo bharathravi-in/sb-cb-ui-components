@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
+  standalone: false,
   selector: 'viewer-iap-container',
   templateUrl: './iap.component.html',
   styleUrls: ['./iap.component.scss'],

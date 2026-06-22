@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core'
+import { Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { NsDiscussionForum, WidgetContentService } from '@sunbird-cb/collection'
 import { NsContent } from '../../models/constant'
@@ -14,6 +14,7 @@ import { filter } from 'rxjs/operators'
 import { ViewerUtilService } from '../../viewer-util.service'
 import { AccessControlService } from '@sunbird-cb/toc'
 @Component({
+  standalone: false,
   selector: 'viewer-html',
   templateUrl: './html.component.html',
   styleUrls: ['./html.component.scss'],
@@ -51,7 +52,7 @@ export class HtmlComponent implements OnInit, OnDestroy {
     private configSvc: ConfigurationsService,
     private eventSvc: EventService,
     private accessControlSvc: AccessControlService,
-    @Inject('environment') private environment: any,
+    @Optional() @Inject('environment') private environment: any,
   ) { }
 
   ngOnInit() {
@@ -298,6 +299,14 @@ export class HtmlComponent implements OnInit, OnDestroy {
     })
   }
   generateUrl(oldUrl: string) {
+    if (!this.environment || !this.environment.azureHost) {
+      try {
+        const urlObj = new URL(oldUrl)
+        return `${window.location.origin}${urlObj.pathname}`
+      } catch {
+        return oldUrl
+      }
+    }
     const chunk = oldUrl ? oldUrl.split('/') : []
     const newChunk = this.environment.azureHost.split('/')
     const newLink = []

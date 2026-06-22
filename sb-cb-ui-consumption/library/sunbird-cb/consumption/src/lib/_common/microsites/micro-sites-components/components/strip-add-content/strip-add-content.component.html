@@ -25,8 +25,8 @@
   </div>
 
   <div class="dialog-body">
-    <div class="search-container">
-      <div class="filter-dropdown">
+    <div class="dialog-search-container">
+      <div class="filter-dropdown mt-6">
         <mat-form-field appearance="outline" class="program-select">
           <mat-select placeholder="All Content" [(ngModel)]="selectedContents" name="selectedContents"
             (selectionChange)="onContentTypeChange()">
@@ -38,7 +38,7 @@
       </div>
 
       <div class="search-input-container">
-        <mat-form-field appearance="outline" class="search-field">
+        <mat-form-field appearance="outline" class="search-field mt-6">
           <mat-icon matPrefix class="search-icon">search</mat-icon>
           <input matInput placeholder="Select" [(ngModel)]="searchText" name="searchText" (keyup.enter)="onSearch()">
         </mat-form-field>

@@ -12,6 +12,7 @@ import { ActivatedRoute } from '@angular/router'
 import { Platform } from '@angular/cdk/platform'
 
 @Component({
+  standalone: false,
   selector: 'viewer-youtube',
   templateUrl: './youtube.component.html',
   styleUrls: ['./youtube.component.scss'],

@@ -36,10 +36,10 @@ interface IStripUnitContentData {
   } | null
 }
 @Component({
-    selector: 'ws-widget-content-strip-vertical',
-    templateUrl: './content-strip-vertical.component.html',
-    styleUrls: ['./content-strip-vertical.component.scss'],
-    standalone: false
+  selector: 'ws-widget-content-strip-vertical',
+  templateUrl: './content-strip-vertical.component.html',
+  styleUrls: ['./content-strip-vertical.component.scss'],
+  standalone: false
 })
 export class ContentStripVerticalComponent extends WidgetBaseComponent
   implements
@@ -442,7 +442,7 @@ export class ContentStripVerticalComponent extends WidgetBaseComponent
     return this.contentSvc
       .fetchContentLikes(contentIds)
       .then(likeHash => {
-        const likes = likeHash
+        const likes: any = likeHash
         results.forEach(result => {
           result.widgetData.likes = likes[result.widgetData.content.identifier] || 0
         })

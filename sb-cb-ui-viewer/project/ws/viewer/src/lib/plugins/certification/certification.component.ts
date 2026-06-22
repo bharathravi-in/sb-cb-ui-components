@@ -5,6 +5,7 @@ import { NsContent } from '@sunbird-cb/collection'
 // import { ConfigurationsService } from '@sunbird-cb/utils';
 
 @Component({
+  standalone: false,
   selector: 'viewer-plugin-certification',
   templateUrl: './certification.component.html',
   styleUrls: ['./certification.component.scss'],

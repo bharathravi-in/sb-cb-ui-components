@@ -1,5 +1,5 @@
 // import { ConfigurationsService } from '@sunbird-cb/utils'
-import { Inject, Injectable } from '@angular/core'
+import { Inject, Injectable, Optional } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { noop, Observable, Subject } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -29,7 +29,7 @@ export class ViewerUtilService {
     private http: HttpClient,
     private configservice: ConfigurationsService,
     private contentSvc: WidgetContentService,
-    @Inject('environment') private environment: any,
+    @Optional() @Inject('environment') private environment: any,
   ) { }
 
   async fetchManifestFile(url: string) {
@@ -150,6 +150,14 @@ export class ViewerUtilService {
   }
 
   getPublicUrl(url: string): string {
+    if (!this.environment || !this.environment.contentHost) {
+      try {
+        const urlObj = new URL(url)
+        return `${window.location.origin}${urlObj.pathname}`
+      } catch {
+        return url
+      }
+    }
     const mainUrl = url.split('/content').pop() || ''
     return `${this.environment.contentHost}/${this.environment.contentBucket}/content${mainUrl}`
   }

@@ -18,6 +18,7 @@ import { jsPlumb, jsPlumbInstance } from 'jsplumb'
 import { ClassDiagramService } from './class-diagram.service'
 
 @Component({
+  standalone: false,
   selector: 'viewer-plugin-class-diagram',
   templateUrl: './class-diagram.component.html',
   styleUrls: ['./class-diagram.component.scss'],

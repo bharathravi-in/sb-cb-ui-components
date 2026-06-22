@@ -1,11 +1,10 @@
-@import "ws-vars";
-@import "ws-common";
+@use 'ws-common' as *;
 
 .quiz-question {
   overflow-x: auto;
 }
 
-.app-class .mat-list-option {
+.app-class .mat-mdc-list-option {
   padding-top: $size-m;
   padding-bottom: $size-m;
   height: auto;
@@ -15,16 +14,16 @@
 }
 
 
-.mat-list-base .mat-list-item,
-.mat-list-base .mat-list-option {
+.mat-mdc-list-base .mat-mdc-list-item,
+.mat-mdc-list-base .mat-mdc-list-option {
   width: 380px !important;
   min-height: 48px;
   height: auto !important;
   word-wrap: break-word;
 }
 
-.mat-list-base .mat-list-item .mat-list-item-content,
-.mat-list-base .mat-list-option .mat-list-item-content {
+.mat-mdc-list-base .mat-mdc-list-item .mdc-list-item__content,
+.mat-mdc-list-base .mat-mdc-list-option .mdc-list-item__content {
   padding: 16px !important
 }
 
@@ -43,11 +42,11 @@
     background-color: rgb(219, 236, 220) !important;
   }
 
-  .mat-pseudo-checkbox-checked {
+  .mat-mdc-pseudo-checkbox-checked {
     background-color: rgb(29, 137, 35) !important;
   }
 
-  .mat-pseudo-checkbox-checked::after {
+  .mat-mdc-pseudo-checkbox-checked::after {
     border-color: #1d8923 !important;
     content: "\2714";
     position: absolute;
@@ -75,11 +74,11 @@
     background-color: rgb(248, 223, 220) !important;
   }
 
-  .mat-pseudo-checkbox-checked {
+  .mat-mdc-pseudo-checkbox-checked {
     background-color: #f44336 !important;
   }
 
-  .mat-pseudo-checkbox-checked::after {
+  .mat-mdc-pseudo-checkbox-checked::after {
     border-color: #f44336 !important;
     content: "✕";
     position: absolute;
@@ -121,8 +120,8 @@
 
 @media only screen and (min-width : 240px) and (max-width: 240px) {
 
-  .mat-list-base .mat-list-item,
-  .mat-list-base .mat-list-option {
+  .mat-mdc-list-base .mat-mdc-list-item,
+  .mat-mdc-list-base .mat-mdc-list-option {
     width: 228px !important;
     min-height: 48px;
     height: auto !important;
@@ -132,8 +131,8 @@
 
 @media only screen and (min-width : 344px) and (max-width: 344px) {
 
-  .mat-list-base .mat-list-item,
-  .mat-list-base .mat-list-option {
+  .mat-mdc-list-base .mat-mdc-list-item,
+  .mat-mdc-list-base .mat-mdc-list-option {
     width: 280px !important;
     min-height: 48px;
     height: auto !important;
@@ -143,8 +142,8 @@
 
 @media only screen and (min-width : 345px) and (max-width: 360px) {
 
-  .mat-list-base .mat-list-item,
-  .mat-list-base .mat-list-option {
+  .mat-mdc-list-base .mat-mdc-list-item,
+  .mat-mdc-list-base .mat-mdc-list-option {
     width: 310px !important;
     min-height: 48px;
     height: auto !important;
@@ -154,8 +153,8 @@
 
 @media only screen and (min-width : 361px) and (max-width: 390px) {
 
-  .mat-list-base .mat-list-item,
-  .mat-list-base .mat-list-option {
+  .mat-mdc-list-base .mat-mdc-list-item,
+  .mat-mdc-list-base .mat-mdc-list-option {
     width: 320px !important;
     min-height: 48px;
     height: auto !important;
@@ -164,7 +163,7 @@
 }
 
 // @media only screen and (min-width : 360px) and (max-width: 390px) {
-//   .mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+//   .mat-mdc-list-base .mat-mdc-list-item, .mat-mdc-list-base .mat-mdc-list-option {
 //     width:auto !important;
 //     min-height: 48px;
 //     height: auto !important;
@@ -173,8 +172,8 @@
 // }
 @media only screen and (min-width : 391px) and (max-width: 767px) {
 
-  .mat-list-base .mat-list-item,
-  .mat-list-base .mat-list-option {
+  .mat-mdc-list-base .mat-mdc-list-item,
+  .mat-mdc-list-base .mat-mdc-list-option {
     width: 370px !important;
     min-height: 48px;
     height: auto !important;

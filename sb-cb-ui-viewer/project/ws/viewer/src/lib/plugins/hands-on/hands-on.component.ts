@@ -6,7 +6,7 @@ import { NSHandsOnModels } from './hands-on.model'
 import { NSHandsOnConstants } from './hands-on.constants'
 import { LoggerService, EventService } from '@sunbird-cb/utils-v2'
 import { HandsOnService } from './hands-on.service'
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog'
+import { MatDialog } from '@angular/material/dialog'
 import { HandsOnDialogComponent } from './components/hands-on-dialog/hands-on-dialog.component'
 
 // import 'brace'
@@ -60,6 +60,7 @@ import { HandsOnDialogComponent } from './components/hands-on-dialog/hands-on-di
 // import 'brace/theme/eclipse'
 
 @Component({
+  standalone: false,
   selector: 'viewer-plugin-hands-on',
   templateUrl: './hands-on.component.html',
   styleUrls: ['./hands-on.component.scss'],

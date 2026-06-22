@@ -74,7 +74,6 @@ $green : #1D8923;
     width: 14px;
     font-size: 14px;
     min-width: 14px;
-     margin-top: -15px;
 }
 
 .bold {
@@ -294,4 +293,9 @@ $green : #1D8923;
 .custom-blue-btn {
     border-color: #1b4ca1 !important;
     color: #1b4ca1 !important;
+}
+
+.no-margin-padding {
+    margin: 0;
+    padding: 0;
 }

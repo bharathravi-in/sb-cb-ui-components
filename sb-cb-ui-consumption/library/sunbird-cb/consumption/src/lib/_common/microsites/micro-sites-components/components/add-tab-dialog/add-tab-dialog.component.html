@@ -1,7 +1,7 @@
 <h2 mat-dialog-title class="dialog-title">{{data ? 'Edit Section Title' : 'Add New Tab'}}</h2>
 
 <mat-dialog-content class="dialog-content">
-  <mat-form-field appearance="outline" class="full-width">
+  <mat-form-field appearance="outline" class="full-width tab-label">
     <mat-label>{{data ? 'Section Title' : 'Tab Title'}}</mat-label>
     <input matInput [(ngModel)]="tabTitle" (keydown)="onKeydown($event)" placeholder="Enter title" autofocus required
       maxlength="75">

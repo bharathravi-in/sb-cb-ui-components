@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
+  standalone: false,
   selector: 'viewer-web-module-container',
   templateUrl: './web-module.component.html',
   styleUrls: ['./web-module.component.scss'],

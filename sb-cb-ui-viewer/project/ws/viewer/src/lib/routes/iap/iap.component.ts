@@ -9,6 +9,7 @@ import { ViewerUtilService } from '../../viewer-util.service'
 import { SubapplicationRespondService } from '../../services/subapplication-responsd.service'
 
 @Component({
+  standalone: false,
   selector: 'viewer-iap',
   templateUrl: './iap.component.html',
   styleUrls: ['./iap.component.scss'],

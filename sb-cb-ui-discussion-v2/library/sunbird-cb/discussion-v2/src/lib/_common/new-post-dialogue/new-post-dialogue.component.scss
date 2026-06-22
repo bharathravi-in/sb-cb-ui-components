@@ -306,3 +306,10 @@
     /* stylelint-enable */
   }
 }
+
+.new-post-dialogue-box-container {
+  overflow-y: auto;
+  height: auto;
+  max-height: 85vh;
+  margin-bottom: 25px;
+}

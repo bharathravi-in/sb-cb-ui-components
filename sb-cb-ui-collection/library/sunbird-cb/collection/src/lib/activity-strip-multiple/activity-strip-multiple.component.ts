@@ -38,10 +38,10 @@ interface IStripUnitContentData {
   } | null
 }
 @Component({
-    selector: 'ws-widget-activity-strip-multiple',
-    templateUrl: './activity-strip-multiple.component.html',
-    styleUrls: ['./activity-strip-multiple.component.scss'],
-    standalone: false
+  selector: 'ws-widget-activity-strip-multiple',
+  templateUrl: './activity-strip-multiple.component.html',
+  styleUrls: ['./activity-strip-multiple.component.scss'],
+  standalone: false
 })
 export class ActivityStripMultipleComponent extends WidgetBaseComponent
   implements
@@ -332,7 +332,7 @@ export class ActivityStripMultipleComponent extends WidgetBaseComponent
     return this.contentSvc
       .fetchContentLikes(contentIds)
       .then(likeHash => {
-        const likes = likeHash
+        const likes: any = likeHash
         results.forEach(result => {
           result.widgetData.likes = likes[result.widgetData.content.identifier] || 0
         })

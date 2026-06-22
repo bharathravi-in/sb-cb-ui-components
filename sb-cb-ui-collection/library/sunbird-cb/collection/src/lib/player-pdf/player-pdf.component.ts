@@ -323,7 +323,7 @@ export class PlayerPdfComponent extends WidgetBaseComponent
   }
 
   refresh() {
-    this.renderSubject.next()
+    this.renderSubject.next({})
   }
 
   private async loadDocument(url: string) {
@@ -339,7 +339,7 @@ export class PlayerPdfComponent extends WidgetBaseComponent
         ? this.widgetData.resumePage
         : 1,
     )
-    this.renderSubject.next()
+    this.renderSubject.next({})
     this.activityStartedAt = new Date()
     if (!this.widgetData.disableTelemetry) {
       this.eventDispatcher(WsEvents.EnumTelemetrySubType.Loaded)

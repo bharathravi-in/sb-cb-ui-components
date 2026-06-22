@@ -1,6 +1,4 @@
-@import "ws-vars";
-@import "ws-common";
-@import "ws-mixins";
+@use 'ws-common' as *;
 
 $nav-height: 40px;
 
@@ -283,18 +281,18 @@ $nav-height: 40px;
   color: rgb(27, 76, 161) !important
 }
 
-.mat-cell {
+.mat-mdc-cell {
   border: 1px solid orange;
   padding: $size-s;
 }
 
-.mat-header-cell {
+.mat-mdc-header-cell {
   border: 1px solid orange;
   padding: $size-s;
 }
 
 
-::ng-deep .mat-progress-bar {
+::ng-deep .mat-mdc-progress-bar {
   height: 9px;
 }
 
@@ -416,12 +414,12 @@ $nav-height: 40px;
   /* stylelint-enable */
 }
 
-::ng-deep .question-flag .mat-standard-chip {
+::ng-deep .question-flag .mat-mdc-chip {
   height: 32px !important;
   width: 48px !important;
 }
 
-::ng-deep .timer .mat-standard-chip {
+::ng-deep .timer .mat-mdc-chip {
   min-height: 32px !important;
   width: 102px !important;
 }
@@ -470,7 +468,7 @@ $nav-height: 40px;
   // padding-left: 16px;
 }
 
-.quest_num_box ::ng-deep .mat-chip-list-wrapper {
+.quest_num_box ::ng-deep .mat-mdc-chip-set {
   margin: 0 !important;
 }
 
@@ -600,7 +598,7 @@ $nav-height: 40px;
   margin-top: 0.15rem;
 }
 
-::ng-deep .calculate-overlay .mat-spinner circle {
+::ng-deep .calculate-overlay .mat-mdc-progress-spinner circle {
   stroke: orange !important;
   stroke-width: 8px !important;
 }
@@ -738,8 +736,8 @@ $nav-height: 40px;
   padding-left: 8px;
 }
 
-::ng-deep .mat-chip-list-wrapper .mat-standard-chip,
-.mat-chip-list-wrapper input.mat-input-element {
+::ng-deep .mat-mdc-chip-set .mat-mdc-chip,
+.mat-mdc-chip-set input.mat-mdc-input-element {
   margin: 0 !important
 }
 

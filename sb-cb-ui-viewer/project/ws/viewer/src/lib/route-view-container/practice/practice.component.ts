@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router'
 import { NSQuiz } from '../../plugins/quiz/quiz.model'
 
 @Component({
+  standalone: false,
     selector: 'viewer-practice-container',
     templateUrl: './practice.component.html',
     styleUrls: ['./practice.component.scss'],

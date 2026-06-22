@@ -5,6 +5,7 @@ import { NSRdbmsHandsOn } from '../../rdbms-hands-on.model'
 import { MatSnackBar } from '@angular/material'
 
 @Component({
+  standalone: false,
   selector: 'viewer-dbms-concept-create',
   templateUrl: './dbms-concept-create.component.html',
   styleUrls: ['./dbms-concept-create.component.scss'],

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
+  standalone: false,
   selector: 'viewer-survey-container',
   templateUrl: './survey.component.html',
   styleUrls: ['./survey.component.scss'],

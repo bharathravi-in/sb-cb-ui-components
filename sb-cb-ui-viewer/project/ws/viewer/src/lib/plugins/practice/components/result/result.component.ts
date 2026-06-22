@@ -3,8 +3,9 @@ import { NsContent, MultilingualTranslationsService } from '@sunbird-cb/utils-v2
 import { NSPractice } from '../../practice.model'
 import { MatAccordion } from '@angular/material/expansion'
 import * as _ from 'lodash'
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table'
+import { MatTableDataSource } from '@angular/material/table'
 @Component({
+  standalone: false,
   selector: 'viewer-result',
   templateUrl: './result.component.html',
   styleUrls: ['./result.component.scss'],

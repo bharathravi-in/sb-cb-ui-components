@@ -1,13 +1,16 @@
-<div class="padding-dynamic" *ngIf="surveyData">
+@if (surveyData) {
+  <div class="padding-dynamic">
     <div class="flex flex-around flex-wrapped">
-        <div class="w-full">
-            <mat-card class="viewer-container">
-                <mat-card-content>
-                    <div id="fullScreenContainer" class="video-player">
-                        <ng-container *ngIf="isFetchingDataComplete"
-                            [sbUiResolverWidget]="widgetResolverSurveyData"></ng-container>
-                    </div>
-                    <div class="flex justify-end mt-3">
+      <div class="w-full">
+        <mat-card class="viewer-container">
+          <mat-card-content>
+            <div id="fullScreenContainer" class="video-player">
+              @if (isFetchingDataComplete) {
+                <ng-container
+                [sbUiResolverWidget]="widgetResolverSurveyData"></ng-container>
+              }
+            </div>
+            <div class="flex justify-end mt-3">
                         <ws-widget-btn-content-download [forPreview]="forPreview" [widgetData]="
                     surveyData
                         | pipePartialContent
@@ -21,9 +24,10 @@
                         'artifactUrl'
                             ]
                     "></ws-widget-btn-content-download>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
-</div>
+  </div>
+}

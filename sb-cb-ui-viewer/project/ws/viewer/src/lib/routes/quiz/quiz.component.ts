@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core'
+import { Component, Inject, OnInit, OnDestroy, Optional } from '@angular/core'
 import { Subscription } from 'rxjs'
 import { HttpBackend, HttpClient } from '@angular/common/http'
 import { NsContent, WidgetContentService } from '@sunbird-cb/collection'
@@ -8,6 +8,7 @@ import { WsEvents, EventService } from '@sunbird-cb/utils'
 import { ViewerUtilService } from '../../viewer-util.service'
 
 @Component({
+  standalone: false,
   selector: 'viewer-quiz',
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.scss'],
@@ -31,7 +32,7 @@ export class QuizComponent implements OnInit, OnDestroy {
     private contentSvc: WidgetContentService,
     private eventSvc: EventService,
     private viewSvc: ViewerUtilService,
-    @Inject('environment') private environment: any,
+    @Optional() @Inject('environment') private environment: any,
   ) { }
 
   ngOnInit() {
@@ -82,6 +83,14 @@ export class QuizComponent implements OnInit, OnDestroy {
     }
   }
   generateUrl(oldUrl: string) {
+    if (!this.environment || !this.environment.azureHost) {
+      try {
+        const urlObj = new URL(oldUrl)
+        return `${window.location.origin}${urlObj.pathname}`
+      } catch {
+        return oldUrl
+      }
+    }
     const chunk = oldUrl ? oldUrl.split('/') : []
     const newChunk = this.environment.azureHost.split('/')
     const newLink = []
@@ -154,13 +163,19 @@ export class QuizComponent implements OnInit, OnDestroy {
   // }
 
   getUrl(url: string) {
-    if (url && url.length > 0) {
+    if (url && url.length > 0 && this.environment) {
       const tempData = url.split('content')
       if (url.indexOf(`/collection`) > 0) {
         return `${this.environment.mdoPath}${this.environment.contentBucket}${tempData[tempData.length - 1]}`
       }
       return `${this.environment.mdoPath}${this.environment.contentBucket}/content${tempData[tempData.length - 1]}`
-    }
-    return url
+    } if (url && url.length > 0) {
+      try {
+        const urlObj = new URL(url)
+        return `${window.location.origin}${urlObj.pathname}`
+      } catch {
+        return url
+      }
+    } return url
   }
 }

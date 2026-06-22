@@ -1,4 +1,4 @@
-@import 'ws-mixins';
+@use 'ws-mixins' as *;
 
 @mixin layout-width {
   // @include breakpoint-gt-sm {
@@ -80,7 +80,7 @@
   text-shadow: 0 0 3px #000;
 }
 
-.mat-form-field {
+.mat-mdc-form-field {
   width: 137px !important;
 }
 

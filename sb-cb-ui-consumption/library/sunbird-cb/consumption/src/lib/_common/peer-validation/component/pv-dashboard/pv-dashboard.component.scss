@@ -420,3 +420,20 @@
     margin: 0;
   }
 }
+
+::ng-deep .filter-row {
+  .mat-mdc-text-field-wrapper {
+    min-height: 40px !important;
+  }
+  .mat-mdc-input-element {
+    margin-top: 5px !important;
+  }
+  .status-filter {
+    .mat-mdc-select-value-text {
+      margin-top: 5px !important;
+    }
+  }
+  .line-height-0 {
+    line-height: 0;
+  }
+}

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
+  standalone: false,
   selector: 'viewer-audio-native-container',
   templateUrl: './audio-native.component.html',
   styleUrls: ['./audio-native.component.scss'],

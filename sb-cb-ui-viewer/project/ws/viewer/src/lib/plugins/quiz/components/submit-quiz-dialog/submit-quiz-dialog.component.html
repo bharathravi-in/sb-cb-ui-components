@@ -1,14 +1,20 @@
 <h2 mat-dialog-title i18n>Submit Quiz</h2>
 <mat-dialog-content>
-  <ng-container i18n *ngIf="submissionState === 'answered'">
+  @if (submissionState === 'answered') {
+    <ng-container i18n>
     Do you want to submit?
   </ng-container>
-  <ng-container i18n *ngIf="submissionState === 'unanswered'">
+  }
+  @if (submissionState === 'unanswered') {
+    <ng-container i18n>
     You have not answered all the questions! Do you still want to submit?
   </ng-container>
-  <ng-container i18n *ngIf="submissionState === 'marked'">
+  }
+  @if (submissionState === 'marked') {
+    <ng-container i18n>
     You still have some questions marked for later! Do you still want to submit?
   </ng-container>
+  }
 </mat-dialog-content>
 <mat-dialog-actions class="flex-row-reverse">
   <button mat-button mat-dialog-close i18n>No</button>

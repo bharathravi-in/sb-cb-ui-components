@@ -21,12 +21,12 @@
 }
 
 .search-icon {
-  margin-top: 10px !important;
+  // margin-top: 10px !important;
 }
 
 .search-close-btn {
-  height: 24px !important;
-  margin-top: 15px;
+  // height: 24px !important;
+  // margin-top: 15px;
 }
 
 .authers-header-row {
@@ -148,4 +148,11 @@
   padding: 8px 12px;
   background-color: #f5f7ff;
   border-radius: 0 4px 4px 0;
+}
+
+
+::ng-deep .cra-languages-dropdown {
+  .mat-mdc-select-arrow {
+    margin-right: 15px;
+  }
 }

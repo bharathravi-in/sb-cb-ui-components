@@ -11,6 +11,7 @@ import { ViewerUtilService } from '../../viewer-util.service'
 import { PdfScormDataService } from '../../pdf-scorm-data-service'
 import { AppTocService } from '../../services/app-toc.service'
 @Component({
+  standalone: false,
   selector: 'viewer-viewer-secondary-top-bar',
   templateUrl: './viewer-secondary-top-bar.component.html',
   styleUrls: ['./viewer-secondary-top-bar.component.scss'],

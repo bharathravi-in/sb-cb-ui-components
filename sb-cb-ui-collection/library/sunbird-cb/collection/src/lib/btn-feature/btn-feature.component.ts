@@ -61,7 +61,7 @@ export class BtnFeatureComponent extends WidgetBaseComponent
     if (this.widgetData.actionBtn && this.widgetData.actionBtn.badgeEndpoint) {
       this.btnFeatureSvc
         .getBadgeCount(this.widgetData.actionBtn.badgeEndpoint)
-        .then(count => {
+        .then((count: any) => {
           if (count > 99) {
             this.badgeCount = '99+'
           } else if (count > 0) {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core'
+import { Component, Inject, OnInit, OnDestroy, Optional } from '@angular/core'
 import { Subscription } from 'rxjs'
 import {
   NsContent,
@@ -13,6 +13,7 @@ import { Platform } from '@angular/cdk/platform'
 import { AccessControlService } from '@sunbird-cb/toc'
 
 @Component({
+  standalone: false,
   selector: 'viewer-video',
   templateUrl: './video.component.html',
   styleUrls: ['./video.component.scss'],
@@ -37,7 +38,7 @@ export class VideoComponent implements OnInit, OnDestroy {
     private contentSvc: WidgetContentService,
     private platform: Platform,
     private accessControlSvc: AccessControlService,
-    @Inject('environment') private environment: any,
+    @Optional() @Inject('environment') private environment: any,
   ) {
     this.activatedRoute.paramMap.subscribe(params => {
       this.forPreview = params.get('preview') === 'true'
@@ -103,9 +104,7 @@ export class VideoComponent implements OnInit, OnDestroy {
             this.widgetResolverVideoData = this.initWidgetResolverVideoData(this.videoData as any)
             const url = this.generateUrl(this.videoData ? this.videoData.artifactUrl : '')
             this.widgetResolverVideoData.widgetData.url = this.videoData
-              ? this.forPreview
-                ? url // this.viewerSvc.getAuthoringUrl(this.videoData.artifactUrl)
-                : this.videoData.artifactUrl
+              ? url
               : ''
             this.widgetResolverVideoData.widgetData.resumePoint = this.getResumePoint(this.videoData)
             this.widgetResolverVideoData.widgetData.identifier = this.videoData
@@ -149,109 +148,16 @@ export class VideoComponent implements OnInit, OnDestroy {
         )
       }
     })
-    this.isNotEmbed =
-      this.activatedRoute.snapshot.queryParamMap.get('embed') === 'true' ? false : true
-    if (
-      this.activatedRoute.snapshot.queryParamMap.get('preview') &&
-      !this.accessControlSvc.authoringConfig.newDesign
-    ) {
-      this.viewerDataSubscription = this.viewerSvc
-        .getContent(this.activatedRoute.snapshot.paramMap.get('resourceId') || '')
-        .subscribe(data => {
-          this.videoData = data
-          if (this.videoData) {
-            this.formDiscussionForumWidget(this.videoData)
-          }
-          this.widgetResolverVideoData = this.initWidgetResolverVideoData(this.videoData)
-          console.log('this.widgetResolverVideoData', this.widgetResolverVideoData)
-          let url = ''
-          // if (this.videoData.artifactUrl.indexOf('/content-store/') > -1) {
-          //   url = `/apis/authContent/${new URL(this.videoData.artifactUrl).pathname}`
-          // } else {
-          //   url = `/apis/authContent/${encodeURIComponent(this.videoData.artifactUrl)}`
-          // }
-          url = this.generateUrl(this.videoData.artifactUrl)
-          this.widgetResolverVideoData.widgetData.url = this.videoData ? url : ''
-          this.widgetResolverVideoData.widgetData.disableTelemetry = true
-          this.isFetchingDataComplete = true
-
-          if (this.videoData.subTitles) {
-            // need to update
-            let subTitleUrl = ''
-            if (this.videoData.subTitles.length > 0 && this.videoData.subTitles[0]) {
-              if (this.videoData.subTitles[0].url.indexOf('/content-store/') > -1) {
-                subTitleUrl = `/apis/authContent/${new URL(this.videoData.subTitles[0].url).pathname}`
-              } else {
-                subTitleUrl = `/apis/authContent/${encodeURIComponent(this.videoData.subTitles[0].url)}`
-              }
-            }
-
-            this.widgetResolverVideoData.widgetData.subtitles = [{
-              srclang: '',
-              label: '',
-              url: subTitleUrl,
-            }]
-          }
-        })
-    } else {
-      this.routeDataSubscription = this.activatedRoute.data.subscribe(
-        async data => {
-          this.widgetResolverVideoData = null
-          this.videoData = data.content.data
-          if (this.videoData) {
-            this.formDiscussionForumWidget(this.videoData)
-          }
-          this.widgetResolverVideoData = this.initWidgetResolverVideoData(this.videoData as any)
-          const url = this.generateUrl(this.videoData ? this.videoData.artifactUrl : '')
-          this.widgetResolverVideoData.widgetData.url = this.videoData
-            ? this.forPreview
-              ? url // this.viewerSvc.getAuthoringUrl(this.videoData.artifactUrl)
-              : this.videoData.artifactUrl
-            : ''
-          this.widgetResolverVideoData.widgetData.resumePoint = this.getResumePoint(this.videoData)
-          this.widgetResolverVideoData.widgetData.identifier = this.videoData
-            ? this.videoData.identifier
-            : ''
-          this.widgetResolverVideoData.widgetData.mimeType = data.content.data.mimeType
-          // if (this.videoData && this.videoData.identifier) {
-          //   if (this.activatedRoute.snapshot.queryParams.collectionId) {
-          //     await this.fetchContinueLearning(
-          //       this.activatedRoute.snapshot.queryParams.collectionId,
-          //       this.videoData.identifier,
-          //     )
-          //   } else {
-          //     await this.fetchContinueLearning(this.videoData.identifier, this.videoData.identifier)
-          //   }
-          // }
-          // if (data.content.data.subTitles && data.content.data.subTitles[0]) {
-
-          //   let subTitlesUrl = ''
-          //   if (data.content.data.subTitles[0].url.indexOf('/content-store/') > -1) {
-          //     subTitlesUrl = `/apis/authContent/${new URL(data.content.data.subTitles[0].url).pathname}`
-          //   } else {
-          //     subTitlesUrl = `/apis/authContent/${encodeURIComponent(data.content.data.subTitles[0].url)}`
-          //   }
-
-          //   this.widgetResolverVideoData.widgetData.subtitles = [{
-          //     srclang: '',
-          //     label: '',
-          //     url: subTitlesUrl,
-          //   }]
-
-          // }
-
-          this.widgetResolverVideoData = JSON.parse(JSON.stringify(this.widgetResolverVideoData))
-          // if (this.videoData && this.videoData.artifactUrl.indexOf('content-store') >= 0) {
-          //   await this.setS3Cookie(this.videoData.identifier)
-          // }
-          this.isFetchingDataComplete = true
-        },
-        () => { },
-      )
-    }
   }
   generateUrl(oldUrl: string) {
-    console.log('environment', this.environment)
+    if (!this.environment || !this.environment.azureHost) {
+      try {
+        const urlObj = new URL(oldUrl)
+        return `${window.location.origin}${urlObj.pathname}`
+      } catch {
+        return oldUrl
+      }
+    }
     const chunk = oldUrl ? oldUrl.split('/') : []
     const newChunk = this.environment.azureHost.split('/')
     const newLink = []
@@ -265,7 +171,6 @@ export class VideoComponent implements OnInit, OnDestroy {
       }
     }
     const newUrl = newLink.join('/')
-    console.log('newUrl', newUrl)
     return newUrl
   }
   ngOnDestroy() {

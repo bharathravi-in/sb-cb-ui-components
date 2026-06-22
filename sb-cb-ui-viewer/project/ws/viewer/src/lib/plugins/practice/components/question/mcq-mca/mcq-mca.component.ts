@@ -13,6 +13,7 @@ import { PracticeService } from '../../../practice.service'
 import { NsContent } from '@sunbird-cb/utils-v2'
 
 @Component({
+  standalone: false,
     selector: 'viewer-mcq-mca-question',
     templateUrl: './mcq-mca.component.html',
     styleUrls: ['./mcq-mca.component.scss'],

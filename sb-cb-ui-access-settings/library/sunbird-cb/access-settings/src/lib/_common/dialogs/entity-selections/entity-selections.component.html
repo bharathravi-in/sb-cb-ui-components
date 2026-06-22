@@ -18,8 +18,8 @@
   >
     <!-- Search Box -->
     <ng-container *ngIf="selectionType !== selectionTypeEnum.CustomField">
-      <div class="search-container flex items-center gap-4">
-        <div class="mat-full-radius flex-grow">
+      <div class="search-container access-settings-search-container flex items-center gap-4">
+        <div class="mat-full-radius flex-grow mt-6">
           <mat-form-field appearance="outline" class="w-full">
             <mat-icon matPrefix>search</mat-icon>
             <input matInput placeholder="Type here to search..." [formControl]="searchControl" (keyup.enter)="search()" />
@@ -160,7 +160,7 @@
     </ng-container>
 
     <ng-container *ngIf="!isLoading">
-      <div class="flex gap-16 items-center p-4 options-checkbox">
+      <div class="flex gap-8 items-center p-4 options-checkbox">
         <ng-container *ngFor="let group of dataList">
           <mat-checkbox [disabled]="accessControlCriteriaSelection?.readOnly || data?.disabled" [checked]="isSelected(group)" (change)="toggleSelection(group)" [title]="group">
             {{ group }}
@@ -171,7 +171,7 @@
   </ng-container>
 
   <ng-container *ngIf="selectionType === selectionTypeEnum.VerificationStatus">
-    <div class="flex gap-16 items-center p-4 options-checkbox">
+    <div class="flex gap-8 items-center p-4 options-checkbox">
       <ng-container *ngFor="let group of dataList">
         <mat-checkbox
           [disabled]="accessControlCriteriaSelection?.readOnly || data?.disabled || disabledVerifiedIfModerated(group)"
@@ -248,7 +248,7 @@
             <ng-container *ngIf="group.value && group.value.length">
               <ng-container *ngFor="let column of group.value">
                 <div class="batch-column">
-                  <div *ngFor="let entity of column" class="org-card py-2">
+                  <div *ngFor="let entity of column" class="org-card">
                     <ng-container
                       *ngIf="
                         selectionType === selectionTypeEnum.Designation ||

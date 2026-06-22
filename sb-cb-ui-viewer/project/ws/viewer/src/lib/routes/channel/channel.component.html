@@ -1,5 +1,9 @@
-<ws-widget-page *ngIf="isFetchingDataComplete && !isErrorOccured" [widgetData]="channelManifest">
-</ws-widget-page>
-<h2 *ngIf="isErrorOccured" class="mat-error margin-top-m text-center" i18n>
+@if (isFetchingDataComplete && !isErrorOccured) {
+  <ws-widget-page [widgetData]="channelManifest">
+  </ws-widget-page>
+}
+@if (isErrorOccured) {
+  <h2 class="mat-error margin-top-m text-center" i18n>
   Error fetching page JSON
 </h2>
+}

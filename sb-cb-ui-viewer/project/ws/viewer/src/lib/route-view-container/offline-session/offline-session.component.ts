@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 
 @Component({
+  standalone: false,
   selector: 'viewer-offline-session-container',
   templateUrl: './offline-session.component.html',
   styleUrls: ['./offline-session.component.scss'],

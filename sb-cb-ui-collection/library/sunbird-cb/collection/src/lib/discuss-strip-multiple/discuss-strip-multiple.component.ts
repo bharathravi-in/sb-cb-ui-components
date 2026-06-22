@@ -38,10 +38,10 @@ interface IStripUnitContentData {
   stripLogo: any
 }
 @Component({
-    selector: 'ws-widget-discuss-strip-multiple',
-    templateUrl: './discuss-strip-multiple.component.html',
-    styleUrls: ['./discuss-strip-multiple.component.scss'],
-    standalone: false
+  selector: 'ws-widget-discuss-strip-multiple',
+  templateUrl: './discuss-strip-multiple.component.html',
+  styleUrls: ['./discuss-strip-multiple.component.scss'],
+  standalone: false
 })
 export class DiscussStripMultipleComponent extends WidgetBaseComponent
   implements
@@ -292,7 +292,7 @@ export class DiscussStripMultipleComponent extends WidgetBaseComponent
     return this.contentSvc
       .fetchContentLikes(contentIds)
       .then(likeHash => {
-        const likes = likeHash
+        const likes: any = likeHash
         results.forEach(result => {
           result.widgetData.likes = likes[result.widgetData.content.identifier] || 0
         })

@@ -1,2 +1,4 @@
-<viewer-plugin-rdbms-hands-on *ngIf="isFetchingDataComplete"
+@if (isFetchingDataComplete) {
+  <viewer-plugin-rdbms-hands-on
   [processedContent]="{ content: rDbmsHandsOnData, rdbms: rDbmsHandsOnManifest }"></viewer-plugin-rdbms-hands-on>
+}

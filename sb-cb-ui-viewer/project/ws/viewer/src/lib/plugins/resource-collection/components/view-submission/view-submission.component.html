@@ -8,18 +8,24 @@
     </button>
   </div>
 </ng-container>
-<ng-container *ngIf="submissionAnswerText.length>0">
+@if (submissionAnswerText.length>0) {
   <mat-dialog-content class="w-full">
     <div class="textView">
-      <div *ngFor="let answers of submissionAnswerText">
-        <p>{{answers}}</p>
-      </div>
+      @for (answers of submissionAnswerText; track answers) {
+        <div>
+          <p>{{answers}}</p>
+        </div>
+      }
     </div>
   </mat-dialog-content>
-</ng-container>
-<ng-container *ngIf="pdfData|| videoData">
+}
+@if (pdfData|| videoData) {
   <mat-dialog-content class="h-full pdfVideoPadding">
-    <ws-widget-player-pdf *ngIf="pdfData" [widgetData]="pdfData"></ws-widget-player-pdf>
-    <ws-widget-player-video *ngIf="videoData" [widgetData]="videoData"></ws-widget-player-video>
+    @if (pdfData) {
+      <ws-widget-player-pdf [widgetData]="pdfData"></ws-widget-player-pdf>
+    }
+    @if (videoData) {
+      <ws-widget-player-video [widgetData]="videoData"></ws-widget-player-video>
+    }
   </mat-dialog-content>
-</ng-container>
+}

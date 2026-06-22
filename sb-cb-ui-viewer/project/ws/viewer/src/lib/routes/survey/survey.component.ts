@@ -10,6 +10,7 @@ import { ViewerUtilService } from '../../viewer-util.service'
 // import { environment } from 'src/environments/environment'
 
 @Component({
+  standalone: false,
   selector: 'viewer-survey',
   templateUrl: './survey.component.html',
   styleUrls: ['./survey.component.scss'],
@@ -161,7 +162,7 @@ export class SurveyComponent implements OnInit, OnDestroy {
     const content = await this.contentSvc
       .fetchContent(this.widgetResolverSurveyData.widgetData.collectionId || '', 'minimal')
       .toPromise()
-    this.widgetResolverSurveyData.widgetData.courseName = content.result.content.name
+    this.widgetResolverSurveyData.widgetData.courseName = content!.result.content.name
   }
 
   // generateUrl(oldUrl: string) {

@@ -36,10 +36,10 @@ const videoJsOptions: videoJs.PlayerOptions = {
 }
 
 @Component({
-    selector: 'ws-widget-player-video',
-    templateUrl: './player-video.component.html',
-    styleUrls: ['./player-video.component.scss'],
-    standalone: false
+  selector: 'ws-widget-player-video',
+  templateUrl: './player-video.component.html',
+  styleUrls: ['./player-video.component.scss'],
+  standalone: false
 })
 export class PlayerVideoComponent extends WidgetBaseComponent
   implements
@@ -258,7 +258,7 @@ export class PlayerVideoComponent extends WidgetBaseComponent
     })
   }
   async fetchContent() {
-    const content = await this.contentSvc
+    const content: any = await this.contentSvc
       .fetchContent(this.widgetData.identifier || '', 'minimal')
       .toPromise()
     if (content.artifactUrl && content.artifactUrl.indexOf('/content-store/') > -1) {

@@ -1,13 +1,16 @@
-<div class="padding-dynamic" *ngIf="pdfData && playPdfContentFlag">
-  <div class="flex flex-around flex-wrapped">
-    <div class="w-full">
-      <div class="pdf-outer-container">
-        <mat-card>
-          <mat-card-content>
-            <div id="fullScreenContainer" class="video-player">
-              <ng-container *ngIf="isFetchingDataComplete" [sbUiResolverWidget]="widgetResolverPdfData"></ng-container>
-            </div>
-            <div class="flex justify-end mt-3">
+@if (pdfData && playPdfContentFlag) {
+  <div class="padding-dynamic">
+    <div class="flex flex-around flex-wrapped">
+      <div class="w-full">
+        <div class="pdf-outer-container">
+          <mat-card>
+            <mat-card-content>
+              <div id="fullScreenContainer" class="video-player">
+                @if (isFetchingDataComplete) {
+                  <ng-container [sbUiResolverWidget]="widgetResolverPdfData"></ng-container>
+                }
+              </div>
+              <div class="flex justify-end mt-3">
               <ws-widget-btn-content-download [forPreview]="forPreview" [widgetData]="
                   pdfData
                     | pipePartialContent
@@ -21,7 +24,7 @@
                           'artifactUrl'
                         ]
                 "></ws-widget-btn-content-download>
-              <!-- TODO: Blocking this button for now, as the functionality is not working -->
+                <!-- TODO: Blocking this button for now, as the functionality is not working -->
               <!-- <ws-widget-btn-content-like [forPreview]="forPreview" [widgetData]="{
                   identifier: pdfData.identifier,
                   isDisabled: isPreviewMode
@@ -49,30 +52,33 @@
     </div>
   </div>
   <!-- <div *ngIf="discussionForumWidget && isRestricted" class="padding-m">
-    <div class="video-discussion-forum-in margin-top-m margin-bottom-m">
-      <h2 class="mat-toolbar discussion-head">Discussion Forum</h2>
-      <ng-container [sbUiResolverWidget]="discussionForumWidget"></ng-container>
-    </div>
-  </div> -->
+  <div class="video-discussion-forum-in margin-top-m margin-bottom-m">
+    <h2 class="mat-toolbar discussion-head">Discussion Forum</h2>
+    <ng-container [sbUiResolverWidget]="discussionForumWidget"></ng-container>
+  </div>
+</div> -->
 </div>
-<div class="start-pdf-content-container" *ngIf="!playPdfContentFlag && isMobile">
-  <div class="flex flex-around flex-wrapped">
-    <div class="w-full">
-      <div class="content-instruction">
-        <div>
-          <p class="content-instruction-desc">{{'playerbrief.openPDF' | translate}}</p>
-        </div>
-        <div class="cursor-pointer">
-          <button color="secondary" class="play-btn flex mat-body-2 flex-middle font-bold-imp px-2" (click)="openPdf()">
-            <ng-container>
-              <span class="mr-1">
-                <img alt="PDF" class="vertical-align-middle" src="/assets/icons/content/grey/pdf.svg">
-                <span class="fw-700">Open</span>
-              </span>
-            </ng-container>
-          </button>
+}
+@if (!playPdfContentFlag && isMobile) {
+  <div class="start-pdf-content-container">
+    <div class="flex flex-around flex-wrapped">
+      <div class="w-full">
+        <div class="content-instruction">
+          <div>
+            <p class="content-instruction-desc">{{'playerbrief.openPDF' | translate}}</p>
+          </div>
+          <div class="cursor-pointer">
+            <button color="secondary" class="play-btn flex mat-body-2 flex-middle font-bold-imp px-2" (click)="openPdf()">
+              <ng-container>
+                <span class="mr-1">
+                  <img alt="PDF" class="vertical-align-middle" src="/assets/icons/content/grey/pdf.svg">
+                  <span class="fw-700">Open</span>
+                </span>
+              </ng-container>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+}

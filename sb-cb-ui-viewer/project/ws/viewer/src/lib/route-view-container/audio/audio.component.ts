@@ -4,6 +4,7 @@ import { NsWidgetResolver } from '@sunbird-cb/resolver'
 import { ActivatedRoute } from '@angular/router'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 @Component({
+  standalone: false,
   selector: 'viewer-audio-container',
   templateUrl: './audio.component.html',
   styleUrls: ['./audio.component.scss'],

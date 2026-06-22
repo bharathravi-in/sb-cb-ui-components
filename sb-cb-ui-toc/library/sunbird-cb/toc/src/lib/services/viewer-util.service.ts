@@ -165,19 +165,22 @@ export class ViewerUtilService {
       this.http
         .patch(`${this.API_ENDPOINTS.PROGRESS_UPDATE}/${contentId}`, req)
         .subscribe(noop, noop)
-      if (this.tocSvc.hashmap[contentId]) {
-        const currentStatus = this.tocSvc.hashmap[contentId]['completionStatus']
-        
-        if (!currentStatus || currentStatus < 2) {
-          this.tocSvc.hashmap[contentId]['completionPercentage'] = req.request.contents[0].completionPercentage
-          this.tocSvc.hashmap[contentId]['completionStatus'] = Number(req.request.contents[0].status) || 0
-          this.tocSvc.hashmap = { ...this.tocSvc.hashmap }
-          
-          // Trigger milestone lock recomputation - it will emit hashmapUpdated with both progress and lock changes
-          this.tocSvc.triggerMilestoneLockUpdate()
-          // Emit to trigger viewer component refresh for Learning Pathways
-          this.markAsCompleteSubject.next(true)
+      const hashEntry = this.tocSvc.hashmap[contentId] || {}
+      const currentStatus = hashEntry['completionStatus']
+      
+      if (!currentStatus || currentStatus < 2) {
+        this.tocSvc.hashmap[contentId] = {
+          ...hashEntry,
+          identifier: contentId,
+          completionPercentage: req.request.contents[0].completionPercentage,
+          completionStatus: Number(req.request.contents[0].status) || 0,
         }
+        this.tocSvc.hashmap = { ...this.tocSvc.hashmap }
+        
+        // Trigger milestone lock recomputation - it will emit hashmapUpdated with both progress and lock changes
+        this.tocSvc.triggerMilestoneLockUpdate()
+        // Emit to trigger viewer component refresh for Learning Pathways
+        this.markAsCompleteSubject.next(true)
       }
     } else {
       req = {}
@@ -393,12 +396,17 @@ export class ViewerUtilService {
       this.http
         .patch(`${this.API_ENDPOINTS.PROGRESS_UPDATE}/${contentId}`, req)
         .subscribe(noop, noop)
-      if (this.tocSvc.hashmap && this.tocSvc.hashmap[contentId] && req.request.contents[0]) {
-        const currentStatus = this.tocSvc.hashmap[contentId]['completionStatus']
+      if (this.tocSvc.hashmap && req.request.contents[0]) {
+        const hashEntry = this.tocSvc.hashmap[contentId] || {}
+        const currentStatus = hashEntry['completionStatus']
         
         if (!currentStatus || currentStatus < 2) {
-          this.tocSvc.hashmap[contentId]['completionPercentage'] = req.request.contents[0].completionPercentage
-          this.tocSvc.hashmap[contentId]['completionStatus'] = Number(req.request.contents[0].status) || 0
+          this.tocSvc.hashmap[contentId] = {
+            ...hashEntry,
+            identifier: contentId,
+            completionPercentage: req.request.contents[0].completionPercentage,
+            completionStatus: Number(req.request.contents[0].status) || 0,
+          }
           this.tocSvc.hashmap = { ...this.tocSvc.hashmap }
           
           // Trigger milestone lock recomputation - it will emit hashmapUpdated with both progress and lock changes
@@ -489,28 +497,30 @@ export class ViewerUtilService {
   updateContentHashMapForAssesstent(contentId: string, contentProgress: any) {
     
     
-    if (this.tocSvc.hashmap[contentId]) {
-      const currentStatus = this.tocSvc.hashmap[contentId]['completionStatus'] || 0
-      const newStatus = Number(contentProgress.status) || 0
-      
-      // Update if not complete or if new status is higher
-      if (currentStatus < 2 || newStatus >= currentStatus) {
-        this.tocSvc.hashmap[contentId]['completionPercentage'] = contentProgress.completionPercentage
-        this.tocSvc.hashmap[contentId]['completionStatus'] = newStatus
-        this.tocSvc.hashmap[contentId]['status'] = newStatus
-        
-        
-        // Create new hashmap reference for Angular change detection
-        this.tocSvc.hashmap = { ...this.tocSvc.hashmap }
-        
-        // Trigger milestone lock recomputation - it will emit hashmapUpdated with both progress and lock changes
-        if (this.tocSvc.triggerMilestoneLockUpdate) {
-          this.tocSvc.triggerMilestoneLockUpdate()
-        }
-        
-        // Emit to trigger viewer component refresh for Learning Pathways
-        this.markAsCompleteSubject.next(true)
+    const hashEntry = this.tocSvc.hashmap[contentId] || {}
+    const currentStatus = hashEntry['completionStatus'] || 0
+    const newStatus = Number(contentProgress.status) || 0
+    
+    // Update if not complete or if new status is higher
+    if (currentStatus < 2 || newStatus >= currentStatus) {
+      this.tocSvc.hashmap[contentId] = {
+        ...hashEntry,
+        identifier: contentId,
+        completionPercentage: contentProgress.completionPercentage,
+        completionStatus: newStatus,
+        status: newStatus,
       }
+      
+      // Create new hashmap reference for Angular change detection
+      this.tocSvc.hashmap = { ...this.tocSvc.hashmap }
+      
+      // Trigger milestone lock recomputation - it will emit hashmapUpdated with both progress and lock changes
+      if (this.tocSvc.triggerMilestoneLockUpdate) {
+        this.tocSvc.triggerMilestoneLockUpdate()
+      }
+      
+      // Emit to trigger viewer component refresh for Learning Pathways
+      this.markAsCompleteSubject.next(true)
     }
   }
 

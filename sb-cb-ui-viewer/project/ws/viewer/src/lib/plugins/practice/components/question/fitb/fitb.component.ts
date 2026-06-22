@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs'
 import { NsContent } from '@sunbird-cb/utils-v2'
 
 @Component({
+  standalone: false,
     selector: 'viewer-fitb-question',
     templateUrl: './fitb.component.html',
     styleUrls: ['./fitb.component.scss'],

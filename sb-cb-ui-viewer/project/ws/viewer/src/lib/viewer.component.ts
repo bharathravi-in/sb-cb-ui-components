@@ -24,6 +24,7 @@ export enum ErrorType {
 }
 
 @Component({
+  standalone: false,
   selector: 'viewer-container',
   templateUrl: './viewer.component.html',
   styleUrls: ['./viewer.component.scss'],

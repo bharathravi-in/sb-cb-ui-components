@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router'
 import { ViewerUtilService } from '../../viewer-util.service'
 
 @Component({
+  standalone: false,
   selector: 'viewer-class-diagram',
   templateUrl: './class-diagram.component.html',
   styleUrls: ['./class-diagram.component.scss'],

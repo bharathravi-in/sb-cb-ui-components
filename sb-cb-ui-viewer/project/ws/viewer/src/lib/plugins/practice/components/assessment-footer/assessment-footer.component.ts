@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 
 @Component({
+  standalone: false,
   selector: 'viewer-assessment-footer',
   templateUrl: './assessment-footer.component.html',
   styleUrls: ['./assessment-footer.component.scss'],

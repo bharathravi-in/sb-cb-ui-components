@@ -6,6 +6,7 @@ import { SubmissionDialogComponent } from '../submission-dialog/submission-dialo
 import { EventService } from '@ws-widget/utils'
 
 @Component({
+  standalone: false,
   selector: 'viewer-dbms-exercise',
   templateUrl: './dbms-exercise.component.html',
   styleUrls: ['./dbms-exercise.component.scss'],

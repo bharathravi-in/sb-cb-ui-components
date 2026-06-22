@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs'
 import { PracticeService } from '../../../practice.service'
 import { NsContent } from '@sunbird-cb/utils-v2'
 @Component({
+  standalone: false,
     selector: 'viewer-mcq-sca-question',
     templateUrl: './mcq-sca.component.html',
     styleUrls: ['./mcq-sca.component.scss'],

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 
 @Component({
+  standalone: false,
   selector: 'viewer-assessment-question-count-container',
   templateUrl: './assessment-question-count-container.component.html',
   styleUrls: ['./assessment-question-count-container.component.scss'],

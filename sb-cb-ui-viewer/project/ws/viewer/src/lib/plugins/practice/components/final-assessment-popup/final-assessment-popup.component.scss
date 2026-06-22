@@ -1,5 +1,5 @@
 ::ng-deep .final-assessment {
-    .mat-dialog-container {
+    .mat-mdc-dialog-container {
         border-radius: 16px;
         overflow: visible;
     }
@@ -8,13 +8,13 @@
         thead {
             background-color: #1B4CA1 !important;
 
-            th.mat-header-cell {
+            th.mat-mdc-header-cell {
                 color: #ffffff !important;
                 font-size: 14px;
             }
         }
 
-        td.mat-cell {
+        td.mat-mdc-cell {
             color: #7d7d7d !important;
             font-size: 14px;
         }

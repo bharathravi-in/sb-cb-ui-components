@@ -1,6 +1,5 @@
-@import 'ws-common';
-// @import 'ws-mixins';
-@import 'ws-vars';
+@use 'sass:math';
+@use 'ws-common' as *;
 
 .auto-w {
     width: 100% !important;
@@ -46,7 +45,7 @@
 }
 
 .xyz {
-    margin: calc(#{$size-s / 2})
+    margin: calc(#{math.div($size-s, 2)})
 }
 
 .max-w {
@@ -282,7 +281,7 @@
 
 }
 
-::ng-deep .consent-checkbox .mat-checkbox-label {
+::ng-deep .consent-checkbox .mdc-label {
     width: 100%;
     /* overflow: hidden; */
     white-space: pre-wrap;
@@ -300,7 +299,7 @@
     margin-right: 10px;
 }
 
-::ng-deep .consent-checkbox .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+::ng-deep .consent-checkbox .mat-mdc-checkbox-checked.mat-accent .mdc-checkbox__background {
     background-color: #1a4ca1 !important;
 }
 
@@ -363,7 +362,7 @@
         margin: 10px 0;
     }
 
-    ::ng-deep .consent-checkbox .mat-checkbox-label {
+    ::ng-deep .consent-checkbox .mdc-label {
         width: 100%;
         /* overflow: hidden; */
         white-space: pre-wrap;

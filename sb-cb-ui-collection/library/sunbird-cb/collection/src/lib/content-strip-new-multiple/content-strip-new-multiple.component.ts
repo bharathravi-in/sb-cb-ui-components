@@ -40,10 +40,10 @@ interface IStripUnitContentData {
 }
 
 @Component({
-    selector: 'ws-widget-content-strip-new-multiple',
-    templateUrl: './content-strip-new-multiple.component.html',
-    styleUrls: ['./content-strip-new-multiple.component.scss'],
-    standalone: false
+  selector: 'ws-widget-content-strip-new-multiple',
+  templateUrl: './content-strip-new-multiple.component.html',
+  styleUrls: ['./content-strip-new-multiple.component.scss'],
+  standalone: false
 })
 export class ContentStripNewMultipleComponent extends WidgetBaseComponent
   implements
@@ -522,7 +522,7 @@ export class ContentStripNewMultipleComponent extends WidgetBaseComponent
     return this.contentSvc
       .fetchContentLikes(contentIds)
       .then(likeHash => {
-        const likes = likeHash
+        const likes: any = likeHash
         results.forEach(result => {
           result.widgetData.likes = likes[result.widgetData.content.identifier] || 0
         })

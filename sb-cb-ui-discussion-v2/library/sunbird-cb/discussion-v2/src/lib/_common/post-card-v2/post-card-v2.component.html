@@ -27,7 +27,8 @@
 
             <div class="flex flex-1 items-start justify-center  flex-col">
                 <div class="flex items-center">
-                    <span class="mat-body-1 bold mr-1 nodtranslate"> {{post?.createdBy?.first_name}} </span>
+                    <span class="mat-body-1 bold mr-1 nodtranslate no-margin-padding"> {{post?.createdBy?.first_name}}
+                    </span>
                     <mat-icon class="icon verified mr-1"
                         *ngIf="post?.createdBy?.userProfileStatus?.toLowerCase() === 'verified'" i18n-aria-label
                         aria-label="verified">check_circle</mat-icon>

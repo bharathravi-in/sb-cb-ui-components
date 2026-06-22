@@ -1,5 +1,4 @@
-@import "ws-common";
-@import "ws-vars";
+@use 'ws-common' as *;
 
 .percent-div {
 
@@ -153,7 +152,7 @@
     border-bottom: none !important;
 }
 
-.mat-card {
+.mat-mdc-card {
     box-sizing: border-box;
 }
 
@@ -471,12 +470,12 @@
     width: 123px;
 }
 
-::ng-deep .mat-card-title {
+::ng-deep .mat-mdc-card-title {
     margin-bottom: 0px !important;
     padding-bottom: 16px;
 }
 
-::ng-deep .mat-card:not([class*=mat-elevation-z]) {
+::ng-deep .mat-mdc-card:not([class*=mat-elevation-z]) {
     box-shadow: none !important;
 }
 
@@ -959,14 +958,14 @@
         thead {
             background-color: #F5F5F5 !important;
 
-            th.mat-header-cell {
+            th.mat-mdc-header-cell {
                 color: rgb(0, 0, 0, 0.54) !important;
                 font-size: 14px;
                 font-weight: 400;
             }
         }
 
-        td.mat-cell {
+        td.mat-mdc-cell {
             color: #212529 !important;
             font-size: 14px;
             font-weight: 400;

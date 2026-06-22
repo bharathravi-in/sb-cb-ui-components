@@ -1,14 +1,18 @@
-<div class="padding-dynamic" *ngIf="offlineSessionData">
+@if (offlineSessionData) {
+  <div class="padding-dynamic">
     <div class="flex flex-around flex-wrapped">
-        <div class="w-full">
-            <mat-card>
-                <mat-card-content>
-                    <div id="fullScreenContainer" class=" p-5" style="min-height: 78vh;">
-                        <ng-container *ngIf="isFetchingDataComplete"
-                            [sbUiResolverWidget]="widgetResolverOfflineSessionData"></ng-container>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
+      <div class="w-full">
+        <mat-card>
+          <mat-card-content>
+            <div id="fullScreenContainer" class=" p-5" style="min-height: 78vh;">
+              @if (isFetchingDataComplete) {
+                <ng-container
+                [sbUiResolverWidget]="widgetResolverOfflineSessionData"></ng-container>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
-</div>
+  </div>
+}

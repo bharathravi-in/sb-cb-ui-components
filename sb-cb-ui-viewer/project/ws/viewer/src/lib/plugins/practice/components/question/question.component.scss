@@ -1,7 +1,6 @@
-@import "ws-vars";
-@import "ws-common";
+@use 'ws-common' as *;
 
-.app-class .mat-list-option {
+.app-class .mat-mdc-list-option {
   padding-top: $size-m;
   padding-bottom: $size-m;
   height: auto;
@@ -111,6 +110,8 @@
 
 .respo_inner {
   padding: 0px 16px;
+  width: 98%;
+  word-break: break-word;
 
   @include breakpoint-lt-m {
     padding: 16px 8px;
@@ -118,9 +119,6 @@
     border-radius: 5px;
     // margin-top: -5px;
   }
-
-  width:98%;
-  word-break: break-word;
 }
 
 .respo_inner p {
@@ -176,7 +174,7 @@
   }
 }
 
-::ng-deep .mat-radio-button {
+::ng-deep .mat-mdc-radio-button {
   background-color: rgb(245, 245, 245) !important;
 }
 
@@ -277,7 +275,7 @@
 }
 
 @media only screen and (min-width: 360px) and (max-width: 767px) {
-  .standalone-assessment.mat-card {
+  .standalone-assessment.mat-mdc-card {
     padding: 0 !important
   }
 

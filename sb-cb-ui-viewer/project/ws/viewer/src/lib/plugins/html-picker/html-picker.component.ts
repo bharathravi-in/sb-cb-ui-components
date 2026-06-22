@@ -1,22 +1,24 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core'
 import { EventService } from '@sunbird-cb/utils'
-import 'brace'
-import 'brace/ext/language_tools'
-import 'brace/mode/css'
-import 'brace/mode/html'
-import 'brace/mode/javascript'
-import 'brace/mode/text'
-import 'brace/snippets/css'
-import 'brace/snippets/html'
-import 'brace/snippets/javascript'
-import 'brace/snippets/text'
-import 'brace/theme/cobalt'
-import 'brace/worker/css'
-import 'brace/worker/html'
-import 'brace/worker/javascript'
+// brace imports moved to dynamic loading to avoid ace global issues
+// import 'brace'
+// import 'brace/ext/language_tools'
+// import 'brace/mode/css'
+// import 'brace/mode/html'
+// import 'brace/mode/javascript'
+// import 'brace/mode/text'
+// import 'brace/snippets/css'
+// import 'brace/snippets/html'
+// import 'brace/snippets/javascript'
+// import 'brace/snippets/text'
+// import 'brace/theme/cobalt'
+// import 'brace/worker/css'
+// import 'brace/worker/html'
+// import 'brace/worker/javascript'
 import { IHtmlPicker } from './html-picker.model'
 
 @Component({
+  standalone: false,
   selector: 'viewer-plugin-html-picker',
   templateUrl: './html-picker.component.html',
   styleUrls: ['./html-picker.component.scss'],
@@ -52,7 +54,7 @@ export class HtmlPickerComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // //console.log(this.newData)
+    // brace/ace editor loading deferred - install brace package if html-picker is needed
   }
   ngOnDestroy() {
     if (this.inputInterval) {

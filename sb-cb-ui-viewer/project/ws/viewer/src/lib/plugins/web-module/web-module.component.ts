@@ -16,6 +16,7 @@ import { ViewerUtilService } from '../../viewer-util.service'
 import { EventService } from '@sunbird-cb/utils'
 import { ActivatedRoute } from '@angular/router'
 @Component({
+  standalone: false,
   selector: 'viewer-plugin-web-module',
   templateUrl: './web-module.component.html',
   styleUrls: ['./web-module.component.scss'],

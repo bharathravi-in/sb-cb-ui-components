@@ -1,5 +1,5 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core'
-import { CommonModule, DatePipe } from '@angular/common'
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, Inject, PLATFORM_ID } from '@angular/core'
+import { CommonModule, DatePipe, DOCUMENT, isPlatformBrowser } from '@angular/common'
 import { RouterModule } from '@angular/router'
 import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 // NOTE: Routing is optional - import AppTocRoutingModule in your application if you need the pre-configured routes
@@ -304,4 +304,39 @@ import { NPSGridService } from './services/nps-grid.service'
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
-export class AppTocLibModule { }
+export class AppTocLibModule {
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(PLATFORM_ID) private platformId: object
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.injectGlobalTabStyles()
+    }
+  }
+
+  private injectGlobalTabStyles(): void {
+    const styleId = 'sb-cb-toc-mat-tab-styles'
+    if (this.document.getElementById(styleId)) {
+      return
+    }
+    const style = this.document.createElement('style')
+    style.id = styleId
+    style.textContent = `
+      .mat-mdc-tab-group,
+      .mat-mdc-tab-nav-bar {
+        --mat-tab-active-indicator-color: #1b4ca1 !important;
+        --mat-tab-active-indicator-height: 3px !important;
+        --mat-tab-active-label-text-color: #222222 !important;
+        --mat-tab-active-focus-label-text-color: #222222 !important;
+        --mat-tab-active-hover-label-text-color: #222222 !important;
+        --mat-tab-active-focus-indicator-color: #1b4ca1 !important;
+        --mat-tab-active-hover-indicator-color: #1b4ca1 !important;
+      }
+      .mat-mdc-tab-group .mdc-tab--active .mdc-tab__text-label,
+      .mat-mdc-tab-nav-bar .mdc-tab--active .mdc-tab__text-label {
+        font-weight: 700 !important;
+      }
+    `
+    this.document.head.appendChild(style)
+  }
+}

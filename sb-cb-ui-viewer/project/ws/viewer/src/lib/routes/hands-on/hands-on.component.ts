@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router'
 import { ViewerUtilService } from '../../viewer-util.service'
 
 @Component({
+  standalone: false,
   selector: 'viewer-hands-on',
   templateUrl: './hands-on.component.html',
   styleUrls: ['./hands-on.component.scss'],

@@ -1,19 +1,23 @@
-<div class="video-player-m ws-mat-primary-lite-background-important" *ngIf="isScreenSizeSmall && audioData"
-  [ngStyle]="{ background: 'url(' + defaultThumbnail + ')' }">
-  <viewer-plugin-audio-native [artifactUrl]="audioData?.artifactUrl"> </viewer-plugin-audio-native>
-</div>
-<div class="padding-dynamic" *ngIf="audioData">
-  <div class="flex flex-around flex-wrapped">
-    <div class="w-full">
-      <div *ngIf="!isScreenSizeSmall">
-        <mat-card>
-          <mat-card-content>
-            <div id="fullScreenContainer" class="video-player ws-mat-primary-lite-background-important"
-              [ngStyle]="{ background: 'url(' + defaultThumbnail + ')' }">
-              <viewer-plugin-audio-native [artifactUrl]="audioData?.artifactUrl">
-              </viewer-plugin-audio-native>
-            </div>
-            <div class="flex justify-end mt-3">
+@if (isScreenSizeSmall && audioData) {
+  <div class="video-player-m ws-mat-primary-lite-background-important"
+    [ngStyle]="{ background: 'url(' + defaultThumbnail + ')' }">
+    <viewer-plugin-audio-native [artifactUrl]="audioData?.artifactUrl"> </viewer-plugin-audio-native>
+  </div>
+}
+@if (audioData) {
+  <div class="padding-dynamic">
+    <div class="flex flex-around flex-wrapped">
+      <div class="w-full">
+        @if (!isScreenSizeSmall) {
+          <div>
+            <mat-card>
+              <mat-card-content>
+                <div id="fullScreenContainer" class="video-player ws-mat-primary-lite-background-important"
+                  [ngStyle]="{ background: 'url(' + defaultThumbnail + ')' }">
+                  <viewer-plugin-audio-native [artifactUrl]="audioData?.artifactUrl">
+                  </viewer-plugin-audio-native>
+                </div>
+                <div class="flex justify-end mt-3">
               <ws-widget-btn-content-download [forPreview]="forPreview" [widgetData]="
                   audioData
                     | pipePartialContent
@@ -27,14 +31,14 @@
                   'artifactUrl'
                         ]
                 ">
-              </ws-widget-btn-content-download>
-              <ws-widget-btn-content-like [forPreview]="forPreview"
-                [widgetData]="{ identifier: audioData.identifier, isDisabled: isPreviewMode }">
-              </ws-widget-btn-content-like>
-              <ws-widget-btn-content-share [forPreview]="forPreview" [widgetData]="audioData"
-                [isDisabled]="isPreviewMode">
-              </ws-widget-btn-content-share>
-              <ws-widget-btn-goals [forPreview]="forPreview"></ws-widget-btn-goals>
+                  </ws-widget-btn-content-download>
+                  <ws-widget-btn-content-like [forPreview]="forPreview"
+                    [widgetData]="{ identifier: audioData.identifier, isDisabled: isPreviewMode }">
+                  </ws-widget-btn-content-like>
+                  <ws-widget-btn-content-share [forPreview]="forPreview" [widgetData]="audioData"
+                    [isDisabled]="isPreviewMode">
+                  </ws-widget-btn-content-share>
+                  <ws-widget-btn-goals [forPreview]="forPreview"></ws-widget-btn-goals>
               <ws-widget-btn-playlist [forPreview]="forPreview" [widgetData]="{
                   contentId: audioData?.identifier,
                   contentName: audioData?.name,
@@ -47,13 +51,16 @@
                   name: audioData.name,
                   isDisabled: isPreviewMode
                 }"></ws-widget-btn-content-feedback-v2>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="vidoe-title margin-top-m" *ngIf="audioData">
-        <mat-card *ngIf="isScreenSizeSmall" class="unit-meta-item">
-          <div class="flex">
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        }
+        @if (audioData) {
+          <div class="vidoe-title margin-top-m">
+            @if (isScreenSizeSmall) {
+              <mat-card class="unit-meta-item">
+                <div class="flex">
             <ws-widget-btn-content-download [forPreview]="forPreview" [widgetData]="
                 audioData
                   | pipePartialContent
@@ -67,21 +74,24 @@
                   'artifactUrl'
                       ]
               "></ws-widget-btn-content-download>
-            <ws-widget-btn-content-like [widgetData]="audioData | pipePartialContent: ['identifier']">
-            </ws-widget-btn-content-like>
-            <ws-widget-btn-content-share [forPreview]="forPreview"></ws-widget-btn-content-share>
-            <ws-widget-btn-goals [forPreview]="forPreview"></ws-widget-btn-goals>
-            <ws-widget-btn-playlist [forPreview]="forPreview"></ws-widget-btn-playlist>
-            <ws-widget-btn-content-feedback [forPreview]="forPreview"></ws-widget-btn-content-feedback>
+                  <ws-widget-btn-content-like [widgetData]="audioData | pipePartialContent: ['identifier']">
+                  </ws-widget-btn-content-like>
+                  <ws-widget-btn-content-share [forPreview]="forPreview"></ws-widget-btn-content-share>
+                  <ws-widget-btn-goals [forPreview]="forPreview"></ws-widget-btn-goals>
+                  <ws-widget-btn-playlist [forPreview]="forPreview"></ws-widget-btn-playlist>
+                  <ws-widget-btn-content-feedback [forPreview]="forPreview"></ws-widget-btn-content-feedback>
+                </div>
+              </mat-card>
+            }
           </div>
-        </mat-card>
+        }
       </div>
     </div>
-  </div>
-  <!-- <div class="padding-m" *ngIf="discussionForumWidget && isRestricted">
+    <!-- <div class="padding-m" *ngIf="discussionForumWidget && isRestricted">
     <div class="video-discussion-forum-in margin-bottom-m">
       <h2 class="mat-toolbar discussion-head">Discussion Forum</h2>
       <ng-container [sbUiResolverWidget]="discussionForumWidget"></ng-container>
     </div>
   </div> -->
 </div>
+}

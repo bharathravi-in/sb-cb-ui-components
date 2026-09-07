@@ -12,6 +12,10 @@ import { CardCourseV2Component, ContentDictionaryService } from '../../../../pub
 import { CbpPlanCacheService } from '../../../_services/cbp-plan-cache.service'
 import { Router } from '@angular/router'
 
+// Mirrors SearchCategory.TrainingPlans in @sunbird-cb/search-listing. Duplicated rather
+// than imported: consumption does not depend on the search-listing package.
+const TRAINING_PLANS_SEARCH_CATEGORY = 'training-plans'
+
 @Component({
   selector: 'sb-uic-content-strips',
   standalone: true,
@@ -146,12 +150,36 @@ export class ContentStripsComponent implements OnInit {
   getViewAllUrl(): { path: string, queryParams?: Record<string, any>, f?: any } | null {
     const config = this.contentConfig()
     const viewMoreUrl = config?.viewMoreUrl ?? null
-    if (!viewMoreUrl || config?.apiDetailsKey !== 'aparApi') {
-      return viewMoreUrl
+    if (!viewMoreUrl) {
+      return null
     }
-    return {
-      ...viewMoreUrl,
-      queryParams: { ...(viewMoreUrl.queryParams || {}), isApar: 'true' },
+    switch (config?.apiDetailsKey) {
+      case 'aparApi':
+        return {
+          ...viewMoreUrl,
+          queryParams: { ...(viewMoreUrl.queryParams || {}), isApar: 'true' },
+        }
+      case 'trainingPlanApi':
+        // The listing page drives BOTH the visible result set (LearnSearchComponent
+        // .seeAllResults) and the pre-checked category checkbox (SearchFiltersComponent
+        // .setCategoryType) off the `category` query param, so it is the only thing that
+        // pins the page to Training Plans.
+        //
+        // `f` is deliberately dropped: GlobalSearchComponent turns it into `paramFilters`,
+        // and LearnSearchComponent handles that branch first — it forces seeAllResult back
+        // to Courses and returns before `searchCategory` is ever read. `q` is defaulted to
+        // an empty string because GlobalSearchComponent only builds `searchParam` (and so
+        // only runs a search) when the URL actually carries a `q`.
+        return {
+          path: viewMoreUrl.path,
+          queryParams: {
+            q: '',
+            ...(viewMoreUrl.queryParams || {}),
+            category: TRAINING_PLANS_SEARCH_CATEGORY,
+          },
+        }
+      default:
+        return viewMoreUrl
     }
   }
 

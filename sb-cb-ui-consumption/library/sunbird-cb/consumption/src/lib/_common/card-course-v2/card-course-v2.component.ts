@@ -10,7 +10,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core'
-import { LowerCasePipe, NgClass } from '@angular/common'
+import { DatePipe, LowerCasePipe, NgClass } from '@angular/common'
 import { Router } from '@angular/router'
 import { TranslateModule } from '@ngx-translate/core'
 import { MatIconModule } from '@angular/material/icon'
@@ -34,6 +34,7 @@ import { VIEWER_ROUTE_FROM_MIME } from '../../_services/viewer-route-util'
   standalone: true,
   imports: [
     NgClass,
+    DatePipe,
     LowerCasePipe,
     MatIconModule,
     MatTooltipModule,
@@ -167,15 +168,27 @@ export class CardCourseV2Component {
     !!(this.content() as any)?.isCA
   )
 
-  readonly cbpStatus = computed<string | null>(() => {
+  /** The CB plan entry for this content, if the parent supplied one. */
+  private readonly cbPlan = computed<any | null>(() => {
     const id = this.content()?.identifier
-    if (!id) { return null }
-    const plan = this.cbPlanMapData()?.[id]
+    return id ? this.cbPlanMapData()?.[id] ?? null : null
+  })
+
+  readonly cbpStatus = computed<'Completed' | 'Overdue' | 'Upcoming' | null>(() => {
+    const plan = this.cbPlan()
+    console.log('cbpStatus plan', plan)
     if (!plan) { return null }
     if (plan.contentStatus === 2) { return 'Completed' }
+    console.log('plan.planDuration', plan.planDuration)
     if (plan.planDuration === 'overdue') { return 'Overdue' }
+    if (plan.planDuration === 'upcoming') { return 'Upcoming' }
     return null
   })
+  /**
+   * Label for the 'Upcoming' state. Like the V1 cards an upcoming plan shows its
+   * end date rather than a word, so there is no translation key to resolve.
+   */
+  readonly cbpEndDate = computed<string | number | null>(() => this.cbPlan()?.endDate ?? null)
 
   readonly durationSeconds = computed(() =>
     this.content()?.programDuration ? 0 : (this.content()?.duration || 0)

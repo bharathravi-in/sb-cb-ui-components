@@ -29,7 +29,10 @@ export class ContentStripsComponent implements OnInit {
 
   // Expose CardType enum so the template can use it in @switch
   CardType = CardType;
-  cbPlanMapData: Record<string, any> = {}
+  // A signal, not a plain field: this component is OnPush and the plan map arrives
+  // asynchronously from the IndexedDB cache, so a plain assignment would leave the
+  // card binding stale until some unrelated event marked this view dirty.
+  cbPlanMapData = signal<Record<string, any>>({})
 
   private apiService = inject(ContentApiService);
   private cardTransformer = inject(CardTransformerService);
@@ -137,7 +140,7 @@ export class ContentStripsComponent implements OnInit {
   getCbPlanData() {
     this.cbpCacheSvc.watchPlanMap()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((planMap: Record<string, any>) => this.cbPlanMapData = planMap)
+      .subscribe((planMap: Record<string, any>) => this.cbPlanMapData.set(planMap))
   }
 
   getViewAllUrl(): { path: string, queryParams?: Record<string, any>, f?: any } | null {

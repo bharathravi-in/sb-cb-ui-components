@@ -12,6 +12,11 @@ import * as _ from 'lodash'
 import { NetCoreService } from '../../services/netcore.service'
 import { ConsentDialogComponent } from './consent-dialog.component'
 
+const KARMA_REDEEM_PAGE_ID = 'app/toc/ext'
+const KARMA_REDEEM_ENV = 'Marketplace'
+const KARMA_REDEEM_CONTINUE = 'redeem-karma-coins-continue'
+const KARMA_REDEEM_CANCEL = 'redeem-karma-coins-cancel'
+
 @Component({
     selector: 'ws-app-app-toc-cios-home',
     templateUrl: './app-toc-cios-home.component.html',
@@ -293,11 +298,37 @@ export class AppTocCiosHomeComponent implements OnInit, AfterViewInit {
 
   onKarmaRedeemClosed(confirmed: boolean) {
     const content = this.karmaRedeemContent
+    this.raiseKarmaRedeemTelemetry(confirmed, content)
     this.karmaRedeemData = null
     this.karmaRedeemContent = null
     if (confirmed && content) {
       this.openConsentDialog(content)
     }
+  }
+
+  private raiseKarmaRedeemTelemetry(confirmed: boolean, content: any) {
+    const pageContext: WsEvents.ITelemetryPageContext = {
+      pageId: KARMA_REDEEM_PAGE_ID,
+      module: KARMA_REDEEM_ENV,  // the listener sends this out as the event's `env`
+    }
+    this.events.dispatchEvent<WsEvents.IWsEventTelemetryInteract>({
+      pageContext,
+      eventType: WsEvents.WsEventType.Telemetry,
+      eventLogLevel: WsEvents.WsEventLogLevel.Info,
+      from: '',
+      to: 'Telemetry',
+      data: {
+        pageContext,
+        eventSubType: WsEvents.EnumTelemetrySubType.Interact,
+        edata: {
+          type: 'click',
+          subType: confirmed ? KARMA_REDEEM_CONTINUE : KARMA_REDEEM_CANCEL,
+          id: _.get(content, 'contentId', ''),
+          pageid: KARMA_REDEEM_PAGE_ID,
+        },
+        object: {},
+      },
+    })
   }
 
   private async openConsentDialog(content: any) {

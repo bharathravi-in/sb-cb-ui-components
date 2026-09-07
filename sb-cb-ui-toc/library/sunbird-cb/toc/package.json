@@ -1,6 +1,6 @@
 {
   "name": "@sunbird-cb/toc",
-  "version": "0.1.6-cbrelease-4.8.40",
+  "version": "0.1.7-cbrelease-4.8.40",
   "dependencies": {
     "tslib": "^2.0.0"
   },

@@ -9,6 +9,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core'
 import { InfoCardsSectionConfig, InfoCardItem } from '../../models/sidebar.models'
 import { MultilingualTranslationsService } from '../../../../_services/multilingual-translations.service'
 import { SkeletonLoaderLibModule } from '../../../skeleton-loader-lib/skeleton-loader-lib.module'
+import { UtilityService } from '@sunbird-cb/utils-v2'
 
 /**
  * Sidebar Info Cards Section Component
@@ -64,7 +65,8 @@ export class SidebarInfoCardsSectionComponent implements OnChanges {
   constructor(
     private translate: TranslateService,
     private langtranslations: MultilingualTranslationsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private utilitySvc: UtilityService
   ) {
     this.langtranslations.languageSelectedObservable.subscribe(() => {
       if (localStorage.getItem('websiteLanguage')) {
@@ -122,6 +124,7 @@ export class SidebarInfoCardsSectionComponent implements OnChanges {
   }
 
   onItemClicked(item: InfoCardItem | any): void {
+    this.utilitySvc.setRouteData([{ module: 'Home', pageId: 'page/home' }])
     this.itemClicked.emit({ code: item.code, subType: item.subtype || '' })
   }
 }

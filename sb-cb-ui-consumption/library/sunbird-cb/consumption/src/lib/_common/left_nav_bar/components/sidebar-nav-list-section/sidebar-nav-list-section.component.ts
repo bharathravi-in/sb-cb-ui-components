@@ -10,6 +10,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core'
 import { NavListSectionConfig, NavListItem } from '../../models/sidebar.models'
 import { MultilingualTranslationsService } from '../../../../_services/multilingual-translations.service'
 import { SkeletonLoaderLibModule } from '../../../skeleton-loader-lib/skeleton-loader-lib.module'
+import { UtilityService } from '@sunbird-cb/utils-v2'
 
 /**
  * Sidebar Nav List Section Component
@@ -81,7 +82,8 @@ export class SidebarNavListSectionComponent implements OnChanges, OnDestroy {
   constructor(
     private router: Router,
     private translate: TranslateService,
-    private langtranslations: MultilingualTranslationsService
+    private langtranslations: MultilingualTranslationsService,
+    private utilitySvc: UtilityService
   ) {
     this.subs.push(
       this.langtranslations.languageSelectedObservable.subscribe(() => {
@@ -132,6 +134,7 @@ export class SidebarNavListSectionComponent implements OnChanges, OnDestroy {
   }
 
   onItemClick(item: NavListItem): void {
+    this.utilitySvc.setRouteData([{ module: 'Home', pageId: 'page/home' }])
     if (item?.code) {
       this.itemClicked.emit({ code: item.code, subType: item.subtype ?? '' })
     }

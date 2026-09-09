@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'
 import { MatIconModule } from '@angular/material/icon'
 import { TranslateModule, TranslateService } from '@ngx-translate/core'
 import { SkeletonLoaderLibModule } from '../../../skeleton-loader-lib/skeleton-loader-lib.module'
-import { MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
+import { MultilingualTranslationsService, UtilityService } from '@sunbird-cb/utils-v2'
 import { MatTooltipModule } from '@angular/material/tooltip'
 
 @Component({
@@ -29,7 +29,8 @@ export class SidebarFooterComponent implements OnChanges {
   constructor(
     private translate: TranslateService,
     private langtranslations: MultilingualTranslationsService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private utilitySvc: UtilityService
   ) {
     this.langtranslations.languageSelectedObservable.subscribe(() => {
       if (localStorage.getItem('websiteLanguage')) {
@@ -58,6 +59,7 @@ export class SidebarFooterComponent implements OnChanges {
   }
 
   onItemClick(item: any): void {
+    this.utilitySvc.setRouteData([{ module: 'Home', pageId: 'page/home' }])
     if (item?.code) {
       const eventDetails = {
         code: item.code,

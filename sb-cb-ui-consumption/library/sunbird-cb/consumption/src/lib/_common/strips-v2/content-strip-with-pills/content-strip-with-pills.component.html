@@ -1,4 +1,13 @@
 <div class="w-full">
+  @if (isSectionLoading()) {
+  <!-- Pills Skeleton -->
+  <div class="pills-container scrollbar-hide">
+    @for (skeletonPill of skeletonPills(); track skeletonPill) {
+    <div class="pill-skeleton animate-pulse bg-gray-200"></div>
+    }
+  </div>
+  <sb-uic-content-strips [contentConfig]="skeletonContentConfig" [forceLoading]="true" />
+  } @else {
   <!-- Pills Navigation -->
   @if (visiblePills()?.length) {
   <div class="pills-wrapper">
@@ -65,5 +74,6 @@
   <!-- Active Pill Content -->
   @if (activeContentConfig() && showContent()) {
     <sb-uic-content-strips [contentConfig]="activeContentConfig()!" />
+  }
   }
 </div>

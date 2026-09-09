@@ -84,6 +84,14 @@
   }
 }
 
+// Pill loading skeleton (matches .pill-inactive's footprint)
+.pill-skeleton {
+  height: 40px;
+  width: 110px;
+  border-radius: 32px;
+  flex-shrink: 0;
+}
+
 // Inactive Pill
 .pill-inactive {
   height: 40px;

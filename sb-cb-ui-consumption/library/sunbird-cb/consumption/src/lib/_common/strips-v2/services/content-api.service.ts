@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs'
 import { catchError, map, switchMap } from 'rxjs/operators'
-import { ApiMethod, ApiRegistryEntry, ChainedApiConfig } from '../models/content-section.model'
+import { ApiMethod, ApiRegistryEntry, ChainedApiConfig, ContentSectionConfig } from '../models/content-section.model'
 import { API_REGISTRY } from '../registry/api-registry'
 import { ConfigurationsService, WidgetEnrollService } from '@sunbird-cb/utils-v2'
 import { WidgetUserServiceLib } from '../../../_services/widget-user-lib.service'
@@ -20,6 +20,11 @@ export class ContentApiService {
   private readonly emptySectionKeysSubject = new BehaviorSubject<string[]>([])
   readonly emptySectionKeys$ = this.emptySectionKeysSubject.asObservable()
 
+  private readonly sectionUpdateSubject = new Subject<{ sectionKey: string; changes: Partial<ContentSectionConfig> }>()
+  // Lets a consumer (e.g. HomeV2Component, after a slow info API resolves) patch an already-rendered
+  // section's config in place — ContetnSectionsComponent merges these into its sections signal.
+  readonly sectionUpdate$ = this.sectionUpdateSubject.asObservable()
+
   publishCardClickDetails(details: any): void {
     this.cardClickDetailsSubject.next(details)
   }
@@ -32,6 +37,13 @@ export class ContentApiService {
     if (!current.includes(sectionKey)) {
       this.emptySectionKeysSubject.next([...current, sectionKey])
     }
+  }
+
+  updateSection(sectionKey: string, changes: Partial<ContentSectionConfig>): void {
+    if (!sectionKey) {
+      return
+    }
+    this.sectionUpdateSubject.next({ sectionKey, changes })
   }
 
   async loadContent(apiDetailsKey: string): Promise<Observable<unknown>> {

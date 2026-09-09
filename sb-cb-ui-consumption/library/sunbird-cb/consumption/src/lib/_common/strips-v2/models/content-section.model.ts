@@ -104,6 +104,8 @@ export interface ContentSectionConfig {
   pillEnlarged?: boolean
   learningProgressConfig?: LearningProgressConfig,
   canShowScrollArrow?: boolean
+  // true while a section's data (e.g. pill visibility counts) is still being fetched — see ContentApiService.updateSection
+  sectionLoading?: boolean
 }
 
 export interface DynamicTab {

@@ -116,6 +116,14 @@ export class ContetnSectionsComponent implements OnDestroy {
         this.emptySectionKeys.set(keys)
       })
 
+    this.contentApiService.sectionUpdate$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(({ sectionKey, changes }) => {
+        this.sections.update(sections =>
+          sections.map(section => section.sectionKey === sectionKey ? { ...section, ...changes } : section)
+        )
+      })
+
     this.valueSvc.isLtMedium$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((isMobile) => {

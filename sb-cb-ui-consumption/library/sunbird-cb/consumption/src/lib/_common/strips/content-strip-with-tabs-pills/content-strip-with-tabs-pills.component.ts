@@ -17,6 +17,7 @@ import {
 import { Subscription } from 'rxjs'
 import { filter } from 'rxjs/operators'
 import { WidgetUserServiceLib } from '../../../_services/widget-user-lib.service'
+import { CbpPlanCacheService } from '../../../_services/cbp-plan-cache.service'
 // import { environment } from 'src/environments/environment'
 // tslint:disable-next-line
 import * as _ from 'lodash'
@@ -123,6 +124,9 @@ export class ContentStripWithTabsPillsComponent extends WidgetBaseComponent
   sakshamLoader = false
   recommendedCoursesId: string
   releventNotReleventSubscription: Subscription | null = null;
+  cbpPlanMapSubscription: Subscription | null = null;
+  /** identifier -> CBP plan item for the current plan year (from IndexedDB). */
+  cbpPlanMap: Record<string, any> = {}
   telementrySubscription: Subscription | null = null;
   feedbackCourseId = ''
   currentStripG: any
@@ -152,6 +156,7 @@ export class ContentStripWithTabsPillsComponent extends WidgetBaseComponent
     private matDialog: MatDialog,
     public snackBar: MatSnackBar,
     private commonSvc: CommonMethodsService,
+    private cbpCacheSvc: CbpPlanCacheService,
     private ngZone: NgZone
   ) {
     super()
@@ -167,6 +172,10 @@ export class ContentStripWithTabsPillsComponent extends WidgetBaseComponent
   ngOnInit() {
     // const url = window.location.href
     this.localRecommended = this.contentSvc.getRecommendedIds(this.configSvc.userProfile.userId)
+    // Kept on the component because getTabsDesignationsList() is synchronous; reading the
+    // IndexedDB CBP cache there directly would resolve after the list had been built.
+    this.cbpPlanMapSubscription = this.cbpCacheSvc.watchPlanMap()
+      .subscribe((planMap: Record<string, any>) => this.cbpPlanMap = planMap)
     this.initData()
     this.subscribeToTelementry()
   }
@@ -222,6 +231,10 @@ export class ContentStripWithTabsPillsComponent extends WidgetBaseComponent
 
     if (this.releventNotReleventSubscription) {
       this.releventNotReleventSubscription.unsubscribe()
+    }
+
+    if (this.cbpPlanMapSubscription) {
+      this.cbpPlanMapSubscription.unsubscribe()
     }
 
     if (this.telementrySubscription) {
@@ -1366,18 +1379,12 @@ export class ContentStripWithTabsPillsComponent extends WidgetBaseComponent
     let avaialable: any[] = []
     let inprogress: any[] = []
     let allCompleted: any[] = []
-    let cbpData: any
-    this.userSvc.getCBPData('cbpData').subscribe((result => {
-      cbpData = result
-    }))
     coursesArray.forEach((courseId: any) => {
       let course = array.find((item: any) => item.identifier === courseId)
       if (course) {
-        if (cbpData && cbpData.length) {
-          const cbpelem = cbpData.find((_course: any) => _course.identifier === course.identifier)
-          if (cbpelem) {
-            return
-          }
+        // Skip anything already in the user's CBP plan (from the IndexedDB plan cache).
+        if (this.cbpPlanMap[course.identifier]) {
+          return
         }
         if (enollData && enollData.length) {
           const elem = enollData.find((eCourse: any) => eCourse.contentId === course.identifier)
@@ -1528,15 +1535,48 @@ export class ContentStripWithTabsPillsComponent extends WidgetBaseComponent
   }
 
 
+  /**
+   * The selected CBP plan year is owned by the host portal and arrives on the strip's
+   * request config. Falls back to the current financial year when it is not supplied.
+   */
+  private resolveCbpPlanYear(strip: any): string {
+    return _.get(strip, 'request.cbpList.planYear')
+      || _.get(strip, 'request.planYear')
+      || this.userSvc.getCurrentFinancialYear()
+  }
+
+  /**
+   * Carries the plan year onto "View All" so the listing page opens on the same year
+   * the user was looking at, instead of defaulting to the current one.
+   */
+  private applyCbpPlanYearToViewMore(strip: any, planYear: string) {
+    if (!planYear) {
+      return
+    }
+    if (strip.viewMoreUrl) {
+      strip.viewMoreUrl.queryParams = { ...strip.viewMoreUrl.queryParams, planYear }
+    }
+    const tabs = _.get(strip, 'tabs', []) || []
+    tabs.forEach((tab: any) => {
+      const pills = _.get(tab, 'pillsData', []) || []
+      pills.forEach((pill: any) => {
+        if (pill && pill.viewMoreUrl) {
+          pill.viewMoreUrl.queryParams = { ...pill.viewMoreUrl.queryParams, planYear }
+        }
+      })
+    })
+  }
+
   // cbp plans
   async fetchAllCbpPlans(strip: any, calculateParentStatus = true) {
     if (strip.request && strip.request.cbpList && Object.keys(strip.request.cbpList).length) {
       let courses: NsContent.IContent[] = []
       let tabResults: any[] = []
-      let userId = this.configSvc.userProfile.userId
+      const planYear = this.resolveCbpPlanYear(strip)
+      this.applyCbpPlanYearToViewMore(strip, planYear)
       const tabCardSubType = _.get(strip, `tabs[${this.tabEventG}].cardSubType`, null)
       try {
-        const response = await this.userSvc.fetchCbpPlanList(userId).toPromise()
+        const response = await this.userSvc.fetchCbpPlanListV3(planYear).toPromise()
 
         if (Array.isArray(response) && response?.length > 0) {
           courses = response

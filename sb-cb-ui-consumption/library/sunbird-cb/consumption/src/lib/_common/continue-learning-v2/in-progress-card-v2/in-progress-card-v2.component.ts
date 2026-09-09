@@ -56,12 +56,12 @@ export class InProgressCardV2Component implements OnChanges {
     this.eventSvc.raiseInteractTelemetry(
       {
         type: WsEvents.EnumInteractTypes.CLICK,
-        subType: 'resume-btn',
-        id: 'continue-learning-resume',
+        subType: 'resume-content-popup-home',
+        id: 'resume-learning',
       },
       {
         id: this.courseId,
-        type: 'Course',
+        type: this.course?.primaryCategory || 'Course',
       },
       {
         module: WsEvents.EnumTelemetrymodules.HOME,

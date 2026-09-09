@@ -12,6 +12,7 @@ export * from './lib/_services/widget-content-lib.service'
 export * from './lib/_services/widget-user-lib.service'
 
 export * from './lib/_services/content-dictionary.service'
+export * from './lib/_services/cbp-plan-cache.service'
 
 export * from './lib/_services/content-language.service'
 

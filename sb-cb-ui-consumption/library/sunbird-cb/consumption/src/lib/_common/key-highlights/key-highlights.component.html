@@ -8,8 +8,13 @@
                     <div class="flex flex-row key-wrapper items-center justify-center"
                         [style.background]="formData?.backgroundColor">
                         <div class="kh-description">
-                            {{content?.title | slice:0:titleMaxLength}}
-                            <span *ngIf="content?.title?.length > titleMaxLength">...</span>
+                            <ng-container *ngIf="content?.innerHTMLTitle; else plainTitleDesktop">
+                                <span [innerHTML]="content.truncatedInnerHTMLTitle"></span>
+                            </ng-container>
+                            <ng-template #plainTitleDesktop>
+                                {{content?.title | slice:0:titleMaxLength}}
+                                <span *ngIf="content?.title?.length > titleMaxLength">...</span>
+                            </ng-template>
                         </div>
                     </div>
                 </div>
@@ -28,8 +33,13 @@
                         <div class="flex flex-row mkey-wrapper items-center justify-center"
                             [style.background]="formData?.backgroundColor">
                             <div class="mkh-description">
-                                {{content?.title | slice:0:titleMaxLength }}
-                                <span *ngIf="content?.title?.length > titleMaxLength">...</span>
+                                <ng-container *ngIf="content?.innerHTMLTitle; else plainTitleMobile">
+                                    <span [innerHTML]="content.truncatedInnerHTMLTitle"></span>
+                                </ng-container>
+                                <ng-template #plainTitleMobile>
+                                    {{content?.title | slice:0:titleMaxLength }}
+                                    <span *ngIf="content?.title?.length > titleMaxLength">...</span>
+                                </ng-template>
                             </div>
                         </div>
                     </div>

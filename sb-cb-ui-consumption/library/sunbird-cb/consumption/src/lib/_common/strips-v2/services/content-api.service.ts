@@ -51,8 +51,8 @@ export class ContentApiService {
       case 'aparApi':
       case 'trainingPlanApi':
       case 'draftCBPplanApi':
-        let userId = this.configSvc?.userProfile?.userId as string
-        return of(await this.userService.fetchCbpPlanList(userId).toPromise())
+        // CBPlan V3; the service resolves the current plan year and caches per year.
+        return of(await this.userService.fetchCbpPlanListV3().toPromise())
       default:
         let config: ApiRegistryEntry | undefined
         const globalApiConfig = _.get(this.configSvc, 'globalConfig.apis.apiRegistryConfig')

@@ -40,7 +40,7 @@ jest.mock('@sunbird-cb/utils-v2', () => ({
   WsEvents: {
     WsEventType: { Telemetry: 'telemetry' },
     WsEventLogLevel: { Info: 'info' },
-    EnumTelemetrySubType: { Loaded: 'loaded', Unloaded: 'unloaded' },
+    EnumTelemetrySubType: { Loaded: 'loaded', Unloaded: 'unloaded', Interact: 'Interact' },
     EnumTelemetrymodules: { CONTENT: 'content' },
   },
 }))
@@ -725,6 +725,68 @@ describe('AppTocCiosHomeComponent', () => {
       component.config = { karmaRedeemPopup: null }
       await component.enRollToExtCourse(extContent)
       expect(component.karmaRedeemData.requiredKarmaPoints).toBe(5)
+    })
+
+    const karmaRedeemEvent = () => eventsMock.dispatchEvent.mock.calls[0][0]
+
+    it('should raise continue telemetry with the content id and the ext toc pageid', async () => {
+      setRequiredKarmaPoints(25)
+      await component.enRollToExtCourse(extContent)
+      eventsMock.dispatchEvent.mockClear()
+
+      component.onKarmaRedeemClosed(true)
+
+      expect(karmaRedeemEvent().data.edata).toEqual({
+        type: 'click',
+        subType: 'redeem-karma-coins-continue',
+        id: extContent.contentId,
+        pageid: 'app/toc/ext',
+      })
+      expect(karmaRedeemEvent().data.eventSubType).toBe('Interact')
+    })
+
+    it('should send the marketplace env and the ext toc pageid on the event itself', async () => {
+      setRequiredKarmaPoints(25)
+      await component.enRollToExtCourse(extContent)
+      eventsMock.dispatchEvent.mockClear()
+
+      component.onKarmaRedeemClosed(true)
+
+      // the listener reads env off the top level pageContext and pageid off the one under data
+      expect(karmaRedeemEvent().pageContext).toEqual({ pageId: 'app/toc/ext', module: 'Marketplace' })
+      expect(karmaRedeemEvent().data.pageContext).toEqual({ pageId: 'app/toc/ext', module: 'Marketplace' })
+    })
+
+    it('should raise cancel telemetry when the popup is dismissed', async () => {
+      setRequiredKarmaPoints(25)
+      await component.enRollToExtCourse(extContent)
+      eventsMock.dispatchEvent.mockClear()
+
+      component.onKarmaRedeemClosed(false)
+
+      expect(karmaRedeemEvent().data.edata.subType).toBe('redeem-karma-coins-cancel')
+      expect(karmaRedeemEvent().data.edata.id).toBe(extContent.contentId)
+    })
+
+    it('should raise exactly one event per close, on either button', async () => {
+      setRequiredKarmaPoints(25)
+      await component.enRollToExtCourse(extContent)
+      eventsMock.dispatchEvent.mockClear()
+      component.onKarmaRedeemClosed(true)
+      expect(eventsMock.dispatchEvent).toHaveBeenCalledTimes(1)
+
+      await component.enRollToExtCourse(extContent)
+      eventsMock.dispatchEvent.mockClear()
+      component.onKarmaRedeemClosed(false)
+      expect(eventsMock.dispatchEvent).toHaveBeenCalledTimes(1)
+    })
+
+    it('should send an empty id when the popup closes with no content held', () => {
+      eventsMock.dispatchEvent.mockClear()
+
+      component.onKarmaRedeemClosed(false)
+
+      expect(karmaRedeemEvent().data.edata.id).toBe('')
     })
 
     it('should remember the content being redeemed', async () => {

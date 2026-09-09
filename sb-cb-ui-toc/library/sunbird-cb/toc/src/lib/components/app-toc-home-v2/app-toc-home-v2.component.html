@@ -441,7 +441,8 @@
                 <div *ngIf="showBadgeIcon() && tocConfig?.uiVisibility?.banner?.certificateBadge !== false"
                   class="knowledge-level-container badgediv">
                   <span class="custom-badge">
-                    <img class="badge-img bg-transparent"
+                    <img class="badge-img bg-transparent" [matTooltip]="badgeTooltipText"
+                      matTooltipPosition="above"
                       src="{{ baseContentReadData?.badgeDetails_v1?.[0]?.badgeTemplate | pipePublicURL }}" alt=""
                       srcset="">
                   </span>

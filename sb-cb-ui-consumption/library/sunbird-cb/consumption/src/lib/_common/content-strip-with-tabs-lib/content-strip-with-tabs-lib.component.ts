@@ -1390,11 +1390,18 @@ export class ContentStripWithTabsLibComponent extends WidgetBaseComponent
 
       let courses: NsContent.IContent[]
       let tabResults: any[] = []
-      let userId = this.configSvc.userProfile?.userId
-      if (!userId) {
+      if (!this.configSvc.userProfile?.userId) {
         return of()
       }
-      const response = await this.userSvc.fetchCbpPlanList(userId).toPromise()
+      // The host portal supplies the selected plan year on the strip's request config;
+      // fall back to the current financial year when it does not.
+      const planYear = _.get(strip, 'request.cbpList.planYear')
+        || _.get(strip, 'request.planYear')
+        || this.userSvc.getCurrentFinancialYear()
+      const response = await this.userSvc.fetchCbpPlanListV3(planYear).toPromise()
+      if (planYear && strip.viewMoreUrl) {
+        strip.viewMoreUrl.queryParams = { ...strip.viewMoreUrl.queryParams, planYear }
+      }
       if (response) {
         courses = response
         if (strip.tabs && strip.tabs.length) {

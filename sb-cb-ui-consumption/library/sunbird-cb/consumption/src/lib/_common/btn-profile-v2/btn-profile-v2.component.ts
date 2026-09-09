@@ -64,7 +64,7 @@ export class BtnProfileV2Component extends WidgetBaseComponent implements OnInit
   @HostBinding('id') public id = 'Profile_link'
   @HostBinding('class') public hostClass = 'profile-link'
 
-  @Input() widgetData!: NsPage.INavLink
+  @Input() widgetData!:any
 
   // ── Injected services ──────────────────────────────────────────────────────
   private readonly configSvc = inject(ConfigurationsService)

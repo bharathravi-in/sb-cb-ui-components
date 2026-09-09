@@ -169,12 +169,17 @@
           [matTooltipShowDelay]="400" matTooltipClass="cc-title-tooltip">{{ orgName() }}</span>
         }
 
-        @if (cbpStatus() ) {
+        @if (cbpStatus()) {
         <span class="cc-card__status" [class.cc-card__status--overdue]="cbpStatus() === 'Overdue'"
           [class.cc-card__status--done]="cbpStatus() === 'Completed'"
-          [attr.aria-label]="(cbpStatus() === 'Overdue' ? 'cardcontentv2.overDue' : 'cardcontentv2.completed') | translate">
+          [class.cc-card__status--upcoming]="cbpStatus() === 'Upcoming'">
           <span aria-hidden="true">&#9679;&nbsp;</span>
+          <!-- An upcoming plan shows its end date; the other states are translated words. -->
+          @if (cbpStatus() === 'Upcoming') {
+          Upcoming
+          } @else {
           {{ (cbpStatus() === 'Overdue' ? 'cardcontentv2.overDue' : 'cardcontentv2.completed') | translate }}
+          }
         </span>
         }
       </div>

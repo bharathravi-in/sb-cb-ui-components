@@ -595,10 +595,12 @@ export class AppTocHomeComponent implements OnInit, OnDestroy, AfterViewChecked,
     return res.filter((v: any) => v.identifier === this.courseID)
   }
 
-  findACPB() {
-    const localCbp = localStorage.getItem('cbpData')
-    if (localCbp) {
-      const storeageCbp = JSON.parse(localCbp)
+  async findACPB() {
+    // CBP plan data now lives in IndexedDB (iGotCbpDB/cbpPlans); getCBPData() reads the
+    // current plan year from that cache instead of localStorage['cbpData'].
+    const localCbp = await this.userServiceLib.getCBPData().toPromise()
+    if (localCbp && localCbp.length) {
+      const storeageCbp = localCbp
       const cbp = this.filteredAcbpList(storeageCbp)
       if (cbp.length) {
         const acbp = 'cbPlan'

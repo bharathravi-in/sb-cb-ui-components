@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core'
+import { Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core'
 import { ICarousel } from './sliders-dynamic.model'
 import { Subscription, interval } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core'
@@ -10,7 +10,7 @@ import { MultilingualTranslationsService, EventService, WsEvents } from '@sunbir
     styleUrls: ['./sliders-dynamic.component.scss'],
     standalone: false
 })
-export class SlidersDynamicComponent implements OnInit {
+export class SlidersDynamicComponent implements OnInit, OnChanges {
   @Input() widgetData!: ICarousel
   @Input() baseContentReadData : any;
   @HostBinding('id')
@@ -30,7 +30,30 @@ export class SlidersDynamicComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.prioritizeQuickLearnerBadge()
     this.reInitiateSlideInterval()
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.widgetData) {
+      this.prioritizeQuickLearnerBadge()
+    }
+  }
+
+  /**
+   * Keeps the 'Quick Learner Badge' slide at the first position of sliderData.
+   */
+  prioritizeQuickLearnerBadge() {
+    const sliderData = this.widgetData && this.widgetData.sliderData
+    if (!Array.isArray(sliderData) || sliderData.length < 2) {
+      return
+    }
+    const badgeIndex = sliderData.findIndex(
+      (slide: any) => slide && slide.displayButton === 'Quick Learner Badge')
+    if (badgeIndex > 0) {
+      const [badgeSlide] = sliderData.splice(badgeIndex, 1)
+      sliderData.unshift(badgeSlide)
+    }
   }
 
   reInitiateSlideInterval() {

@@ -16,6 +16,7 @@ export interface ITenantConfig {
   logo?: string
   redirectPath?: string
   cdnContentHost?: string
+  azureHost?: string
   sitePath?: string
   karmayogiBharatLink?: string
 }
@@ -25,6 +26,7 @@ export interface IDomainData {
   logo?: string
   redirectPath?: string
   cdnContentHost?: string
+  azureHost?: string
   sitePath?: string
   karmayogiBharatLink?: string
 }
@@ -118,6 +120,7 @@ export class DomainConfService {
       logo: this.environment?.logo || this.defaultLogo,
       redirectPath: this.environment?.redirectPath || '/page/home',
       cdnContentHost: this.environment?.cdnContentHost || 'https://portal.igotkarmayogi.gov.in/',
+      azureHost: this.environment?.azureHost || '',
       sitePath: this.environment?.sitePath || 'portal.igotkarmayogi.gov.in',
       karmayogiBharatLink: this.environment?.karmayogiBharatLink || 'https://igotkarmayogi.gov.in/',
       features: {
@@ -315,6 +318,18 @@ export class DomainConfService {
 
   getDomainCDNHost(): string {
     return this.domainEntry.cdnContentHost || this.environment?.cdnContentHost
+  }
+
+  /**
+   * Host that serves uploaded content (the azureHost the generateUrl helpers rewrite
+   * artifact URLs onto). The tenant entry comes first: a tenant portal serves its content
+   * from its own host, while environment.azureHost is a single build-time value shared by
+   * every host the bundle is served from, so reading it directly sent tenant content
+   * through the main portal. Falls back to the environment for the main portal and for a
+   * tenant with no entry.
+   */
+  getDomainAzureHost(): string {
+    return this.domainEntry?.azureHost || this.environment?.azureHost || ''
   }
 
   /**

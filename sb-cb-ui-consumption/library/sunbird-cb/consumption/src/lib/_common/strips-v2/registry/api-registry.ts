@@ -30,13 +30,17 @@ export const API_REGISTRY: ApiRegistryConfig = {
     method: ApiMethod.Get,
     queryParams: { category: 'cyber' }
   },
+  // ContentApiService.loadContent() short-circuits these keys to
+  // WidgetUserServiceLib.fetchCbpPlanListV3(), which owns the plan year, the MAX(endDate)
+  // resolution and the IndexedDB cache. These entries are kept only so the registry stays
+  // an accurate description of the endpoint each key represents.
   aparApi: {
-    endpoint: '/apis/proxies/v8/user/v1/cbplan',
-    method: ApiMethod.Get
+    endpoint: '/apis/proxies/v8/cbplan/v3/user/dictionary',
+    method: ApiMethod.Post
   },
   trainingPlanApi: {
-    endpoint: '/apis/proxies/v8/user/v1/cbplan',
-    method: ApiMethod.Get
+    endpoint: '/apis/proxies/v8/cbplan/v3/user/dictionary',
+    method: ApiMethod.Post
   },
   trendingOnIGOTApi: {
     endpoint: '/apis/proxies/v8/trending/content/search',

@@ -169,6 +169,59 @@ export class ContentDictionaryService {
     return content
   }
 
+  /**
+   * Bulk variant of getContent(). Resolves many do_ids with at most ONE dictionary
+   * fetch instead of one lookup per id.
+   *
+   * Prefer this over forkJoin(ids.map(id => getContent(id))): getContent() re-reads the
+   * whole dictionary blob per id, and on a cold cache each miss issues its own content-read
+   * plus a read-modify-write of the shared blob, so concurrent misses overwrite each other.
+   * Misses are resolved sequentially here for that reason.
+   *
+   * @returns map of do_id -> content metadata; ids that cannot be resolved are omitted.
+   */
+  getContents(doIds: string[]): Observable<Record<string, any>> {
+    return from(this.getContentsAsync(doIds))
+  }
+
+  private async getContentsAsync(doIds: string[]): Promise<Record<string, any>> {
+    const resolved: Record<string, any> = {}
+    const uniqueIds = Array.from(new Set((doIds || []).filter(Boolean)))
+    if (!uniqueIds.length) {
+      return resolved
+    }
+
+    let dictionary: Record<string, any> = {}
+    try {
+      dictionary = await this.getDictionaryAsync(false)
+    } catch (err) {
+      console.warn('ContentDictionaryService: dictionary lookup failed, falling back per content', err)
+    }
+
+    const missing: string[] = []
+    uniqueIds.forEach((id: string) => {
+      if (dictionary && dictionary[id]) {
+        resolved[id] = dictionary[id]
+      } else {
+        missing.push(id)
+      }
+    })
+
+    // Sequential: getContentAsync() read-modify-writes the shared dictionary blob.
+    for (const id of missing) {
+      try {
+        const content = await this.getContentAsync(id)
+        if (content) {
+          resolved[id] = content
+        }
+      } catch (err) {
+        console.warn('ContentDictionaryService: unable to resolve content', id, err)
+      }
+    }
+
+    return resolved
+  }
+
   /** Clears IndexedDB store and resets the cache timestamp. */
   clearCache(): Observable<void> {
     return from(this.clearCacheAsync())

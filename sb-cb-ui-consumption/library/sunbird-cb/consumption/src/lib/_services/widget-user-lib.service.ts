@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { Observable, throwError, of } from 'rxjs'
+import { Observable, throwError, of, from } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 import { IUserGroupDetails } from '../_models/widget-user.model'
 import { NsContent } from '../_models/widget-content.model'
@@ -10,6 +10,8 @@ import dayjs from 'dayjs'
 import { NsCardContent } from '../_models/card-content-v2.model'
 import * as lodash from 'lodash'
 import { WidgetEnrollService, ConfigurationsService } from '@sunbird-cb/utils-v2'
+import { ContentDictionaryService } from './content-dictionary.service'
+import { CbpPlanCacheService } from './cbp-plan-cache.service'
 
 
 const PROTECTED_SLAG_V8 = '/apis/protected/v8'
@@ -18,7 +20,7 @@ const API_END_POINTS = {
   FETCH_EVENTS_ENROLLMENT_LIST: (userId: string) => `apis/proxies/v8/user/events/list/${userId}`,
   FETCH_USER_GROUPS: (userId: string) =>
     `${PROTECTED_SLAG_V8}/user/group/fetchUserGroup?userId=${userId}`,
-  FETCH_CPB_PLANS: `/apis/proxies/v8/user/v1/cbplan`,
+  FETCH_CBP_PLAN_USER_DICTIONARY: `/apis/proxies/v8/cbplan/v3/user/dictionary`,
   FETCH_USER_ENROLLMENT_LIST: (userId: string | undefined, competencyKey: string) =>
     // tslint:disable-next-line: max-line-length
     `/apis/proxies/v8/learner/course/v2/user/enrollment/list/${userId}?orgdetails=orgName,email&licenseDetails=name,description,url&fields=contentType,primaryCategory,courseCategory,topic,name,channel,mimeType,appIcon,gradeLevel,resourceType,identifier,medium,pkgVersion,board,subject,trackable,posterImage,duration,creatorLogo,license,version,versionKey,avgRating,additionalTags,${competencyKey}&batchDetails=name,endDate,startDate,status,enrollmentType,createdBy,certificates,batchAttributes`,
@@ -44,6 +46,8 @@ export class WidgetUserServiceLib {
     @Inject('environment') environment: any,
     private enrollSvc: WidgetEnrollService,
     private configSvc: ConfigurationsService,
+    private contentDictSvc: ContentDictionaryService,
+    private cbpCacheSvc: CbpPlanCacheService,
     private http: HttpClient) {
     this.environment = environment
   }
@@ -151,8 +155,20 @@ export class WidgetUserServiceLib {
     return of(JSON.parse(localStorage.getItem(key) || '{}'))
   }
 
-  getCBPData(key: any): Observable<any> {
-    return of(JSON.parse(localStorage.getItem(key) || '[]'))
+  /**
+   * CBP plan data for a plan year, read from IndexedDB (iGotCbpDB/cbpPlans).
+   *
+   * Previously read localStorage['cbpData'], which no longer holds CBP plan data.
+   * The legacy 'cbpData' argument is tolerated and treated as "current plan year"
+   * so existing callers keep working.
+   */
+  getCBPData(planYear?: string): Observable<any[]> {
+    const year = (!planYear || planYear === 'cbpData')
+      ? this.cbpCacheSvc.getCurrentFinancialYear()
+      : planYear
+    return from(
+      this.cbpCacheSvc.getEntry(year).then((entry: any) => (entry && entry.data) || [])
+    )
   }
   getSavedData(key: any): Observable<any> {
     return JSON.parse(localStorage.getItem(key) || '')
@@ -182,81 +198,265 @@ export class WidgetUserServiceLib {
     }
   }
 
-  fetchCbpPlanList(userId: string, callApi?: boolean) {
-    // If callApi is true, always fetch from API and return full metadata (not reduced)
-    if (callApi) {
-      const result: any = this.http.get(API_END_POINTS.FETCH_CPB_PLANS).pipe(catchError(this.handleError), map(
-        async (data: any) => {
-          if (data.result && data.result.content && data.result.content.length) {
-            let cbpData: any = this.getCbpFormatedData(data.result.content)
-            let cbpContentData: any = cbpData.cbpContentData || []
-            let request = {
-              request: {
-                courseId: cbpData.contentIds
-              }
-            }
-            const responseData = await this.enrollSvc.fetchEnrollContentData(request).toPromise().then(async (res: any) => {
-              const enrollData: any = {}
-              if (res && res.result && res.result.courses && res.result.courses.length) {
-                res.result.courses.forEach((data: any) => {
-                  enrollData[data.collectionId] = data
-                })
-                return enrollData
-              } else {
-                return {}
-              }
-            }).catch((_err: any) => {
-              return {}
-            })
-            // ask for full metadata (fullMeta = true)
-            return await this.mapCbpData(cbpContentData, responseData, true)
-          }
-          // return an empty full-meta list when API response has no content
-          return await this.mapCbpData([], {}, true)
-        }
-      ))
-      return result
+  /**
+   * @deprecated CBP retrieval moved to CBPlan V3. Kept only so existing callers keep
+   * compiling; it now delegates to fetchCbpPlanListV3 and never issues the old
+   * GET /apis/proxies/v8/user/v1/cbplan request. Call fetchCbpPlanListV3(planYear) directly
+   * so the selected plan year is honoured — this shim always resolves the current one.
+   */
+  fetchCbpPlanList(_userId?: string, _callApi?: boolean): Observable<any[]> {
+    return this.fetchCbpPlanListV3()
+  }
+
+  // ── CBPlan V3 ────────────────────────────────────────────────────────────────
+
+  /**
+   * Year-scoped CBP/CVP plan list backed by POST /apis/proxies/v8/cbplan/v3/user/dictionary.
+   *
+   * Replaces the V1 GET flow for the CBP strips. V3 returns only content ids + plan
+   * associations, so metadata comes from the content dictionary and enrolment status
+   * still comes from the existing enrolment API.
+   *
+   * @param planYear financial year as YYYY-YY; defaults to the current one
+   * @param forceRefresh bypass the IndexedDB cache
+   */
+  fetchCbpPlanListV3(planYear?: string, forceRefresh = false): Observable<any[]> {
+    return from(this.fetchCbpPlanListV3Async(planYear, forceRefresh))
+  }
+
+  /** Current financial year (April -> March) as YYYY-YY, e.g. '2026-27'. */
+  getCurrentFinancialYear(): string {
+    return this.cbpCacheSvc.getCurrentFinancialYear()
+  }
+
+  /** Clears the cached CBP data for one plan year, or all years when omitted. */
+  clearCbpPlanCache(planYear?: string): Promise<void> {
+    return this.cbpCacheSvc.clear(planYear)
+  }
+
+  private async fetchCbpPlanListV3Async(planYear?: string, forceRefresh = false): Promise<any[]> {
+    const year = planYear || this.cbpCacheSvc.getCurrentFinancialYear()
+    const cached = await this.cbpCacheSvc.getEntry(year)
+
+    if (!forceRefresh && cached && this.cbpCacheSvc.isEntryValid(cached)) {
+      return cached.data
     }
 
-    // Default behavior: use cache check and return reduced/minified metadata
-    if (this.checkStorageData('cbpService', 'cbpData')) {
-      const result: any = this.http.get(API_END_POINTS.FETCH_CPB_PLANS).pipe(catchError(this.handleError), map(
-        async (data: any) => {
-          if (data.result && data.result.content && data.result.content.length) {
-            let cbpData: any = this.getCbpFormatedData(data.result.content)
-            let cbpDoIds = cbpData.contentIds.join(',')
-            let cbpContentData: any = cbpData.cbpContentData || []
-            let request = {
-              request: {
-                courseId: cbpData.contentIds
-              }
-            }
-            const responseData = await this.enrollSvc.fetchEnrollContentData(request).toPromise().then(async (res: any) => {
+    try {
+      const payload = {
+        request: {
+          planYear: year,
+          enrichment: true,
+        },
+      }
 
-              const enrollData: any = {}
-              if (res && res.result && res.result.courses && res.result.courses.length) {
-                res.result.courses.forEach((data: any) => {
-                  enrollData[data.collectionId] = data
-                })
-                return enrollData
-              } else {
-                return {}
-              }
-            }).catch((_err: any) => {
-              return {}
-            })
-            // default: return reduced metadata (fullMeta = false)
-            return await this.mapCbpData(cbpContentData, responseData, false)
-          }
-          // return an empty reduced list and update cache when API response has no content
-          return await this.mapCbpData([], {}, false)
-        }
-      )
-      )
-      this.setTime('cbpService')
-      return result
+      const res: any = await this.http.post(
+        API_END_POINTS.FETCH_CBP_PLAN_USER_DICTIONARY,
+        payload,
+        { withCredentials: true },
+      ).toPromise()
+
+      const associations = this.resolveCbpAssociations(res && res.result)
+      const enriched = await this.enrichCbpWithDictionary(associations)
+      const enrollmentData = await this.fetchCbpEnrollmentData(enriched.map((c: any) => c.identifier))
+
+      const mapped: any = await this.mapCbpData(enriched, enrollmentData, true)
+      const reduced = this.toReducedCbpData(mapped)
+
+      // An empty list is deliberately not cached. A proxy rejection (the API whitelist
+      // 403, an expired session) can come back as a 200 with no `result`, and caching
+      // that would stop the request being made at all until the TTL expires.
+      if (reduced.length) {
+        await this.cbpCacheSvc.setEntry(year, reduced)
+      }
+      return reduced
+    } catch (err) {
+      // Fall back to a stale cache rather than emptying a working strip.
+      if (cached && cached.data) {
+        console.warn('CBP V3 fetch failed, serving stale cache for', year, err)
+        return cached.data
+      }
+      console.warn('CBP V3 fetch failed and no cache is available for', year, err)
+      return []
     }
-    return this.getCBPData('cbpData')
+  }
+
+  /**
+   * Flattens a CBP plan response into one association per content id.
+   *
+   * Handles both response shapes the endpoint returns:
+   *  - result.content[]      — plan-centric: { id, endDate, isApar, contentList[] }
+   *  - result.aparContentList / result.nonAparContentList
+   *                          — content-centric maps of contentId -> [{ endDate, planId }]
+   *
+   * Either way the same rule applies: when a content id appears in several plans the one
+   * with MAX(endDate) wins, APAR breaking a tie, so the UI never renders the same course
+   * twice.
+   */
+  resolveCbpAssociations(result: any): any[] {
+    const byContentId = new Map<string, any>()
+
+    const collect = (contentList: any, isApar: boolean) => {
+      if (!contentList) {
+        return
+      }
+      Object.keys(contentList).forEach((contentId: string) => {
+        const associations = contentList[contentId]
+        if (!Array.isArray(associations) || !associations.length) {
+          return
+        }
+
+        let latest: any = null
+        let latestTime = Number.NEGATIVE_INFINITY
+        associations.forEach((association: any) => {
+          if (!association) {
+            return
+          }
+          const time = new Date(association.endDate).getTime()
+          if (isNaN(time)) {
+            return
+          }
+          if (time > latestTime) {
+            latestTime = time
+            latest = association
+          }
+        })
+        if (!latest) {
+          return
+        }
+
+        const existing = byContentId.get(contentId)
+        if (existing) {
+          const existingTime = new Date(existing.endDate).getTime()
+          const keepExisting = existingTime > latestTime
+            || (existingTime === latestTime && existing.isApar)
+          if (keepExisting) {
+            return
+          }
+        }
+
+        byContentId.set(contentId, {
+          identifier: contentId,
+          contentId,
+          planId: latest.planId,
+          parentId: latest.planId,
+          endDate: latest.endDate,
+          isApar,
+          planType: 'cbPlan',
+          contentStatus: 0,
+          planDuration: this.getPlanDuration(latest.endDate),
+        })
+      })
+    }
+
+    /**
+     * Plan-centric variant: result.content[] of { id, endDate, isApar, contentList[] },
+     * where contentList holds whole content objects rather than id -> association maps.
+     *
+     * Collapsed on the SAME rule as the map form — one card per content id, the plan with
+     * MAX(endDate) winning and APAR breaking a tie — so a course sitting in several plans
+     * is never rendered twice. Plan fields are applied OVER the content metadata so the
+     * plan's endDate always wins.
+     */
+    const collectPlans = (plans: any[]) => {
+      plans.forEach((plan: any) => {
+        if (!plan || !Array.isArray(plan.contentList) || !plan.contentList.length) {
+          return
+        }
+        const planTime = new Date(plan.endDate).getTime()
+        if (isNaN(planTime)) {
+          return
+        }
+        const isApar = !!plan.isApar
+
+        plan.contentList.forEach((content: any) => {
+          const contentId = content && content.identifier
+          if (!contentId) {
+            return
+          }
+
+          const existing = byContentId.get(contentId)
+          if (existing) {
+            const existingTime = new Date(existing.endDate).getTime()
+            const keepExisting = existingTime > planTime
+              || (existingTime === planTime && existing.isApar)
+            if (keepExisting) {
+              return
+            }
+          }
+
+          byContentId.set(contentId, {
+            ...content,
+            identifier: contentId,
+            contentId,
+            planId: plan.id,
+            parentId: plan.id,
+            endDate: plan.endDate,
+            isApar,
+            planType: 'cbPlan',
+            contentStatus: 0,
+            planDuration: this.getPlanDuration(plan.endDate),
+          })
+        })
+      })
+    }
+
+    if (result && Array.isArray(result.content)) {
+      collectPlans(result.content)
+    } else {
+      collect(result && result.aparContentList, true)
+      collect(result && result.nonAparContentList, false)
+    }
+
+    return Array.from(byContentId.values())
+  }
+
+  /** Same overdue/upcoming/success bucketing the V1 flow applied. */
+  private getPlanDuration(endDate: string): string {
+    const todayDate = dayjs().format('YYYY-MM-DD')
+    const daysCount = dayjs(dayjs(endDate).format('YYYY-MM-DD')).diff(todayDate, 'day')
+    return daysCount < 0 ? NsCardContent.ACBPConst.OVERDUE : daysCount > 29
+      ? NsCardContent.ACBPConst.SUCCESS : NsCardContent.ACBPConst.UPCOMING
+  }
+
+  /**
+   * Adds content metadata to each plan association.
+   * Dictionary values are merged UNDER the CBP fields so plan data always wins.
+   */
+  private async enrichCbpWithDictionary(associations: any[]): Promise<any[]> {
+    if (!associations || !associations.length) {
+      return []
+    }
+    const identifiers = associations.map((c: any) => c.identifier)
+    let dictionary: Record<string, any> = {}
+    try {
+      dictionary = (await this.contentDictSvc.getContents(identifiers).toPromise()) || {}
+    } catch (err) {
+      console.warn('CBP V3: content dictionary enrichment failed', err)
+    }
+
+    return associations.map((association: any) => {
+      const metadata = dictionary[association.identifier]
+      return metadata ? { ...metadata, ...association } : association
+    })
+  }
+
+  private async fetchCbpEnrollmentData(contentIds: string[]): Promise<any> {
+    if (!contentIds || !contentIds.length) {
+      return {}
+    }
+    const request = { request: { courseId: contentIds } }
+    return this.enrollSvc.fetchEnrollContentData(request).toPromise().then((res: any) => {
+      const enrollData: any = {}
+      if (res && res.result && res.result.courses && res.result.courses.length) {
+        res.result.courses.forEach((course: any) => {
+          enrollData[course.collectionId] = course
+        })
+      }
+      return enrollData
+    }).catch((_err: any) => {
+      return {}
+    })
   }
 
   // storeUserEnrollmentInfo(enrollmentData: any, enrolledCourseCount: number) {
@@ -400,7 +600,16 @@ export class WidgetUserServiceLib {
     return cbpContentEmpty
   }
 
+  /**
+   * CBP plan data is no longer mirrored to localStorage['cbpData'] — IndexedDB
+   * (CbpPlanCacheService, iGotCbpDB/cbpPlans) is the only CBP cache.
+   */
   requiredCBPData(cbpData: any) {
+    return this.toReducedCbpData(cbpData)
+  }
+
+  /** Reduces CBP items to the fields the cards and tab logic need. Pure — no persistence. */
+  toReducedCbpData(cbpData: any) {
     const requiredCbpData: any[] = []
     if (cbpData?.length) {
       cbpData.forEach((cbp: any) => {
@@ -418,7 +627,10 @@ export class WidgetUserServiceLib {
         }
         // scheduling / plan fields + the provider fields cards need for the org name and logo
         // + the multilingual fields the "available in N languages" pill is derived from
-        ;['endDate', 'planDuration', 'appIcon', 'difficultyLevel', 'avgRating', 'posterImage', 'duration', 'primaryCategory', 'courseCategory', 'planType', 'planTypeV2', 'contentStatus', 'status', 'isApar', 'organisation', 'creatorLogo', 'sourceName', 'resourceType', 'languageMapV1', 'language'].forEach((k: string) => {
+        // parentId/planId identify the plan a card belongs to — both parsers set them
+        // (getCbpFormatedData from `content[].id`, resolveCbpAssociations from the
+        // association's planId), so the cards can attribute a due date to its plan.
+        ;['endDate', 'planDuration', 'appIcon', 'difficultyLevel', 'avgRating', 'posterImage', 'duration', 'primaryCategory', 'courseCategory', 'planType', 'planTypeV2', 'contentStatus', 'status', 'isApar', 'organisation', 'creatorLogo', 'sourceName', 'resourceType', 'languageMapV1', 'language', 'parentId', 'planId'].forEach((k: string) => {
           if (cbp[k] !== undefined) {
             cbpObj[k] = cbp[k]
           }
@@ -432,8 +644,6 @@ export class WidgetUserServiceLib {
         requiredCbpData.push(cbpObj)
       })
     }
-    // persist only the reduced metadata to keep localStorage small
-    localStorage.setItem('cbpData', JSON.stringify(requiredCbpData))
     return requiredCbpData
   }
   mapEnrollmentData(courseData: any) {

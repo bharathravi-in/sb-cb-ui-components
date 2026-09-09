@@ -2,9 +2,8 @@ import { Inject, Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable, of, Subject, throwError } from "rxjs";
 import { ConfigurationsService } from "@sunbird-cb/utils-v2";
+import { WidgetUserServiceLib } from "@sunbird-cb/consumption";
 import {
-  ACBPConst,
-  IGOTConst,
   SearchTrainingPlansRequest,
   SearchCommunitiesRequest,
   SearchExternalRequest,
@@ -14,9 +13,8 @@ import {
   SearchV4Request,
   SearchDesignationRequest
 } from "../_models/search-listing.model";
-import { catchError, map } from "rxjs/operators";
+import { catchError } from "rxjs/operators";
 // import "rxjs/add/observable/of";
-import * as lodash from "lodash";
 
 const API_END_POINTS = {
   SEARCH_V6: `/apis/proxies/v8/sunbirdigot/search`,
@@ -35,7 +33,6 @@ const API_END_POINTS = {
   ENROLLMENT_API(userId: string): string {
     return `/apis/proxies/v8/learner/course/v4/user/enrollment/list/${userId}`;
   },
-  FETCH_CPB_PLANS: `/apis/proxies/v8/user/v1/cbplan`,
   DOWNLOAD_CERTIFICATE_v2: (id: string) => `apis/protected/v8/cohorts/course/batch/cert/download/${id}`,
   SEARCH_USERS: `/apis/proxies/v8/user/v1/search`,
   SEARCH_TRAINING_PLANS: `/apis/proxies/v8/cbplan/v2/search`,
@@ -56,7 +53,7 @@ export class SearchListingService {
    */
   notifyObservable$ = this.removeFilter.asObservable();
   environment!: any;
-  constructor(@Inject("environment") environment: any, private http: HttpClient, private configSrv: ConfigurationsService) {
+  constructor(@Inject("environment") environment: any, private http: HttpClient, private configSrv: ConfigurationsService, private userSvc: WidgetUserServiceLib) {
     this.environment = environment;
   }
 
@@ -185,19 +182,20 @@ export class SearchListingService {
     return this.http.get(`${API_END_POINTS.DOWNLOAD_CERTIFICATE_v2(id)}`);
   }
 
-  fetchCbpPlanList() {
-    // This method is used to fetch the list of CBP plans.
-    if (this.checkStorageData("cbpService", "cbpData")) {
-      const result: any = this.http.get(API_END_POINTS.FETCH_CPB_PLANS).pipe(
-        catchError(this.handleError),
-        map(async (data: any) => {
-          return await this.mapData(data.result);
-        })
-      );
-      this.setTime("cbpService");
-      return result;
-    }
-    return this.getData("cbpData");
+  /**
+   * CBP plan list for a plan year.
+   *
+   * Delegates to WidgetUserServiceLib, the single owner of the CBPlan V3 call, the
+   * MAX(endDate) resolution, dictionary enrichment and the year-scoped IndexedDB cache.
+   * This service deliberately keeps no copy of that transformation — consumers here only
+   * match on `identifier` for the "in your plan" badge.
+   */
+  fetchCbpPlanList(planYear?: string): Observable<any[]> {
+    return this.userSvc.fetchCbpPlanListV3(planYear).pipe(
+      // Feeds a forkJoin alongside the enrolment calls; rethrowing would take those down
+      // too, so a CBP failure just drops the badge.
+      catchError(() => of([] as any[]))
+    );
   }
 
   getData(key: any): Observable<any> {
@@ -237,90 +235,6 @@ export class SearchListingService {
       return true;
     }
     return true;
-  }
-
-  async mapData(this: any, data: any): Promise<any[]> {
-    const contentNew: any[] = [];
-    const todayDate = new Date().toISOString().split("T")[0]; // Format as YYYY-MM-DD
-
-    const enrollList: { [key: string]: any } = JSON.parse(localStorage.getItem("enrollmentMapData") || "{}");
-
-    if (data && data.count) {
-      data.content.forEach((c: any) => {
-        c.contentList.forEach((childData: any) => {
-          const childEnrollData = enrollList[childData.identifier];
-          const endDate = new Date(c.endDate).toISOString().split("T")[0]; // Format as YYYY-MM-DD
-          const daysCount = Math.floor((new Date(endDate).getTime() - new Date(todayDate).getTime()) / (1000 * 60 * 60 * 24));
-          childData["planDuration"] = daysCount < 0 ? ACBPConst.OVERDUE : daysCount > 29 ? ACBPConst.SUCCESS : ACBPConst.UPCOMING;
-          childData["endDate"] = c.endDate;
-          childData["parentId"] = c.id;
-          childData["planType"] = "cbPlan";
-          if (childData.status !== IGOTConst.RETIRED) {
-            contentNew.push(childData);
-          } else {
-            if (childEnrollData && childEnrollData.status === 2) {
-              contentNew.push(childData);
-            }
-          }
-
-          const competencyArea: string[] = [];
-          const competencyTheme: string[] = [];
-          const competencyThemeType: string[] = [];
-          const competencySubTheme: string[] = [];
-          const competencyAreaId: string[] = [];
-          const competencyThemeId: string[] = [];
-          const competencySubThemeId: string[] = [];
-          childData["contentStatus"] = 0;
-          if (childEnrollData) {
-            childData["contentStatus"] = childEnrollData.status;
-          }
-          if (childData[this.compentencyKey]) {
-            childData[this.compentencyKey].forEach((element: any) => {
-              if (!competencyArea.includes(element.competencyArea)) {
-                competencyArea.push(element.competencyArea);
-                competencyAreaId.push(element.competencyAreaId);
-              }
-              if (!competencyTheme.includes(element.competencyTheme)) {
-                competencyTheme.push(element.competencyTheme);
-                competencyThemeId.push(element.competencyThemeId);
-              }
-              if (!competencyThemeType.includes(element.competencyThemeType)) {
-                competencyThemeType.push(element.competencyThemeType);
-              }
-              if (!competencySubTheme.includes(element.competencySubTheme)) {
-                competencySubTheme.push(element.competencySubTheme);
-                competencySubThemeId.push(element.competencySubThemeId);
-              }
-            });
-          }
-
-          childData["competencyArea"] = competencyArea;
-          childData["competencyTheme"] = competencyTheme;
-          childData["competencyThemeType"] = competencyThemeType;
-          childData["competencySubTheme"] = competencySubTheme;
-          childData["competencyAreaId"] = competencyAreaId;
-          childData["competencyThemeId"] = competencyThemeId;
-          childData["competencySubThemeId"] = competencySubThemeId;
-        });
-      });
-
-      if (contentNew.length > 1) {
-        const sortedData = contentNew.sort((a: any, b: any) => {
-          const firstDate = new Date(a.endDate);
-          const secondDate = new Date(b.endDate);
-          return secondDate > firstDate ? 1 : -1;
-        });
-        const uniqueUsersByID = lodash.uniqBy(sortedData, "identifier");
-        const sortedByEndDate = lodash.orderBy(uniqueUsersByID, ["endDate"], ["asc"]);
-        const sortedByStatus = lodash.orderBy(sortedByEndDate, ["contentStatus"], ["asc"]);
-        localStorage.setItem("cbpData", JSON.stringify(sortedByStatus));
-        return sortedByStatus;
-      }
-      localStorage.setItem("cbpData", JSON.stringify(contentNew));
-      return contentNew;
-    }
-    localStorage.setItem("cbpData", JSON.stringify([]));
-    return [];
   }
 
   searchDesignationV4(params: SearchDesignationRequest): Promise<any> {

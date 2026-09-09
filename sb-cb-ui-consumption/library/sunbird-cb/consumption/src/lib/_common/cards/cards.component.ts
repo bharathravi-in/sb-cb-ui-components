@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core'
 import { WidgetBaseComponent, NsWidgetResolver } from '@sunbird-cb/resolver-v2'
 import { NsCardContent } from '../../_models/card-content.model'
 import { NsContent, UtilityService } from '@sunbird-cb/utils-v2'
 import { WidgetContentLibService } from '../../_services/widget-content-lib.service'
 import { Router } from '@angular/router'
+import { Subscription } from 'rxjs'
 import { VIEWER_ROUTE_FROM_MIME } from '../../_services/viewer-route-util'
+import { CbpPlanCacheService } from '../../_services/cbp-plan-cache.service'
 
 @Component({
     selector: 'sb-uic-cards',
@@ -13,26 +15,32 @@ import { VIEWER_ROUTE_FROM_MIME } from '../../_services/viewer-route-util'
     standalone: false
 })
 export class CardsComponent extends WidgetBaseComponent
-  implements OnInit, NsWidgetResolver.IWidgetData<NsCardContent.ICard> {
+  implements OnInit, OnDestroy, NsWidgetResolver.IWidgetData<NsCardContent.ICard> {
 
   @Input() widgetData!: NsCardContent.ICard
   @Output() triggerTelemetry = new EventEmitter<any>()
   isIntranetAllowedSettings = false
   cbPlanMapData: any
-  cbPlanInterval: any
+  cbPlanSubscription: Subscription | null = null
   constructor(private utilitySvc: UtilityService,
     private contSvc: WidgetContentLibService,
+    private cbpCacheSvc: CbpPlanCacheService,
     public router: Router
   ) {
     super()
   }
 
   ngOnInit() {
-    this.cbPlanInterval = setInterval(() => {
-      this.getCbPlanData()
-    }, 1000)
+    // Was a 1s setInterval polling localStorage['cbpData']. CBP plan data now lives in
+    // IndexedDB and the cache pushes an update when it is written, so no polling.
+    this.cbPlanSubscription = this.cbpCacheSvc.watchPlanMap()
+      .subscribe((planMap: Record<string, any>) => this.cbPlanMapData = planMap)
+  }
 
-
+  ngOnDestroy() {
+    if (this.cbPlanSubscription) {
+      this.cbPlanSubscription.unsubscribe()
+    }
   }
 
   get isLiveOrMarkForDeletion() {
@@ -76,19 +84,11 @@ export class CardsComponent extends WidgetBaseComponent
     }
 
   }
+  /** @deprecated CBP plan data now arrives via CbpPlanCacheService.watchPlanMap(). */
   getCbPlanData() {
-    let cbpList: any = {}
-    if (localStorage.getItem('cbpData')) {
-      let cbpListArr = JSON.parse(localStorage.getItem('cbpData') || '')
-      if (cbpListArr && cbpListArr.length) {
-        cbpListArr.forEach((data: any) => {
-          cbpList[data.identifier] = data
-        })
-      }
-      this.cbPlanMapData = cbpList
-      // this.karmaPointLoading = false
-      clearInterval(this.cbPlanInterval)
-    }
+    this.cbpCacheSvc.getPlanMap().then((planMap: Record<string, any>) => {
+      this.cbPlanMapData = planMap
+    })
   }
 
 

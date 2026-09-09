@@ -91,6 +91,7 @@ export class AppTocHomeV2Component implements OnInit, OnDestroy, AfterViewChecke
   content: NsContent.IContent | null = null
   contentReadData: NsContent.IContent | null = null
   baseContentReadData: NsContent.IContent | null = null
+  badgeTooltipText = ''
   errorCode: NsAppToc.EWsTocErrorCode | null = null
   resumeData: any = null
   nsCardContentData: any = NsCardContent.ACBPConst
@@ -388,10 +389,12 @@ export class AppTocHomeV2Component implements OnInit, OnDestroy, AfterViewChecke
     return res.filter((v: any) => v.identifier === this.courseID)
   }
 
-  findACPB() {
-    const localCbp = localStorage.getItem('cbpData')
-    if (localCbp) {
-      const storeageCbp = JSON.parse(localCbp)
+  async findACPB() {
+    // CBP plan data now lives in IndexedDB (iGotCbpDB/cbpPlans); getCBPData() reads the
+    // current plan year from that cache instead of localStorage['cbpData'].
+    const localCbp = await this.userServiceLib.getCBPData().toPromise()
+    if (localCbp && localCbp.length) {
+      const storeageCbp = localCbp
       const cbp = this.filteredAcbpList(storeageCbp)
       if (cbp.length) {
         const acbp = 'cbPlan'
@@ -2232,6 +2235,7 @@ export class AppTocHomeV2Component implements OnInit, OnDestroy, AfterViewChecke
     }
     // Added to make sure this reference was incorrect, assigning again to make sure global variable is properly updated
     this.queryParamsData = queryParamsDataTemp
+    this.updateBadgeTooltipText()
 
     // Continue with the rest of the processing
     this.loadLanguageData()
@@ -3544,6 +3548,43 @@ export class AppTocHomeV2Component implements OnInit, OnDestroy, AfterViewChecke
       return badge.badgeEarningDateTime > Date.now()
     }
     return false
+  }
+
+  /**
+   * Builds the hover text shown on the banner badge icon.
+   * For a Learning Pathway it tells the learner how many mandatory courses earn the badge.
+   */
+  updateBadgeTooltipText(): void {
+    this.badgeTooltipText = ''
+    if (this.baseContentReadData?.courseCategory !== 'Learning Pathway') {
+      return
+    }
+    const mandatoryCourseCount = this.getPathwayMandatoryCourseCount()
+    if (!mandatoryCourseCount) {
+      return
+    }
+    this.badgeTooltipText =
+      `Earn a badge on completing ${mandatoryCourseCount} mandatory courses in this Learning Pathway`
+  }
+
+  /**
+   * Counts the mandatory courses across all milestones of a Learning Pathway
+   */
+  getPathwayMandatoryCourseCount(): number {
+    const baseData = this.baseContentReadData as any
+    let milestones: any[] = []
+    if (baseData?.milestones_v1?.length) {
+      milestones = baseData.milestones_v1
+    } else if ((this.content as any)?.children?.length) {
+      milestones = (this.content as any).children.filter((child: any) =>
+        child?.primaryCategory === 'Milestone' || child?.courseCategory === 'Milestone')
+    }
+    return milestones.reduce((count: number, milestone: any) => {
+      const courses = milestone?.courses || milestone?.children || []
+      const mandatoryCourses = courses.filter((course: any) =>
+        course?.primaryCategory === 'Course' && (course?.isMandatory === true || course?.mandatory === true))
+      return count + mandatoryCourses.length
+    }, 0)
   }
 
   async areAllActiveBatchesFull(): Promise<void> {

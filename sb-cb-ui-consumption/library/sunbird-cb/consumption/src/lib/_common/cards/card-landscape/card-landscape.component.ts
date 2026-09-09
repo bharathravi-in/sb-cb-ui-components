@@ -94,9 +94,6 @@ export class CardLandscapeComponent implements OnInit {
     }
     this.defaultSLogo = this.widgetData?.content?.contentPartner?.contentPartnerName ? '/assets/icons/content/provider.svg' : this.defaultSLogo
 
-    this.cbPlanInterval = setInterval(() => {
-      this.getCbPlanData()
-    }, 1000)
   }
 
   showSnackbar() {
@@ -114,18 +111,16 @@ export class CardLandscapeComponent implements OnInit {
   }
 
 
+  /**
+   * cbPlanMapData is an @Input here — the parent strip supplies it, so this component
+   * never needed its own copy (the assignment has long been commented out). It used to
+   * poll localStorage['cbpData'] every second purely to clear that timer; CBP plan data
+   * now lives in IndexedDB, so the polling is gone.
+   */
   getCbPlanData() {
-    let cbpList: any = {}
-    if (localStorage.getItem('cbpData')) {
-      let cbpListArr = JSON.parse(localStorage.getItem('cbpData') || '')
-      if (cbpListArr && cbpListArr.length) {
-        cbpListArr.forEach((data: any) => {
-          cbpList[data.identifier] = data
-        })
-      }
-      // this.cbPlanMapData = cbpList
-      // this.karmaPointLoading = false
+    if (this.cbPlanInterval) {
       clearInterval(this.cbPlanInterval)
+      this.cbPlanInterval = null
     }
   }
 

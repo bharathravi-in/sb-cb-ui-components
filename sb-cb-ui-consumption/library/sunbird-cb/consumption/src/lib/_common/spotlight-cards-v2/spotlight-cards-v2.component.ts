@@ -137,13 +137,10 @@ export class SbUicSpotlightCardsV2Component {
     this.events.raiseInteractTelemetry(
       {
         type: WsEvents.EnumInteractTypes.CLICK,
-        subType: 'spotlight-card',
-        id: card.label,
+        subType: card?.cardClickDetails?.subType || 'spotlight',
+        id: card?.cardClickDetails?.id || card.label,
       },
-      {
-        id: card.redirectionUrl,
-        type: 'spotlight-card',
-      },
+      {},
       { module: WsEvents.EnumTelemetrymodules.HOME },
     )
     if (card.externalUrl) {

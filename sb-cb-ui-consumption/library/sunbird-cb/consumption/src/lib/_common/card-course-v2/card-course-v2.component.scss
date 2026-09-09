@@ -303,6 +303,10 @@ $done-green : #388e3c;
     &--done {
       color: $done-green;
     }
+
+    &--upcoming {
+      color: $amber;
+    }
   }
 
   /* Footer: org+status – sticks to card bottom */

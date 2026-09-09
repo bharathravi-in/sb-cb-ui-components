@@ -2,6 +2,7 @@ import { AfterViewInit, Component, HostBinding, Inject, Input, OnDestroy, OnInit
 import { NsWidgetResolver, WidgetBaseComponent } from '@sunbird-cb/resolver-v2'
 import { ConfigurationsService, EventService, UtilityService, NsInstanceConfig, WsEvents, MultilingualTranslationsService } from '@sunbird-cb/utils-v2'
 import { Subscription } from 'rxjs'
+import { CbpPlanCacheService } from '@sunbird-cb/consumption'
 import { NsGoal } from '../btn-goals/btn-goals.model'
 import { NsPlaylist } from '../btn-playlist/btn-playlist.model'
 import { NsContent } from '../_services/widget-content.model'
@@ -38,7 +39,7 @@ export class CardContentV2Component extends WidgetBaseComponent
   showContentTag = false
   downloadCertificateLoading: boolean = false
   cbPlanMapData: any
-  cbPlanInterval: any
+  cbPlanSubscription: Subscription | null = null
   nsContentConstants: any = NsContent
   btnPlaylistConfig: NsPlaylist.IBtnPlaylist | any = null
   btnGoalsConfig: NsGoal.IBtnGoal | any = null
@@ -55,6 +56,7 @@ export class CardContentV2Component extends WidgetBaseComponent
     private route: ActivatedRoute,
     private contSvc: WidgetContentService,
     private langtranslations: MultilingualTranslationsService,
+    private cbpCacheSvc: CbpPlanCacheService,
     @Inject('environment') private environment: any
   ) {
     super()
@@ -110,9 +112,10 @@ export class CardContentV2Component extends WidgetBaseComponent
           this.checkCriteria() && this.checkContentTypeCriteria() && this.checkMimeTypeCriteria()
       }
     }
-    this.cbPlanInterval = setInterval(() => {
-      this.getCbPlanData()
-    }, 1000)
+    // Was a 1s setInterval polling localStorage['cbpData']. CBP plan data now lives in
+    // IndexedDB and the cache pushes an update when written, so no polling is needed.
+    this.cbPlanSubscription = this.cbpCacheSvc.watchPlanMap()
+      .subscribe((planMap: Record<string, any>) => this.cbPlanMapData = planMap)
   }
 
   checkContentTypeCriteria() {
@@ -170,6 +173,9 @@ export class CardContentV2Component extends WidgetBaseComponent
   ngOnDestroy() {
     if (this.prefChangeSubscription) {
       this.prefChangeSubscription.unsubscribe()
+    }
+    if (this.cbPlanSubscription) {
+      this.cbPlanSubscription.unsubscribe()
     }
   }
 
@@ -375,19 +381,11 @@ export class CardContentV2Component extends WidgetBaseComponent
   }
 
 
+  /** @deprecated CBP plan data now arrives via CbpPlanCacheService.watchPlanMap(). */
   getCbPlanData() {
-    let cbpList: any = {}
-    if (localStorage.getItem('cbpData')) {
-      let cbpListArr = JSON.parse(localStorage.getItem('cbpData') || '')
-      if (cbpListArr && cbpListArr.length) {
-        cbpListArr.forEach((data: any) => {
-          cbpList[data.identifier] = data
-        })
-      }
-      this.cbPlanMapData = cbpList
-      // this.karmaPointLoading = false
-      clearInterval(this.cbPlanInterval)
-    }
+    this.cbpCacheSvc.getPlanMap().then((planMap: Record<string, any>) => {
+      this.cbPlanMapData = planMap
+    })
   }
   async getRedirectUrlData(content: any, contentType?: any) {
     const contentCategory = content && content.primaryCategory ? content.primaryCategory : 'Content'

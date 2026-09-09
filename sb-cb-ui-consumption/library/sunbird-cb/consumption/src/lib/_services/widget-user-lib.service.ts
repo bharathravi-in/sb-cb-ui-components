@@ -287,11 +287,17 @@ export class WidgetUserServiceLib {
    * Handles both response shapes the endpoint returns:
    *  - result.content[]      — plan-centric: { id, endDate, isApar, contentList[] }
    *  - result.aparContentList / result.nonAparContentList
-   *                          — content-centric maps of contentId -> [{ endDate, planId }]
+   *                          — content-centric maps of contentId -> [{ endDate, planId, planType }]
    *
    * Either way the same rule applies: when a content id appears in several plans the one
    * with MAX(endDate) wins, APAR breaking a tie, so the UI never renders the same course
    * twice.
+   *
+   * The winning plan's own `planType` ("AICBP" for an AI-drafted plan, null otherwise) is
+   * carried through as `planTypeV2` — the same field `getCbpFormatedData` sets — because
+   * `planType` itself is stamped with the constant 'cbPlan'. The Draft CBP Plan strip is
+   * keyed off `planTypeV2`, so dropping it here left that strip empty and filed AI-drafted
+   * courses under Training Plan instead.
    */
   resolveCbpAssociations(result: any): any[] {
     const byContentId = new Map<string, any>()
@@ -343,6 +349,7 @@ export class WidgetUserServiceLib {
           endDate: latest.endDate,
           isApar,
           planType: 'cbPlan',
+          planTypeV2: latest.planType || '',
           contentStatus: 0,
           planDuration: this.getPlanDuration(latest.endDate),
         })
@@ -394,6 +401,7 @@ export class WidgetUserServiceLib {
             endDate: plan.endDate,
             isApar,
             planType: 'cbPlan',
+            planTypeV2: plan.planType || '',
             contentStatus: 0,
             planDuration: this.getPlanDuration(plan.endDate),
           })

@@ -15,7 +15,7 @@ import { Router } from '@angular/router'
 import { TranslateModule } from '@ngx-translate/core'
 import { MatIconModule } from '@angular/material/icon'
 import { MatTooltipModule } from '@angular/material/tooltip'
-import { ConfigurationsService, DomainConfService, EventService, PipePublicURLModule, WsEvents } from '@sunbird-cb/utils-v2'
+import { ConfigurationsService, DomainConfService, EventService, PipePublicURLModule, UtilityService, WsEvents } from '@sunbird-cb/utils-v2'
 import { NsContent } from '../../_models/widget-content.model'
 import { ContentLanguageService } from '../../_services/content-language.service'
 import { CommonMethodsService } from '../../_services/common-methods.service'
@@ -196,7 +196,9 @@ export class CardCourseV2Component {
 
   readonly programDurationDays = computed(() => this.content()?.programDuration || 0)
 
-  constructor() {
+  constructor(
+    private utilitySvc: UtilityService,
+  ) {
     // One-time initialisation from config
     const cfg = this.configSvc.instanceConfig
     if (cfg) {
@@ -242,6 +244,7 @@ export class CardCourseV2Component {
 
   emitDetails(): void {
     if (this.content() && this.config() && this.config()?.cardClickDetails) {
+      this.utilitySvc.setRouteData([{ module: 'Home', pageId: 'page/home' }])
       const cardClickDetails = {
         ...this.config()?.cardClickDetails,
         identifier: this.content()?.identifier,

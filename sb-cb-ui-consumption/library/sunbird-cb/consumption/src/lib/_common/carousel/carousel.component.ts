@@ -14,6 +14,7 @@ import {
   effect,
 } from '@angular/core'
 import { NgTemplateOutlet } from '@angular/common'
+import { UtilityService } from '@sunbird-cb/utils-v2'
 
 /**
  * A reusable, content-agnostic carousel component built with Angular 20 signals.
@@ -122,7 +123,9 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
     return Array.from({ length: total }, (_, i) => i)
   });
 
-  constructor() {
+  constructor(
+    private utilitySvc: UtilityService
+  ) {
     // Clamp currentPage when totalPages changes (e.g. on resize)
     effect(() => {
       const total = this.totalPages()
@@ -171,6 +174,7 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
   }
 
   onItemClick(item: any, index: number): void {
+    this.utilitySvc.setRouteData([{ module: 'Home', pageId: 'page/home' }])
     this.itemClicked.emit({ item, index })
   }
 

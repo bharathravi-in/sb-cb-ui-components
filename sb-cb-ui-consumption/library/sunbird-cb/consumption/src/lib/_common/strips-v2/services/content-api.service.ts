@@ -17,6 +17,12 @@ export class ContentApiService {
   private readonly cardClickDetailsSubject = new Subject<any>()
   readonly cardClickDetails$ = this.cardClickDetailsSubject.asObservable()
 
+  /**
+   * In-flight CBP plan request per plan year, so the CBP sections on one page share a single
+   * POST. This service is a root singleton, so the map spans every section on the page.
+   */
+  private readonly cbpPlanInFlight = new Map<string, Promise<any[]>>()
+
   private readonly emptySectionKeysSubject = new BehaviorSubject<string[]>([])
   readonly emptySectionKeys$ = this.emptySectionKeysSubject.asObservable()
 
@@ -52,7 +58,10 @@ export class ContentApiService {
       case 'trainingPlanApi':
       case 'draftCBPplanApi':
         // CBPlan V3; the service resolves the current plan year and caches per year.
-        return of(await this.userService.fetchCbpPlanListV3().toPromise())
+        // All three keys are slices of the SAME year's dataset (CardTransformerService filters
+        // on isApar / planTypeV2), and each section calls loadContent separately, so they are
+        // deduped onto one request here.
+        return of(await this.loadCbpPlanOnce())
       default:
         let config: ApiRegistryEntry | undefined
         const globalApiConfig = _.get(this.configSvc, 'globalConfig.apis.apiRegistryConfig')
@@ -83,6 +92,28 @@ export class ContentApiService {
 
         return this.executeRequest(config, apiDetailsKey)
     }
+  }
+
+  /**
+   * One CBP plan request per plan year, shared by every CBP section on the page.
+   *
+   * The year-scoped IndexedDB cache cannot collapse these on its own: it is only written
+   * once a response lands, so sections that start together all miss it and each POSTs
+   * /cbplan/v3/user/dictionary. The entry is dropped as soon as the request settles, so a
+   * later navigation still re-reads (and re-validates) the cache normally.
+   */
+  private loadCbpPlanOnce(): Promise<any[]> {
+    const planYear = this.userService.getCurrentFinancialYear()
+    const inFlight = this.cbpPlanInFlight.get(planYear)
+    if (inFlight) {
+      return inFlight
+    }
+    const request = this.userService.fetchCbpPlanListV3(planYear)
+      .toPromise()
+      .then((data: any) => data || [])
+      .finally(() => this.cbpPlanInFlight.delete(planYear))
+    this.cbpPlanInFlight.set(planYear, request)
+    return request
   }
 
   private executeRequest(config: ApiRegistryEntry, apiDetailsKey: string): Observable<unknown> {

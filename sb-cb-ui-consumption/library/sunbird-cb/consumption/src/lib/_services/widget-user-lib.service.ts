@@ -219,9 +219,14 @@ export class WidgetUserServiceLib {
    *
    * @param planYear financial year as YYYY-YY; defaults to the current one
    * @param forceRefresh bypass the IndexedDB cache
+   * @param enrichment ask the server to enrich the response with content metadata.
+   *   Defaults to OFF, which is what every strip wants: the display fields are taken from
+   *   the content dictionary in `enrichCbpWithDictionary` and then reduced to a whitelist,
+   *   so the server's enriched fields are read by nobody. Only the CBP plan ("View All")
+   *   page opts in.
    */
-  fetchCbpPlanListV3(planYear?: string, forceRefresh = false): Observable<any[]> {
-    return from(this.fetchCbpPlanListV3Async(planYear, forceRefresh))
+  fetchCbpPlanListV3(planYear?: string, forceRefresh = false, enrichment = false): Observable<any[]> {
+    return from(this.fetchCbpPlanListV3Async(planYear, forceRefresh, enrichment))
   }
 
   /** Current financial year (April -> March) as YYYY-YY, e.g. '2026-27'. */
@@ -234,7 +239,11 @@ export class WidgetUserServiceLib {
     return this.cbpCacheSvc.clear(planYear)
   }
 
-  private async fetchCbpPlanListV3Async(planYear?: string, forceRefresh = false): Promise<any[]> {
+  private async fetchCbpPlanListV3Async(
+    planYear?: string,
+    forceRefresh = false,
+    enrichment = false,
+  ): Promise<any[]> {
     const year = planYear || this.cbpCacheSvc.getCurrentFinancialYear()
     const cached = await this.cbpCacheSvc.getEntry(year)
 
@@ -246,7 +255,7 @@ export class WidgetUserServiceLib {
       const payload = {
         request: {
           planYear: year,
-          enrichment: true,
+          enrichment,
         },
       }
 

@@ -14,6 +14,10 @@ export class MultipleChoiceQuestionComponent implements OnInit, OnChanges {
   @Output() addOptionRequest = new EventEmitter<void>();
 
   optionsList: any[] = [];
+  // Options whose rich text editor has been mounted. Each editor is a full CKEditor instance,
+  // so mounting one per option up front is what made expanding a question slow; they are
+  // mounted on demand instead and the rest render as plain HTML previews.
+  activeOptionEditors = new Set<any>();
   correctAnswer: any = null; // For single select (MCQ-SCA, MCQ-SCA-TF)
   correctAnswers: any = {}; // For multiple select (MCQ-MCA)
   maxOptions: number = 7; // Maximum options for MCQ-SCA and MCQ-MCA
@@ -29,6 +33,7 @@ export class MultipleChoiceQuestionComponent implements OnInit, OnChanges {
   }
 
   initializeOptions(): void {
+    this.activeOptionEditors.clear()
     // Check if options are provided first (for loading existing data)
     if (this.options && this.options.length > 0) {
       this.optionsList = this.options
@@ -122,6 +127,17 @@ export class MultipleChoiceQuestionComponent implements OnInit, OnChanges {
     return this.questionType === 'MCQ-SCA-TF'
   }
 
+  isOptionEditorActive(option: any): boolean {
+    return this.activeOptionEditors.has(option)
+  }
+
+  activateOptionEditor(option: any): void {
+    if (this.isReadOnly) {
+      return
+    }
+    this.activeOptionEditors.add(option)
+  }
+
   onOptionTextChange(option: any, text: string): void {
     option.text = text
     this.emitOptionsUpdate()
@@ -152,11 +168,13 @@ export class MultipleChoiceQuestionComponent implements OnInit, OnChanges {
   addOption(): void {
     if (this.canAddMoreOptions()) {
       const newId = this.optionsList.length + 1
-      this.optionsList.push({
+      const newOption = {
         id: newId,
         text: '',
         isCorrect: false
-      })
+      }
+      this.optionsList.push(newOption)
+      this.activateOptionEditor(newOption)
       this.emitOptionsUpdate()
       this.addOptionRequest.emit()
     }
@@ -168,6 +186,7 @@ export class MultipleChoiceQuestionComponent implements OnInit, OnChanges {
 
   removeOption(index: number): void {
     if (this.optionsList.length > 2) {
+      this.activeOptionEditors.delete(this.optionsList[index])
       this.optionsList.splice(index, 1)
       this.emitOptionsUpdate()
     }

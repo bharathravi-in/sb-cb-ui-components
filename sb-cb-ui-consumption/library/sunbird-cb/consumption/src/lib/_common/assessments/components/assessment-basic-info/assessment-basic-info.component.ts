@@ -1,10 +1,17 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core'
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms'
+import { AbstractControl, FormBuilder, FormGroup, FormArray, ValidationErrors, ValidatorFn, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs'
 import { NsAssessment } from '../../service/assessment.model'
 import { ConfigurationsService } from '@sunbird-cb/utils-v2'
 import { AssessmentService } from '../../service/assessment.service'
 import { MatSnackBar } from '@angular/material/snack-bar'
+
+const DEFAULT_MAX_SECTIONS = 5
+// CQF assessments are authored with a fixed configuration - only the section count is editable.
+const CQF_MAX_SECTIONS = 15
+const CQF_SECTION_TOTAL_QUESTIONS = 200
+const CQF_MINIMUM_PASS_PERCENTAGE = 70
+const CQF_NEGATIVE_MARKING_PERCENTAGE = '0%'
 
 @Component({
     selector: 'sb-uic-assessment-basic-info',
@@ -23,7 +30,7 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
   assessmentForm!: FormGroup
   reAttemptOptions: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
   nameMaxLength = 70
-  instructionsMaxLength = 500
+  instructionsMaxLength = 1000
   durationTouched = false
   overallScoreCutoffOptions = [
     {
@@ -39,7 +46,10 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
   ]
   isFinalAssessment: boolean = false
   isPracticeAssessment: boolean = false
+  isCqfAssessment: boolean = false
   showCoolOffPeriod: boolean = false
+  // Seeds the CQF rich text editor - the authored markup lives in the description control.
+  instructionsHtml = ''
   private showTimerSubscription?: Subscription
   private assessmentTypeSubscription?: Subscription
   private questionWeightageTypeSubscription?: Subscription
@@ -70,6 +80,21 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // The category flags decide which validators apply, so resolve them before the form is populated.
+    if (this.config && this.config?.primaryCategory === NsAssessment.EAssessmentPrimaryCategory.FINAL_ASSESSMENT) {
+      this.isFinalAssessment = true
+    }
+    if (this.config && this.config?.primaryCategory === NsAssessment.EAssessmentPrimaryCategory.PRACTICE_QUESTION_SET) {
+      this.isPracticeAssessment = true
+    }
+    if (this.config && this.config?.primaryCategory === NsAssessment.EAssessmentPrimaryCategory.CQF_ASSESSMENT) {
+      this.isCqfAssessment = true
+    }
+
+    if (this.isCqfAssessment) {
+      this.applyCqfDefaults()
+    }
+
     if (this.config && this.config.identifier) {
       // Load existing assessment data to populate the form
       this.assessmentData = this.assessmentService.getAssessmentHierarchyData()
@@ -78,12 +103,6 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (this.config && this.config?.primaryCategory === NsAssessment.EAssessmentPrimaryCategory.FINAL_ASSESSMENT) {
-      this.isFinalAssessment = true
-    }
-    if (this.config && this.config?.primaryCategory === NsAssessment.EAssessmentPrimaryCategory.PRACTICE_QUESTION_SET) {
-      this.isPracticeAssessment = true
-    }
     // Check if coolOffPeriod should be shown
     if (this.config && this.config?.contextCategory) {
       this.showCoolOffPeriod = this.config.contextCategory === NsAssessment.EAssessmentContextCategory.PRELIMINARY_ASSESSMENT ||
@@ -101,6 +120,27 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
     this.assessmentTypeSubscription?.unsubscribe()
     this.questionWeightageTypeSubscription?.unsubscribe()
     this.noOfSectionSubscription?.unsubscribe()
+  }
+
+  /**
+   * CQF assessments hide every scoring option except the passing percentage, so the
+   * values the API still expects are pinned here instead of being collected from the
+   * author. The passing percentage is only seeded - a saved figure overrides it.
+   */
+  applyCqfDefaults(): void {
+    this.assessmentForm.patchValue({
+      assessmentType: 'advanced',
+      questionWeightageType: NsAssessment.EAssessmentType.QUESTION_OPTION_WEIGHTAGE,
+      showMarks: 'No',
+      sectionalPassPercentage: 'No',
+      sectionTimeBound: 'No',
+      minimumPassPercentage: CQF_MINIMUM_PASS_PERCENTAGE,
+      negativeMarkingPercentage: CQF_NEGATIVE_MARKING_PERCENTAGE
+    }, { emitEvent: false })
+  }
+
+  get maxSections(): number {
+    return this.isCqfAssessment ? CQF_MAX_SECTIONS : DEFAULT_MAX_SECTIONS
   }
 
   setupShowTimerSubscription(): void {
@@ -145,7 +185,7 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
 
   setupNoOfSectionSubscription(): void {
     this.noOfSectionSubscription = this.assessmentForm.get('noOfSection')?.valueChanges.subscribe((value) => {
-      if (value && value >= 1 && value <= 5) {
+      if (value && value >= 1 && value <= this.maxSections) {
         this.updateSections(value)
         if (this.selectedSectionIndex >= value) {
           this.selectedSectionIndex = value - 1
@@ -261,6 +301,7 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
       scoreCutoffType: data.scoreCutoffType || 'AssessmentLevel',
       coolOffPeriod: data.coolOffPeriod !== undefined && data.coolOffPeriod !== null ? data.coolOffPeriod : null
     }, { emitEvent: false })
+    this.instructionsHtml = data.description || ''
 
     // Duration - convert from seconds to hours, minutes, seconds
     if (data.expectedDuration) {
@@ -281,6 +322,14 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
         questionWeightageType: data.assessmentType || null,
         noOfSection: data.noOfSection || 1
       }, { emitEvent: false })
+
+      // CQF is saved under the option weightage type, so the one scoring value its
+      // author edits is restored here rather than in the branches below.
+      if (this.isCqfAssessment) {
+        this.assessmentForm.patchValue({
+          minimumPassPercentage: data.minimumPassPercentage || CQF_MINIMUM_PASS_PERCENTAGE
+        }, { emitEvent: false })
+      }
 
       // Question Weightage specific fields
       if (data.assessmentType === NsAssessment.EAssessmentType.QUESTION_WEIGHTAGE) {
@@ -420,10 +469,11 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
       numberOfQuestionsToDisplay?.clearValidators()
     }
 
-    // noOfSection validator - only required for Question Weightage
+    // noOfSection validator - required for Question Weightage and for CQF assessments
     const noOfSection = this.assessmentForm.get('noOfSection')
-    if (assessmentType === 'advanced' && questionWeightageTypeValue === NsAssessment.EAssessmentType.QUESTION_WEIGHTAGE) {
-      noOfSection?.setValidators([Validators.required, Validators.min(1), Validators.max(5)])
+    if (assessmentType === 'advanced' &&
+      (this.isCqfAssessment || questionWeightageTypeValue === NsAssessment.EAssessmentType.QUESTION_WEIGHTAGE)) {
+      noOfSection?.setValidators([Validators.required, Validators.min(1), Validators.max(this.maxSections)])
     } else {
       noOfSection?.clearValidators()
     }
@@ -435,9 +485,18 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
     const minimumPassPercentage = this.assessmentForm.get('minimumPassPercentage')
     const negativeMarkingPercentage = this.assessmentForm.get('negativeMarkingPercentage')
 
-    if (assessmentType === 'advanced' && questionWeightageTypeValue === NsAssessment.EAssessmentType.QUESTION_WEIGHTAGE) {
-      showMarks?.setValidators([Validators.required])
+    const isQuestionWeightage = assessmentType === 'advanced' &&
+      questionWeightageTypeValue === NsAssessment.EAssessmentType.QUESTION_WEIGHTAGE
+
+    // The passing percentage is authored for Question Weightage and for CQF.
+    if (isQuestionWeightage || this.isCqfAssessment) {
       minimumPassPercentage?.setValidators([Validators.required, Validators.min(0), Validators.max(100)])
+    } else {
+      minimumPassPercentage?.clearValidators()
+    }
+
+    if (isQuestionWeightage) {
+      showMarks?.setValidators([Validators.required])
       negativeMarkingPercentage?.setValidators([Validators.required])
 
       // Sectional validators only when more than 1 section
@@ -454,7 +513,6 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
       showMarks?.clearValidators()
       sectionalPassPercentage?.clearValidators()
       sectionTimeBound?.clearValidators()
-      minimumPassPercentage?.clearValidators()
       negativeMarkingPercentage?.clearValidators()
     }
 
@@ -488,7 +546,7 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
       durationMinutes: [0, [Validators.min(0), Validators.max(59)]],
       durationSeconds: [0, [Validators.min(0), Validators.max(59)]],
       coolOffPeriod: [null, [Validators.min(1), Validators.max(7)]],
-      description: ['', Validators.maxLength(this.instructionsMaxLength)],
+      description: ['', this.instructionsLengthValidator()],
       showTimer: [true],
       // Question Weightage settings
       showMarks: ['No'],
@@ -504,7 +562,37 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
   }
 
   get descriptionLength(): number {
-    return this.assessmentForm.get('description')?.value?.length || 0
+    return this.getInstructionsLength(this.assessmentForm.get('description')?.value)
+  }
+
+  onInstructionsChange(content: string): void {
+    this.instructionsHtml = content
+    const description = this.assessmentForm.get('description')
+    description?.setValue(content)
+    description?.markAsDirty()
+  }
+
+  /**
+   * CQF instructions are stored as markup, so the limit is measured against the text
+   * the learner reads instead of the tags wrapped around it.
+   */
+  private getInstructionsLength(value: string): number {
+    if (!value) {
+      return 0
+    }
+    if (!this.isCqfAssessment) {
+      return value.length
+    }
+    return value.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim().length
+  }
+
+  private instructionsLengthValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const actualLength = this.getInstructionsLength(control.value)
+      return actualLength > this.instructionsMaxLength
+        ? { maxlength: { requiredLength: this.instructionsMaxLength, actualLength } }
+        : null
+    }
   }
 
   get controls() {
@@ -671,6 +759,11 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
       }
     }
 
+    // Check CQF fields - the passing percentage is the only editable scoring value
+    if (this.isCqfAssessment && formValues.minimumPassPercentage !== this.assessmentData.minimumPassPercentage) {
+      changedData.minimumPassPercentage = formValues.minimumPassPercentage
+    }
+
     // Check Option Weightage fields
     if (formValues.questionWeightageType === NsAssessment.EAssessmentType.OPTION_WEIGHTAGE) {
       if (formValues.numberOfQuestionsToDisplay !== this.assessmentData.totalQuestions) {
@@ -779,6 +872,24 @@ export class AssessmentBasicInfoComponent implements OnInit, OnDestroy {
 
     // Advanced Assessment specific fields
     if (formValues.assessmentType === 'advanced') {
+
+      if (this.isCqfAssessment) {
+        assessmentData.noOfSection = formValues.noOfSection
+        assessmentData.showMarks = formValues.showMarks
+        assessmentData.minimumPassPercentage = formValues.minimumPassPercentage
+        assessmentData.negativeMarkingPercentage = formValues.negativeMarkingPercentage
+        assessmentData.sectionalPassPercentage = formValues.sectionalPassPercentage
+        assessmentData.sectionTimeBound = formValues.sectionTimeBound
+
+        // Difficulty levels are not authored for CQF, so every section gets the fixed capacity.
+        assessmentData.children = formValues.sections.map((section: any, index: number) => ({
+          sectionIndex: index,
+          paragraph: section.paragraph,
+          totalQuestions: CQF_SECTION_TOTAL_QUESTIONS
+        }))
+        assessmentData.totalQuestions = CQF_SECTION_TOTAL_QUESTIONS * assessmentData.children.length
+        assessmentData.maxQuestions = assessmentData.totalQuestions
+      }
 
       if (formValues.questionWeightageType === NsAssessment.EAssessmentType.OPTION_WEIGHTAGE) {
         assessmentData.totalQuestions = formValues.numberOfQuestionsToDisplay

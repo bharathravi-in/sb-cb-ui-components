@@ -1,4 +1,4 @@
-<div class="assessment-session-container" *ngIf="isAdvancedAssessmentQuestionWeightage()">
+<div class="assessment-session-container" *ngIf="isSectionedAdvancedAssessment()">
   <!-- Section Tabs -->
   <div class="section-tabs flex flex-middle gap-2 mb-5">
     <ng-container *ngFor="let section of sections.controls; let i = index">
@@ -11,7 +11,7 @@
   <!-- Section Content -->
   <div class="section-content" *ngIf="sections.controls[selectedSectionIndex]">
     <!-- Values Display Section for Current Section -->
-    <div class="values-display">
+    <div class="values-display" *ngIf="isAdvancedAssessmentQuestionWeightage()">
       <p class="values-text">
         Values that are assigned by you in EMDH Based. ({{ getSectionDifficultyLevelSummary(selectedSectionIndex) }})
       </p>
@@ -40,16 +40,72 @@
         </mat-form-field>
       </div>
 
+      <!-- Minimum pass percentage and Section Weightage (CQF only) -->
+      <div class="form-row" *ngIf="isAdvanceAssessmentQuestionOptionWeightage()">
+        <div class="form-field mat-full-radius">
+          <label class="field-label required">Minimum percentage (%) to pass this section?</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input matInput type="number" formControlName="minPassPercentage" min="50" max="100" placeholder="50">
+            <mat-error *ngIf="currentSectionGroup?.get('minPassPercentage')?.hasError('required')">
+              This field is required
+            </mat-error>
+            <mat-error *ngIf="currentSectionGroup?.get('minPassPercentage')?.hasError('min')">
+              Value must be 50 or greater
+            </mat-error>
+            <mat-error *ngIf="currentSectionGroup?.get('minPassPercentage')?.hasError('max')">
+              Value must be 100 or less
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-field mat-full-radius">
+          <label class="field-label required">Section Weightage</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input matInput type="number" formControlName="sectionWeightage" min="0" [max]="maxSectionWeightage"
+              placeholder="0">
+            <mat-error *ngIf="currentSectionGroup?.get('sectionWeightage')?.hasError('required')">
+              Section weightage is required
+            </mat-error>
+            <mat-error *ngIf="currentSectionGroup?.get('sectionWeightage')?.hasError('min')">
+              Value must be 0 or greater
+            </mat-error>
+            <mat-error *ngIf="currentSectionGroup?.get('sectionWeightage')?.hasError('max')">
+              Value must be {{ maxSectionWeightage }} or less
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
       <!-- Additional Instructions -->
       <div class="form-field mat-full-radius">
         <label class="field-label">Additional Instructions</label>
-        <mat-form-field appearance="outline" class="full-width">
-          <textarea matInput formControlName="additionalInstructions"
-            placeholder="Enter additional instructions for this section" rows="4" maxlength="500"></textarea>
-          <mat-hint align="end">
-            {{ currentSectionGroup?.get('additionalInstructions')?.value?.length || 0 }}/500
-          </mat-hint>
-        </mat-form-field>
+
+        <!-- CQF authors these as rich text; the markup is stored in additionalInstructions. -->
+        <ng-container *ngIf="isAdvanceAssessmentQuestionOptionWeightage(); else plainInstructions">
+          <sb-uic-assessment-rich-text specificToolBar="instructions"
+            [textToBeShown]="currentSectionGroup?.get('additionalInstructions')?.value" [readOnly]="isReadOnly"
+            (getContent)="onAdditionalInstructionsChange($event)">
+          </sb-uic-assessment-rich-text>
+          <mat-error *ngIf="currentSectionGroup?.get('additionalInstructions')?.hasError('maxlength')"
+            class="instructions-error">
+            Additional instructions cannot exceed {{ instructionsMaxLength }} characters
+          </mat-error>
+          <div class="field-footer">
+            <span></span>
+            <span class="char-count">{{ additionalInstructionsLength }}/{{ instructionsMaxLength }}</span>
+          </div>
+        </ng-container>
+
+        <ng-template #plainInstructions>
+          <mat-form-field appearance="outline" class="full-width">
+            <textarea matInput formControlName="additionalInstructions"
+              placeholder="Enter additional instructions for this section" rows="4"
+              [maxlength]="instructionsMaxLength"></textarea>
+            <mat-hint align="end">
+              {{ currentSectionGroup?.get('additionalInstructions')?.value?.length || 0 }}/{{ instructionsMaxLength }}
+            </mat-hint>
+          </mat-form-field>
+        </ng-template>
       </div>
 
       <!-- Question Paragraph -->
@@ -184,9 +240,10 @@
         <label class="field-label">Additional Instructions</label>
         <mat-form-field appearance="outline" class="full-width">
           <textarea matInput formControlName="additionalInstructions"
-            placeholder="Enter additional instructions for this section" rows="4" maxlength="500"></textarea>
-          <mat-hint align="end">{{ currentBasicSectionGroup?.get('additionalInstructions')?.value?.length || 0
-            }}/500</mat-hint>
+            placeholder="Enter additional instructions for this section" rows="4"
+            [maxlength]="instructionsMaxLength"></textarea>
+          <mat-hint align="end">{{ currentBasicSectionGroup?.get('additionalInstructions')?.value?.length || 0 }}/{{
+            instructionsMaxLength }}</mat-hint>
         </mat-form-field>
       </div>
     </form>
@@ -283,11 +340,11 @@
         <label class="field-label">Instructions</label>
         <mat-form-field appearance="outline" class="full-width">
           <textarea matInput formControlName="additionalInstructions" placeholder="Add instructions" rows="4"
-            maxlength="500"></textarea>
-          <mat-hint align="end">{{ basicAssessmentForm?.get('additionalInstructions')?.value?.length || 0
-            }}/500</mat-hint>
+            [maxlength]="instructionsMaxLength"></textarea>
+          <mat-hint align="end">{{ basicAssessmentForm?.get('additionalInstructions')?.value?.length || 0 }}/{{
+            instructionsMaxLength }}</mat-hint>
           <mat-error *ngIf="basicAssessmentForm?.get('additionalInstructions')?.hasError('maxlength')">
-            Instructions cannot exceed 500 characters
+            Instructions cannot exceed {{ instructionsMaxLength }} characters
           </mat-error>
         </mat-form-field>
       </div>
@@ -336,12 +393,12 @@
         <label class="field-label">Instructions</label>
         <mat-form-field appearance="outline" class="full-width">
           <textarea matInput formControlName="additionalInstructions" placeholder="Add instructions" rows="4"
-            maxlength="500"></textarea>
+            [maxlength]="instructionsMaxLength"></textarea>
           <mat-hint align="end">
-            {{ optionWeightageForm?.get('additionalInstructions')?.value?.length || 0 }}/500
+            {{ optionWeightageForm?.get('additionalInstructions')?.value?.length || 0 }}/{{ instructionsMaxLength }}
           </mat-hint>
           <mat-error *ngIf="optionWeightageForm?.get('additionalInstructions')?.hasError('maxlength')">
-            Instructions cannot exceed 500 characters
+            Instructions cannot exceed {{ instructionsMaxLength }} characters
           </mat-error>
         </mat-form-field>
       </div>
@@ -381,7 +438,7 @@
 
 <!-- Message for non-basic, non-advanced assessments -->
 <div class="assessment-session-container"
-  *ngIf="!isAdvancedAssessmentQuestionWeightage() && !isBasicAssessment() && !isAdvanceAssessmentOptionWeightage()">
+  *ngIf="!isSectionedAdvancedAssessment() && !isBasicAssessment() && !isAdvanceAssessmentOptionWeightage()">
   <div class="info-message">
     <mat-icon>info</mat-icon>
     <p>Assessment sessions are only available for advanced assessments.</p>

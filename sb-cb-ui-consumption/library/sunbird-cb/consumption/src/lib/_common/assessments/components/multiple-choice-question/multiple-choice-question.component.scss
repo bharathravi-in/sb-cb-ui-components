@@ -55,6 +55,24 @@
   user-select: none;
 }
 
+:host ::ng-deep .weight-field {
+  .mdc-notched-outline:not(.mdc-notched-outline--notched) {
+    .mdc-notched-outline__notch {
+      // Clips 1px in from the notch, which would eat a centred label on a narrow field.
+      -webkit-clip-path: none !important;
+      clip-path: none !important;
+    }
+
+    .mdc-floating-label {
+      position: absolute !important;
+      left: 0 !important;
+      width: 100%;
+      text-align: center;
+      top: 20px;
+    }
+  }
+}
+
 .option-content {
   flex: 1;
   min-width: 0;

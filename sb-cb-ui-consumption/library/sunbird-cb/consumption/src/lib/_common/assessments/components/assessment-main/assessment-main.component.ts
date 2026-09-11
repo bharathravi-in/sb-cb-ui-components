@@ -33,6 +33,7 @@ export class AssessmentMainComponent implements OnInit {
       this.config.primaryCategory = NsAssessment.EAssessmentPrimaryCategory.FINAL_ASSESSMENT
     }
     this.assessmentService.setReadOnly(this.config?.isReadOnly)
+    this.assessmentService.setPrimaryCategory(this.config?.primaryCategory)
     if (this.config && this.config.identifier !== '') {
       this.callLoader(true)
       this.assessmentService.getAssessmentHierarchyDetailsModeEdit(this.config.identifier).subscribe({

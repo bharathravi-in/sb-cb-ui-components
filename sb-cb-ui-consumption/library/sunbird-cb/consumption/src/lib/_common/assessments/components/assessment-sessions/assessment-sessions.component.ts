@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, OnChanges, SimpleChanges, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core'
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms'
+import { AbstractControl, FormBuilder, FormGroup, FormArray, ValidationErrors, ValidatorFn, Validators } from '@angular/forms'
 import { AssessmentService } from '../../service/assessment.service'
 import { Subscription } from 'rxjs'
 import { NsAssessment } from '../../service/assessment.model'
@@ -31,6 +31,8 @@ export class AssessmentSessionsComponent implements OnInit, OnDestroy, OnChanges
   ]
   selectedSectionIndex = 0
   nameMaxLength = 70
+  instructionsMaxLength = 1000
+  maxSectionWeightage = 100
   questionsList: Array<{ qType: string; identifier: string }> = []
   expandedQuestionIndex: number | null = null
   private subscriptions: Subscription[] = []
@@ -69,11 +71,11 @@ export class AssessmentSessionsComponent implements OnInit, OnDestroy, OnChanges
       totalQuestions: [0, [Validators.required, Validators.min(1)]],
       maxQuestions: [0, [Validators.required, Validators.min(1)]],
       minPassPercentage: [50, [Validators.required, Validators.min(50), Validators.max(100)]],
-      additionalInstructions: ['', [Validators.maxLength(500)]]
+      additionalInstructions: ['', [Validators.maxLength(this.instructionsMaxLength)]]
     })
 
     this.optionWeightageForm = this.fb.group({
-      additionalInstructions: ['', [Validators.maxLength(500)]]
+      additionalInstructions: ['', [Validators.maxLength(this.instructionsMaxLength)]]
     })
   }
 
@@ -108,6 +110,9 @@ export class AssessmentSessionsComponent implements OnInit, OnDestroy, OnChanges
     if (this.assessmentData && this.isAdvancedAssessmentQuestionWeightage()) {
       this.populateFormFromAssessmentData()
       this.calculateDifficultyLevelCounts()
+    } else if (this.assessmentData && this.isAdvanceAssessmentQuestionOptionWeightage()) {
+      // No difficulty levels are defined for CQF, so only the section forms are needed.
+      this.populateFormFromAssessmentData()
     } else if (this.assessmentData && this.isBasicAssessment()) {
       this.populateBasicAssessmentForm()
     } else if (this.assessmentData && this.isAdvanceAssessmentOptionWeightage()) {
@@ -130,6 +135,19 @@ export class AssessmentSessionsComponent implements OnInit, OnDestroy, OnChanges
   isAdvanceAssessmentOptionWeightage(): boolean {
     return this.assessmentData?.compatibilityLevel === NsAssessment.ECompatibilityLevel.ADVANCED &&
       this.assessmentData?.assessmentType === NsAssessment.EAssessmentType.OPTION_WEIGHTAGE
+  }
+
+  isAdvanceAssessmentQuestionOptionWeightage(): boolean {
+    return this.assessmentData?.compatibilityLevel === NsAssessment.ECompatibilityLevel.ADVANCED &&
+      this.assessmentData?.assessmentType === NsAssessment.EAssessmentType.QUESTION_OPTION_WEIGHTAGE
+  }
+
+  /**
+   * Question weightage and question-option weightage (CQF) both author their content
+   * through the same multi-section form.
+   */
+  isSectionedAdvancedAssessment(): boolean {
+    return this.isAdvancedAssessmentQuestionWeightage() || this.isAdvanceAssessmentQuestionOptionWeightage()
   }
 
   isBasicAssessment(): boolean {
@@ -166,11 +184,69 @@ export class AssessmentSessionsComponent implements OnInit, OnDestroy, OnChanges
   createBasicSectionGroup(): FormGroup {
     return this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(this.nameMaxLength)]],
-      additionalInstructions: ['', [Validators.maxLength(500)]],
+      additionalInstructions: ['', [Validators.maxLength(this.instructionsMaxLength)]],
       totalQuestions: [0, [Validators.required, Validators.min(1)]],
       maxQuestions: [0, [Validators.required, Validators.min(1)]],
       minPassPercentage: [50, [Validators.required, Validators.min(50), Validators.max(100)]]
     })
+  }
+
+  /**
+   * CQF sections carry a pass mark, a weightage and rich text instructions. The other
+   * assessment types keep the shape they already save, so these are added only for CQF.
+   */
+  private addCqfSectionControls(group: FormGroup, section?: any): void {
+    if (!this.isAdvanceAssessmentQuestionOptionWeightage()) {
+      return
+    }
+
+    group.addControl('minPassPercentage', this.fb.control(
+      section?.minimumPassPercentage || 50,
+      [Validators.required, Validators.min(50), Validators.max(100)]
+    ))
+    group.addControl('sectionWeightage', this.fb.control(
+      section?.sectionWeightage ?? null,
+      [Validators.required, Validators.min(0), Validators.max(this.maxSectionWeightage)]
+    ))
+
+    // The rich text editor has no input cap of its own, so the limit the textarea
+    // enforces for the other types becomes a validator here.
+    const additionalInstructions = group.get('additionalInstructions')
+    additionalInstructions?.setValidators(this.instructionsLengthValidator())
+    additionalInstructions?.updateValueAndValidity({ emitEvent: false })
+  }
+
+  onAdditionalInstructionsChange(content: string): void {
+    const additionalInstructions = this.currentSectionGroup?.get('additionalInstructions')
+    additionalInstructions?.setValue(content)
+    additionalInstructions?.markAsDirty()
+  }
+
+  get additionalInstructionsLength(): number {
+    return this.getInstructionsLength(this.currentSectionGroup?.get('additionalInstructions')?.value)
+  }
+
+  /**
+   * CQF instructions are stored as markup, so the limit is measured against the text
+   * the learner reads instead of the tags wrapped around it.
+   */
+  private getInstructionsLength(value: string): number {
+    if (!value) {
+      return 0
+    }
+    if (!this.isAdvanceAssessmentQuestionOptionWeightage()) {
+      return value.length
+    }
+    return value.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim().length
+  }
+
+  private instructionsLengthValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const actualLength = this.getInstructionsLength(control.value)
+      return actualLength > this.instructionsMaxLength
+        ? { maxlength: { requiredLength: this.instructionsMaxLength, actualLength } }
+        : null
+    }
   }
 
   addBasicSection(): void {
@@ -307,6 +383,12 @@ export class AssessmentSessionsComponent implements OnInit, OnDestroy, OnChanges
       // Load questions for the initially selected section
       this.loadQuestionsForSection(this.selectedSectionIndex)
     }
+
+    // Covers the rebuilt sections above as well as the default one that stands in
+    // before any section has been created.
+    this.sections.controls.forEach((sectionGroup, index) => {
+      this.addCqfSectionControls(sectionGroup as FormGroup, this.assessmentData.children?.[index])
+    })
 
     // Disable form if read-only mode
     if (this.isReadOnly) {
@@ -488,6 +570,16 @@ export class AssessmentSessionsComponent implements OnInit, OnDestroy, OnChanges
         }
       }
 
+      // CQF sections also carry a pass mark and a weightage
+      if (this.isAdvanceAssessmentQuestionOptionWeightage()) {
+        if (currentSectionData.minPassPercentage !== originalSectionData?.minimumPassPercentage) {
+          changedData.minimumPassPercentage = currentSectionData.minPassPercentage
+        }
+        if (currentSectionData.sectionWeightage !== originalSectionData?.sectionWeightage) {
+          changedData.sectionWeightage = currentSectionData.sectionWeightage
+        }
+      }
+
       if (Object.keys(changedData).length > 0) {
         const sectionIdentifier = this.assessmentData.children?.[this.selectedSectionIndex]?.identifier || null
 
@@ -662,7 +754,7 @@ export class AssessmentSessionsComponent implements OnInit, OnDestroy, OnChanges
       maxWidth: '90vw',
       data: {
         title: 'Select the questions type',
-        isOptionWeightage: this.isAdvanceAssessmentOptionWeightage(),
+        isOptionWeightage: this.isAdvanceAssessmentOptionWeightage() || this.isAdvanceAssessmentQuestionOptionWeightage(),
         isBasicAssessment: this.isBasicAssessment()
       }
     })

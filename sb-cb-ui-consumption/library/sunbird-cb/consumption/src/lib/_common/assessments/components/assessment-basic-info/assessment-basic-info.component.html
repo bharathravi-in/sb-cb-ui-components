@@ -1,7 +1,7 @@
 <div class="assessment-basic-info" *ngIf="assessmentForm">
   <form [formGroup]="assessmentForm">
     <!-- Assessment Type -->
-    <div class="form-section">
+    <div class="form-section" *ngIf="!isCqfAssessment">
       <mat-radio-group formControlName="assessmentType" class="assessment-type-group flex flex-middle gap-4">
         <mat-radio-button value="basic">Basic Assessment</mat-radio-button>
         <mat-radio-button value="advanced">Advanced Assessment</mat-radio-button>
@@ -26,7 +26,7 @@
 
     <!-- Question Weightage Type (for Advanced Assessment) -->
     <ng-container *ngIf="assessmentForm.get('assessmentType')?.value === 'advanced'">
-      <div class="form-section mat-full-radius">
+      <div class="form-section mat-full-radius" *ngIf="!isCqfAssessment">
         <label class="field-label required">Assessment Type
           <mat-icon class="info-icon"
             matTooltip="By choosing question weightage, content creator can create competency based or marks-based assessment. On the selection of option weightage, psychometric assessment will be created. In practice test, in question weightage, marks and pass or fail status will not be visible.">info_outline</mat-icon>
@@ -71,8 +71,8 @@
       </div>
     </ng-container>
 
-    <!-- Section details (for Question Weightage) -->
-    <ng-container *ngIf="assessmentForm.get('questionWeightageType')?.value === 'questionWeightage'">
+    <!-- Section details (for Question Weightage, and the section count for CQF) -->
+    <ng-container *ngIf="isCqfAssessment || assessmentForm.get('questionWeightageType')?.value === 'questionWeightage'">
       <div class="section-detail-container">
         <label class="field-label">Section details</label>
 
@@ -80,16 +80,17 @@
         <div class="form-section mat-full-radius">
           <label class="field-label required">Total number of sections</label>
           <mat-form-field appearance="outline" class="full-width">
-            <input matInput type="number" formControlName="noOfSection" min="1" max="5" placeholder="1">
+            <input matInput type="number" formControlName="noOfSection" min="1" [max]="maxSections" placeholder="1">
             <mat-error *ngIf="controls['noOfSection'].hasError('required')">Total number of sections is
               required</mat-error>
             <mat-error *ngIf="controls['noOfSection'].hasError('min')">Value must be at least 1</mat-error>
-            <mat-error *ngIf="controls['noOfSection'].hasError('max')">Value must be at most 5</mat-error>
+            <mat-error *ngIf="controls['noOfSection'].hasError('max')">Value must be at most {{ maxSections
+              }}</mat-error>
           </mat-form-field>
         </div>
 
         <!-- Section Tabs and Content -->
-        <div class="sections-container" *ngIf="sections.length > 0">
+        <div class="sections-container" *ngIf="!isCqfAssessment && sections.length > 0">
           <!-- Section Tabs -->
           <div class="section-tabs-row flex flex-middle">
             <div class="section-tabs flex flex-middle gap-2">
@@ -166,7 +167,7 @@
         <!-- Question Weightage Settings -->
         <div class="question-weightage-settings">
           <!-- First Row: Show Marks/Question, Sectional Passing Percentage, Sectional Time Bound -->
-          <div class="settings-row flex gap-4">
+          <div class="settings-row flex gap-4" *ngIf="!isCqfAssessment">
             <!-- Show Marks/Question -->
             <div class="form-section setting-field">
               <label class="field-label required">Show Marks/Question</label>
@@ -210,7 +211,7 @@
           </div>
 
           <!-- Negative Percentage% Question -->
-          <div class="form-section mat-full-radius">
+          <div class="form-section mat-full-radius" *ngIf="!isCqfAssessment">
             <label class="field-label required">Negative Percentage% Question</label>
             <mat-form-field appearance="outline" class="full-width">
               <mat-select formControlName="negativeMarkingPercentage" placeholder="Select">
@@ -296,12 +297,25 @@
     <!-- Instructions -->
     <div class="form-section mat-full-radius">
       <label class="field-label">Instructions</label>
-      <mat-form-field appearance="outline" class="full-width">
-        <textarea matInput formControlName="description" [maxlength]="instructionsMaxLength" rows="5"
-          placeholder="Enter instructions"></textarea>
-        <mat-error *ngIf="controls['description'].hasError('maxlength')">Instructions cannot exceed {{
-          instructionsMaxLength }} characters</mat-error>
-      </mat-form-field>
+
+      <!-- CQF instructions are authored as rich text; the markup is stored in description. -->
+      <ng-container *ngIf="isCqfAssessment; else plainInstructions">
+        <sb-uic-assessment-rich-text specificToolBar="instructions" [textToBeShown]="instructionsHtml"
+          [readOnly]="isReadOnly" (getContent)="onInstructionsChange($event)">
+        </sb-uic-assessment-rich-text>
+        <mat-error *ngIf="controls['description'].hasError('maxlength')" class="instructions-error">Instructions cannot
+          exceed {{ instructionsMaxLength }} characters</mat-error>
+      </ng-container>
+
+      <ng-template #plainInstructions>
+        <mat-form-field appearance="outline" class="full-width">
+          <textarea matInput formControlName="description" [maxlength]="instructionsMaxLength" rows="5"
+            placeholder="Enter instructions"></textarea>
+          <mat-error *ngIf="controls['description'].hasError('maxlength')">Instructions cannot exceed {{
+            instructionsMaxLength }} characters</mat-error>
+        </mat-form-field>
+      </ng-template>
+
       <div class="field-footer">
         <span></span>
         <span class="char-count">{{ descriptionLength }}/{{ instructionsMaxLength }}</span>

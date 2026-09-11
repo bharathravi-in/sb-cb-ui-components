@@ -20,7 +20,8 @@ export namespace NsAssessment {
 
   export enum EAssessmentPrimaryCategory {
     FINAL_ASSESSMENT = 'Course Assessment',
-    PRACTICE_QUESTION_SET = 'Practice Question Set'
+    PRACTICE_QUESTION_SET = 'Practice Question Set',
+    CQF_ASSESSMENT = 'CQF Assessment'
   }
 
 

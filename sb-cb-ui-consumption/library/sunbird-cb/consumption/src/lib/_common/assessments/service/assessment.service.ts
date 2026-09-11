@@ -4,6 +4,8 @@ import { map } from 'rxjs/operators'
 import { v4 as uuid } from 'uuid'
 import { NsAssessment } from './assessment.model'
 
+const API_PROXY_V8_CQF = 'apis/proxies/v8/cqfquestionset/'
+
 const API_END_POINTS = {
   CREARE_ASSESSMENT: 'apis/proxies/v8/questionset/v1/create',
   UPDATE_ASSESSMENT: 'apis/proxies/v8/questionset/v1/hierarchy/update',
@@ -12,6 +14,10 @@ const API_END_POINTS = {
   QUESTIONSET_HIERARCHY: (id: any) => `apis/proxies/v8/questionset/v1/hierarchy/${id}`,
   QUESTIONSET_HIERARCHY_MODE_EDIT: (id: any) => `apis/proxies/v8/questionset/v1/hierarchy/${id}?mode=edit`,
   QUESTION_READ_MODE_EDIT: `apis/proxies/v8/cbp/question/list?editMode=true`,
+  CREATE_CQF_ASSESSMENT: `${API_PROXY_V8_CQF}questionset/create`,
+  UPDATE_CQF_ASSESSMENT: `${API_PROXY_V8_CQF}questionset/update`,
+  PUBLISH_CQF_ASSESSMENT: `${API_PROXY_V8_CQF}questionset/autopublish/`,
+  GET_CQF_LIST: `${API_PROXY_V8_CQF}listEntry`,
 }
 
 @Injectable({
@@ -20,6 +26,7 @@ const API_END_POINTS = {
 export class AssessmentService {
 
   private assessmentHierarchyData: any = {}
+  private primaryCategory: string = ''
   readOnly: boolean = false
 
   constructor(
@@ -30,6 +37,7 @@ export class AssessmentService {
     return this.http.get<any>(API_END_POINTS.QUESTIONSET_HIERARCHY(assessmentId)).pipe(
       map((response: any) => {
         this.assessmentHierarchyData = response.result.questionSet
+        this.setPrimaryCategory(this.assessmentHierarchyData?.primaryCategory)
         return this.assessmentHierarchyData
       })
     )
@@ -39,6 +47,7 @@ export class AssessmentService {
     return this.http.get<any>(API_END_POINTS.QUESTIONSET_HIERARCHY_MODE_EDIT(assessmentId)).pipe(
       map((response: any) => {
         this.assessmentHierarchyData = response.result.questionSet
+        this.setPrimaryCategory(this.assessmentHierarchyData?.primaryCategory)
         return this.assessmentHierarchyData
       })
     )
@@ -65,7 +74,11 @@ export class AssessmentService {
   }
 
   createAssessment(assessmentReqData: any) {
-    return this.http.post<any>(API_END_POINTS.CREARE_ASSESSMENT, assessmentReqData).pipe(
+    // The category the assessment is being created with drives every subsequent hierarchy
+    // update too, so remember it before the create call picks its endpoint.
+    this.setPrimaryCategory(assessmentReqData?.request?.questionset?.primaryCategory)
+    const createUrl = this.isCqfAssessment() ? API_END_POINTS.CREATE_CQF_ASSESSMENT : API_END_POINTS.CREARE_ASSESSMENT
+    return this.http.post<any>(createUrl, assessmentReqData).pipe(
       map((response: any) => {
         return response
       })
@@ -73,7 +86,8 @@ export class AssessmentService {
   }
 
   updateAssessment(assessmentHierarchyReqData: any) {
-    return this.http.patch<any>(API_END_POINTS.UPDATE_ASSESSMENT, assessmentHierarchyReqData).pipe(
+    const updateUrl = this.isCqfAssessment() ? API_END_POINTS.UPDATE_CQF_ASSESSMENT : API_END_POINTS.UPDATE_ASSESSMENT
+    return this.http.patch<any>(updateUrl, assessmentHierarchyReqData).pipe(
       map((response: any) => {
         return response
       })
@@ -364,6 +378,12 @@ export class AssessmentService {
       }
     }
 
+    // Only CQF sections are authored with a weightage, so the key stays off every
+    // other assessment type's payload.
+    if (sectionData.sectionWeightage !== undefined && sectionData.sectionWeightage !== null) {
+      nodesModified[sectionId].metadata.sectionWeightage = sectionData.sectionWeightage
+    }
+
     // If parentChanges exist, add root node update
     if (sectionData.parentChanges && currentHierarchy && currentHierarchy.identifier) {
       const rootId = currentHierarchy.identifier
@@ -420,6 +440,18 @@ export class AssessmentService {
         }
       }
     }
+  }
+
+  isCqfAssessment(): boolean {
+    return this.primaryCategory === NsAssessment.EAssessmentPrimaryCategory.CQF_ASSESSMENT
+  }
+
+  getPrimaryCategory() {
+    return this.primaryCategory
+  }
+
+  setPrimaryCategory(primaryCategory: string) {
+    this.primaryCategory = primaryCategory || ''
   }
 
   getReadOnly() {

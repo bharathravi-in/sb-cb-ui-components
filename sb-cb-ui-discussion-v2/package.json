@@ -1,6 +1,6 @@
 {
   "name": "sb-cb-ui-discussion-v2",
-  "version": "0.0.2-ang-17-20-role-based",
+  "version": "0.1.1-cbrelease-4.8.40",
   "scripts": {
     "ng": "ng",
     "build-watch": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --watch",

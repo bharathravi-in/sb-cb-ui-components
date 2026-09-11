@@ -15,6 +15,12 @@
     </div>
   </div>
 
+  <!-- Details are fetched on expand; show that the click registered while that is in flight -->
+  <div class="question-editor-loading" *ngIf="isExpanded && !questionDataLoaded">
+    <mat-spinner diameter="24"></mat-spinner>
+    <span>Loading question...</span>
+  </div>
+
   <!-- Expanded Editor View -->
   <div class="question-editor-section" *ngIf="isExpanded && questionDataLoaded">
     <div class="question-content-expanded">

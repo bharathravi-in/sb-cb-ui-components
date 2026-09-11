@@ -19,6 +19,8 @@ export class AssessmentRichTextComponent {
   @Input() ftbCount = 0
   @Input() ftbMaxCount = 0
   @Input() readOnly: boolean = false
+  // Set when the editor is mounted in response to a click, so the caret lands where the user clicked.
+  @Input() autoFocus: boolean = false
   @Output() getContent = new EventEmitter()
   @Output() onTouched = new EventEmitter<void>()
   @Output() ready = new EventEmitter<boolean>()
@@ -131,9 +133,12 @@ export class AssessmentRichTextComponent {
     this.getContent.emit(data)
   }
 
-  onReady(_editor: any) {
+  onReady(editor: any) {
     this.isReady = true
     this.ready.emit(true)
+    if (this.autoFocus && !this.readOnly) {
+      editor?.focus?.()
+    }
   }
 
 }

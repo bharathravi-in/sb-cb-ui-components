@@ -44,6 +44,8 @@ export class AssessmentQuestionListComponent implements OnInit, OnChanges {
   }
   questionOptions: any[] = []
   questionDataLoaded: boolean = false
+  questionDetailsFetched: boolean = false
+  questionDetailsFetchInFlight: boolean = false
 
   constructor(
     public assessemntService: AssessmentService,
@@ -65,6 +67,9 @@ export class AssessmentQuestionListComponent implements OnInit, OnChanges {
     // editor view until that completes. New questions have nothing to fetch — mark them
     // loaded up front so they expand immediately regardless of how they're opened.
     this.questionDataLoaded = !this.questionData?.identifier?.startsWith('do_')
+    // A new question is bound here on re-use, so any details cached for the previous one are stale.
+    this.questionDetailsFetched = false
+    this.questionDetailsFetchInFlight = false
     // For initial load, just use whatever data we have
     // Complete data will be fetched when question is expanded
     this.populateQuestionForm()
@@ -93,7 +98,7 @@ export class AssessmentQuestionListComponent implements OnInit, OnChanges {
             text: opt.value?.body || opt.body || '',
             value: opt.value?.body || opt.body || '',
             isCorrect: false, // Will be set based on answer field below
-            weight: opt.answer !== undefined && typeof opt.answer === 'number' ? opt.answer : undefined // Load weight for MCQ-MCA-W
+            weight: this.parseOptionWeight(opt.answer) // Load weight for MCQ-MCA-W
           }))
 
           // Set correct answers based on answer field at question level
@@ -113,7 +118,7 @@ export class AssessmentQuestionListComponent implements OnInit, OnChanges {
             text: opt.value?.body || opt.body || '',
             value: opt.value?.body || opt.body || '',
             isCorrect: false, // Will be set based on answer field
-            weight: opt.answer !== undefined && typeof opt.answer === 'number' ? opt.answer : undefined // Load weight for MCQ-MCA-W
+            weight: this.parseOptionWeight(opt.answer) // Load weight for MCQ-MCA-W
           }))
 
           // Set correct answers based on answer field
@@ -199,6 +204,17 @@ export class AssessmentQuestionListComponent implements OnInit, OnChanges {
 
   onOptionsUpdated(options: any[]): void {
     this.questionOptions = options
+  }
+
+  parseOptionWeight(answer: any): number | undefined {
+    // Weighted questions (MCQ-MCA-W) store the option weight in the option's answer field.
+    // The API can send it as a number or as a numeric string, while regular MCQs keep a
+    // boolean there, so only take a value that reads as a number.
+    if (answer === undefined || answer === null || answer === '' || typeof answer === 'boolean') {
+      return undefined
+    }
+    const weight = Number(answer)
+    return isNaN(weight) ? undefined : weight
   }
 
   onAddOption(): void {
@@ -350,6 +366,15 @@ export class AssessmentQuestionListComponent implements OnInit, OnChanges {
     // If this is an existing question (has do_ identifier), fetch complete data on expand
     // Only fetch if we're expanding (not collapsing)
     if (!this.isExpanded && this.questionData.identifier && this.questionData.identifier.startsWith('do_')) {
+      // Fetch the details only once. Re-populating rebuilds every rich text editor in the
+      // expanded question (one for the body plus one per option), so letting repeated expands
+      // - or impatient double clicks while the first call is still out - stack duplicate
+      // responses tears down and recreates all of them once per response.
+      if (this.questionDetailsFetched || this.questionDetailsFetchInFlight) {
+        this.questionDataLoaded = true
+        return
+      }
+
       const reqBody = {
         request: {
           search: {
@@ -358,10 +383,13 @@ export class AssessmentQuestionListComponent implements OnInit, OnChanges {
         }
       }
 
+      this.questionDetailsFetchInFlight = true
       this.assessemntService.getQuestionReadDetailsModeEdit(reqBody).subscribe({
         next: (response: any) => {
+          this.questionDetailsFetchInFlight = false
           this.questionDataLoaded = true
           if (response?.result?.questions && response.result.questions.length > 0) {
+            this.questionDetailsFetched = true
             const completeQuestionData = response.result.questions[0]
             // Merge complete data with existing questionData
             this.questionData = { ...this.questionData, ...completeQuestionData }
@@ -370,6 +398,7 @@ export class AssessmentQuestionListComponent implements OnInit, OnChanges {
           }
         },
         error: (error: any) => {
+          this.questionDetailsFetchInFlight = false
           this.questionDataLoaded = true
           console.error('Error fetching question details:', error)
         }

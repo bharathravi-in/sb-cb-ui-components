@@ -35,11 +35,17 @@
           <strong>{{ option.value }}</strong>
         </div>
 
-        <!-- Rich Text Editor for Option -->
+        <!-- Rich Text Editor for Option, mounted only once the option is opened for editing -->
         <div *ngIf="!isMCQTrueFalse()" class="option-editor">
-          <sb-uic-assessment-rich-text [textToBeShown]="option.text" (getContent)="onOptionTextChange(option, $event)"
-            [showAudioVideoToolBar]="false" [readOnly]="isReadOnly">
+          <sb-uic-assessment-rich-text *ngIf="isOptionEditorActive(option); else optionPreview"
+            [textToBeShown]="option.text" (getContent)="onOptionTextChange(option, $event)"
+            [showAudioVideoToolBar]="false" [readOnly]="isReadOnly" [autoFocus]="true">
           </sb-uic-assessment-rich-text>
+          <ng-template #optionPreview>
+            <div class="option-preview" [class.read-only]="isReadOnly" [attr.tabindex]="isReadOnly ? null : 0"
+              (click)="activateOptionEditor(option)" (focus)="activateOptionEditor(option)"
+              [innerHTML]="option.text"></div>
+          </ng-template>
         </div>
       </div>
 

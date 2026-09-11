@@ -235,3 +235,11 @@
     transform: translateY(0);
   }
 }
+.question-editor-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px;
+  color: #666666;
+}

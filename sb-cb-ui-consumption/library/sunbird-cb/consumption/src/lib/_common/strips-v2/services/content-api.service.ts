@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs'
 import { catchError, map, switchMap } from 'rxjs/operators'
-import { ApiMethod, ApiRegistryEntry, ChainedApiConfig } from '../models/content-section.model'
+import { ApiMethod, ApiRegistryEntry, ChainedApiConfig, ContentSectionConfig } from '../models/content-section.model'
 import { API_REGISTRY } from '../registry/api-registry'
 import { ConfigurationsService, WidgetEnrollService } from '@sunbird-cb/utils-v2'
 import { WidgetUserServiceLib } from '../../../_services/widget-user-lib.service'
@@ -17,8 +17,19 @@ export class ContentApiService {
   private readonly cardClickDetailsSubject = new Subject<any>()
   readonly cardClickDetails$ = this.cardClickDetailsSubject.asObservable()
 
+  /**
+   * In-flight CBP plan request per plan year, so the CBP sections on one page share a single
+   * POST. This service is a root singleton, so the map spans every section on the page.
+   */
+  private readonly cbpPlanInFlight = new Map<string, Promise<any[]>>()
+
   private readonly emptySectionKeysSubject = new BehaviorSubject<string[]>([])
   readonly emptySectionKeys$ = this.emptySectionKeysSubject.asObservable()
+
+  private readonly sectionUpdateSubject = new Subject<{ sectionKey: string; changes: Partial<ContentSectionConfig> }>()
+  // Lets a consumer (e.g. HomeV2Component, after a slow info API resolves) patch an already-rendered
+  // section's config in place — ContetnSectionsComponent merges these into its sections signal.
+  readonly sectionUpdate$ = this.sectionUpdateSubject.asObservable()
 
   publishCardClickDetails(details: any): void {
     this.cardClickDetailsSubject.next(details)
@@ -34,13 +45,23 @@ export class ContentApiService {
     }
   }
 
+  updateSection(sectionKey: string, changes: Partial<ContentSectionConfig>): void {
+    if (!sectionKey) {
+      return
+    }
+    this.sectionUpdateSubject.next({ sectionKey, changes })
+  }
+
   async loadContent(apiDetailsKey: string): Promise<Observable<unknown>> {
     switch (apiDetailsKey) {
       case 'aparApi':
       case 'trainingPlanApi':
       case 'draftCBPplanApi':
         // CBPlan V3; the service resolves the current plan year and caches per year.
-        return of(await this.userService.fetchCbpPlanListV3().toPromise())
+        // All three keys are slices of the SAME year's dataset (CardTransformerService filters
+        // on isApar / planTypeV2), and each section calls loadContent separately, so they are
+        // deduped onto one request here.
+        return of(await this.loadCbpPlanOnce())
       default:
         let config: ApiRegistryEntry | undefined
         const globalApiConfig = _.get(this.configSvc, 'globalConfig.apis.apiRegistryConfig')
@@ -71,6 +92,28 @@ export class ContentApiService {
 
         return this.executeRequest(config, apiDetailsKey)
     }
+  }
+
+  /**
+   * One CBP plan request per plan year, shared by every CBP section on the page.
+   *
+   * The year-scoped IndexedDB cache cannot collapse these on its own: it is only written
+   * once a response lands, so sections that start together all miss it and each POSTs
+   * /cbplan/v3/user/dictionary. The entry is dropped as soon as the request settles, so a
+   * later navigation still re-reads (and re-validates) the cache normally.
+   */
+  private loadCbpPlanOnce(): Promise<any[]> {
+    const planYear = this.userService.getCurrentFinancialYear()
+    const inFlight = this.cbpPlanInFlight.get(planYear)
+    if (inFlight) {
+      return inFlight
+    }
+    const request = this.userService.fetchCbpPlanListV3(planYear)
+      .toPromise()
+      .then((data: any) => data || [])
+      .finally(() => this.cbpPlanInFlight.delete(planYear))
+    this.cbpPlanInFlight.set(planYear, request)
+    return request
   }
 
   private executeRequest(config: ApiRegistryEntry, apiDetailsKey: string): Observable<unknown> {

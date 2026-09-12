@@ -16,6 +16,12 @@ import { Router } from '@angular/router'
 // than imported: consumption does not depend on the search-listing package.
 const TRAINING_PLANS_SEARCH_CATEGORY = 'training-plans'
 
+// The plan type the CBP plan page offers for AI-drafted plans — the same bucket
+// `draftCBPplanApi` is built from (`planTypeV2` of AICBP). CbpPlanComponent maps this hint
+// onto whichever plan type cbp.json configures for that bucket, so the id here need only
+// name the bucket, not match the configured label.
+const AI_DRAFTED_PLAN_TYPE = 'aicbp'
+
 @Component({
   selector: 'sb-uic-content-strips',
   standalone: true,
@@ -31,6 +37,9 @@ const TRAINING_PLANS_SEARCH_CATEGORY = 'training-plans'
 export class ContentStripsComponent implements OnInit {
   contentConfig = input.required<ContentConfig>();
   sectionKey = input<string>('');
+  // When true, skips fetching and stays on the skeleton state — used for the pills section's
+  // upfront skeleton before a pill (and its real contentConfig) has actually been selected.
+  forceLoading = input<boolean>(false);
 
   // Expose CardType enum so the template can use it in @switch
   CardType = CardType;
@@ -68,6 +77,10 @@ export class ContentStripsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeSkeletons()
+    if (this.forceLoading()) {
+      this.loading.set(true)
+      return
+    }
     this.fetchContent()
     this.getCbPlanData()
   }
@@ -163,6 +176,15 @@ export class ContentStripsComponent implements OnInit {
       // The *PlanListApi keys are deliberately absent from this switch: plan cards link to the
       // plan listing (/app/plans), which carries its own params, so their configured
       // viewMoreUrl is passed through untouched by the default branch below.
+      case 'draftCBPplanApi':
+        // Same contract as the APAR strip above: the plan page opens on the plan type the
+        // strip was showing rather than on all of them. `planType` and not `category` —
+        // CbpPlanComponent reads its plan type filter off that param, where `category` is
+        // how the search listing names the same idea.
+        return {
+          ...viewMoreUrl,
+          queryParams: { ...(viewMoreUrl.queryParams || {}), planType: AI_DRAFTED_PLAN_TYPE },
+        }
       case 'trainingPlanApi':
         // The listing page drives BOTH the visible result set (LearnSearchComponent
         // .seeAllResults) and the pre-checked category checkbox (SearchFiltersComponent

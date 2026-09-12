@@ -1,10 +1,12 @@
 import { Component, input, signal, ChangeDetectionStrategy, computed, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { PillConfig, ContentConfig, ContentSectionConfig } from '../models/content-section.model'
+import { PillConfig, ContentConfig, ContentSectionConfig, CardType } from '../models/content-section.model'
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatIconModule } from '@angular/material/icon'
 import { filterVisiblePills } from '../utils/visibility.util'
 import { ContentStripsComponent } from '../content-strips/content-strips.component'
+
+const SKELETON_PILLS_COUNT = 6
 
 @Component({
   selector: 'sb-uic-content-strip-with-pills',
@@ -27,6 +29,19 @@ export class ContentStripWithPillsComponent implements AfterViewInit {
   canScrollRight = signal<boolean>(false);
 
   visiblePills = computed(() => filterVisiblePills(this.pills()));
+
+  isSectionLoading = computed(() => this.section()?.sectionLoading === true);
+  skeletonPills = computed(() => new Array(SKELETON_PILLS_COUNT).fill(0).map((_, i) => i));
+
+  // Minimal placeholder so sb-uic-content-strips can render its own card skeletons before any
+  // pill (and its real contentConfig) has been resolved.
+  readonly skeletonContentConfig: ContentConfig = {
+    cardType: CardType.CourseCard,
+    maxCardsToShow: SKELETON_PILLS_COUNT,
+    cardClickDetails: { courseCategory: '' },
+    viewMoreUrl: { path: '' },
+    showViewAll: false,
+  };
 
   resolvedDefaultPillKey = computed<string>(() => {
     const key = this.defaultPillKey()

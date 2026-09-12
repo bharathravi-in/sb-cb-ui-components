@@ -14,6 +14,7 @@ import {
   Subscript,
   Superscript,
   GeneralHtmlSupport,
+  PasteFromOffice,
 } from 'ckeditor5'
 
 import SimpleAudioUpload from './plugins/simple-audio-upload/simple-audio-upload-plugin'
@@ -38,6 +39,8 @@ export const editorConfig = {
     ImageUpload,
     Subscript,
     Superscript,
+    // Rewrites Word / Google Docs list markup into real lists before PastePlugin cleans it.
+    PasteFromOffice,
     SimpleAudioUpload,
     SimpleVideoUpload,
     SimpleImageUpload,

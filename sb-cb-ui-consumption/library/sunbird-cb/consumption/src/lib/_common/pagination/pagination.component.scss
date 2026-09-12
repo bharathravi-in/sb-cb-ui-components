@@ -1,15 +1,18 @@
+/* Colours are design-system custom properties, redefined under [data-theme="dark"] by the
+   tokens, so this control follows the app's light/dark mode without a separate dark ruleset.
+   Light-mode values match the hex codes these replaced. */
 .ws-pagination-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #ffffff;
-  border-top: 1px solid #00000014;
+  background-color: var(--environment-application-backgrounds-card-background);
+  border-top: 1px solid var(--border-default);
   .pagination-size-select span {
     /* stylelint-disable */
     font-family: Lato;
     /* stylelint-enable */
     line-height: 100%;
-    color: #666666;
+    color: var(--text-bandw-black-captions);
   }
 }
 ul {
@@ -21,7 +24,7 @@ ul {
     height: 24px;
     text-align: center;
     a {
-      color: #666666;
+      color: var(--text-bandw-black-captions);
       font-size: 14px;
       border: 0;
       font-family: Lato;
@@ -35,13 +38,16 @@ ul {
     &:hover {
       border-radius: 99px;
       cursor: pointer;
-      background-color: #f5f5f5;
+      background-color: var(--surface-tertiary);
     }
 
     &.active {
-      background: #1b4ca1;
+      /* `other-background` darkens in dark mode (#1B4CA1 -> #133672), keeping the white
+         page number legible; the *-500-400 fill lightens and would not. */
+      background: var(--environment-application-backgrounds-other-background);
       border-radius: 99px;
       a {
+        /* On the brand fill in both themes, so this one stays white. */
         color: #ffffff !important;
       }
     }

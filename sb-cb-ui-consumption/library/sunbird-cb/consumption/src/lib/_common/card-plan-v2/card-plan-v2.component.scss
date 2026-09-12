@@ -1,0 +1,464 @@
+/* ── Dimensions ─────────────────────────────────────────── */
+/* Matched to card-course-v2 so a plan strip and a course strip share the carousel geometry
+   (ContentStripsComponent passes one cardWidth for every card type). */
+$pc-width : 254px;
+$pc-height : 325px;
+$pc-media-h : 140px;
+$pc-radius : 10px;
+$pc-body-pad : 10px 12px;
+
+/* ── Theme ──────────────────────────────────────────────────
+   Everything that has to flip between light and dark is a design-system custom property
+   (those are redefined under [data-theme="dark"] in the design-system tokens), so this card
+   needs no dark-mode ruleset of its own.
+
+   The exceptions are deliberate and named `permanent-*`: the badges sit on the painted media
+   area, which is the brand purple in BOTH themes, so flipping them would put dark text on a
+   dark ground. The skeleton greys have no token, so they are local custom properties swapped
+   for the dark theme just below.
+   ────────────────────────────────────────────────────────── */
+$permanent-badge-bg : #101010;
+$permanent-badge-fg : #ffffff;
+
+:host {
+  /* Skeleton shimmer — no design-system token covers a gradient pair. */
+  --pc-skeleton-base: #f0f0f0;
+  --pc-skeleton-highlight: #e0e0e0;
+  --pc-skeleton-block: #e8e8e8;
+
+  /* Status colours.
+     Two sets are needed because the same three states are drawn on two very different
+     grounds: the media badge is a near-black plate in both themes, while the landscape
+     footer sits on the card surface (white in light, deep blue in dark). One palette cannot
+     stay legible on both.
+       *-badge-*  : on the dark plate — the design-system accent values, written literally
+                    because --color-accents-* are primitives defined only in the light block.
+       *-status-* : on the card surface — the design-system's semantic status colours, which
+                    ARE defined in both theme blocks. */
+  --pc-badge-overdue: #FF383C;
+  --pc-badge-progress: #FF8D28;
+  --pc-badge-done: #34C759;
+
+  --pc-status-overdue: var(--text-system-text-error);
+  --pc-status-progress: var(--text-system-text-warning);
+  --pc-status-done: var(--text-system-text-success);
+}
+
+:host-context([data-theme='dark']) {
+  --pc-skeleton-base: rgba(255, 255, 255, 0.06);
+  --pc-skeleton-highlight: rgba(255, 255, 255, 0.14);
+  --pc-skeleton-block: rgba(255, 255, 255, 0.08);
+
+  /* The card surface is a deep blue in dark mode, where the darker semantic status colours
+     stop reading — so the surface statuses adopt the brighter badge set. */
+  --pc-status-overdue: var(--pc-badge-overdue);
+  --pc-status-progress: var(--pc-badge-progress);
+  --pc-status-done: var(--pc-badge-done);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Base card
+   ═══════════════════════════════════════════════════════════ */
+.pc-card {
+  display: flex;
+  flex-direction: column;
+  width: $pc-width;
+  height: $pc-height;
+  border-radius: $pc-radius;
+  overflow: hidden;
+  cursor: pointer;
+  box-sizing: border-box;
+  border: 1px solid var(--border-strong);
+  font-family: 'Noto Sans';
+
+  /* ── MEDIA ────────────────────────────────────────────── */
+  /* No image: a training plan has no thumbnail, so the media area is painted from the
+     theme's primary/secondary colours — the same pair the active pill above it uses. */
+  &__media {
+    position: relative;
+    flex: 0 0 $pc-media-h;
+    height: $pc-media-h;
+    overflow: hidden;
+    background: var(--environment-all-fills-primary-primary-500-400);
+  }
+
+  /* Quarter-circle sweeping out of the bottom-right corner. */
+  &__media-arc {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 124px;
+    height: 108px;
+    background: var(--environment-all-fills-secondry-secondry-500-400);
+    border-top-left-radius: 100%;
+  }
+
+  /* Status badge – top-left of the media area */
+  &__status {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    max-width: calc(100% - 20px);
+    background: $permanent-badge-bg;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    /* currentColor drives the dot, so each state needs only one declaration. */
+    &--overdue {
+      color: var(--pc-badge-overdue);
+    }
+
+    &--in-progress {
+      color: var(--pc-badge-progress);
+    }
+
+    &--completed {
+      color: var(--pc-badge-done);
+    }
+  }
+
+  &__status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  /* Content count – bottom-right of the media area */
+  &__count {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: $permanent-badge-bg;
+    color: $permanent-badge-fg;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 12px;
+    white-space: nowrap;
+  }
+
+  &__count-icon {
+    font-size: 13px;
+    width: 13px;
+    height: 13px;
+    line-height: 13px;
+  }
+
+  /* ── BODY ─────────────────────────────────────────────── */
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: $pc-body-pad;
+    overflow: hidden;
+    background: var(--environment-application-backgrounds-card-background);
+  }
+
+  /* Row 1 – plan year + due date (fixed 28px) */
+  &__meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    height: 28px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--surface-tertiary);
+    color: var(--text-bandw-black-body);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &--type {
+      font-weight: 600;
+      padding: 3px 6px;
+    }
+  }
+
+  &__chip-icon {
+    font-size: 13px;
+    width: 13px;
+    height: 13px;
+    line-height: 13px;
+    flex-shrink: 0;
+  }
+
+  &__chip-img {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* Row 2 – title (fixed 46px = 2 lines × 23px) */
+  &__title-wrap {
+    height: 46px;
+    flex-shrink: 0;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+
+  &__title {
+    margin: 0;
+    /* Defensive: reset any inherited/global white-space or word-wrap overrides */
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    font: 600 var(--font-size-body-1) 'Noto Sans';
+    line-height: 23px;
+    color: var(--text-bandw-black-sub-heading);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Row 3 – "Created By" + the name (fixed 40px) */
+  &__owner {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    height: 40px;
+    flex-shrink: 0;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+
+  &__owner-label {
+    font: 400 12px 'Noto Sans';
+    color: var(--text-bandw-black-captions);
+  }
+
+  &__owner-name {
+    font: 600 12px 'Noto Sans';
+    color: var(--text-bandw-black-sub-heading);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Row 4 – plan type chip, pinned to the card bottom */
+  &__footer {
+    margin-top: auto;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    height: 30px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Landscape row — the mobile listing layout
+   ═══════════════════════════════════════════════════════════ */
+.pc-row {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: $pc-radius;
+  background: var(--environment-application-backgrounds-card-background);
+  cursor: pointer;
+  font-family: 'Noto Sans';
+
+  &__top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* Same painted media as the portrait card, scaled down to a thumbnail. */
+  &__media {
+    position: relative;
+    flex: 0 0 124px;
+    width: 124px;
+    height: 84px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--environment-all-fills-primary-primary-500-400);
+  }
+
+  /* The arc is sized for the 140px-tall portrait media, so it needs its own scale here. */
+  .pc-card__media-arc {
+    width: 76px;
+    height: 66px;
+  }
+
+  &__count {
+    right: 6px;
+    bottom: 6px;
+    padding: 2px 7px;
+  }
+
+  &__main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* The row grows with its content, so the fixed heights the portrait card uses to keep a
+     carousel aligned would only clip text here. */
+  .pc-card__meta-row {
+    height: auto;
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .pc-card__title-wrap {
+    height: auto;
+    margin-top: 6px;
+  }
+
+  &__type {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  &__divider {
+    height: 1px;
+    background: var(--border-strong);
+    margin: 12px 0 10px;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  &__org-logo {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    /* Org logo art is drawn for a light plate, so the backing stays white in both themes. */
+    background: #ffffff;
+  }
+
+  &__org-name {
+    font: 400 12px 'Noto Sans';
+    color: var(--text-bandw-black-captions);
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Plain coloured text, not the media area's black pill — so it needs the surface palette
+     rather than the brighter one tuned for the dark plate. */
+  &__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .pc-card__status--overdue {
+    color: var(--pc-status-overdue);
+  }
+
+  .pc-card__status--in-progress {
+    color: var(--pc-status-progress);
+  }
+
+  .pc-card__status--completed {
+    color: var(--pc-status-done);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Skeleton loader helpers
+   ═══════════════════════════════════════════════════════════ */
+.pc-skeleton {
+  background: linear-gradient(90deg,
+      var(--pc-skeleton-base) 25%,
+      var(--pc-skeleton-highlight) 50%,
+      var(--pc-skeleton-base) 75%);
+  background-size: 200% 100%;
+  animation: pc-shimmer 1.4s infinite;
+  border-radius: 4px;
+
+  &--chip {
+    width: 62px;
+    height: 22px;
+    border-radius: 12px;
+  }
+
+  &--chip-wide {
+    width: 88px;
+  }
+
+  &--line {
+    height: 13px;
+  }
+}
+
+.pc-card__media--skeleton {
+  background: var(--pc-skeleton-block);
+  animation: pc-breathe 1.8s ease-in-out infinite;
+}
+
+@keyframes pc-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes pc-breathe {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* Tooltip for truncated titles */
+::ng-deep .pc-title-tooltip.mat-mdc-tooltip {
+  font-size: 12px;
+  max-width: 220px;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.5;
+}

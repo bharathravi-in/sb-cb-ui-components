@@ -1,0 +1,169 @@
+<!-- ── SKELETON STATE ──────────────────────────────────────── -->
+@if (isLoading()) {
+<div class="pc-card pc-card--skeleton" aria-busy="true" aria-label="Loading plan card">
+
+  <div class="pc-card__media pc-card__media--skeleton" aria-hidden="true"></div>
+
+  <div class="pc-card__body" aria-hidden="true">
+    <div class="pc-card__meta-row">
+      <div class="pc-skeleton pc-skeleton--chip"></div>
+      <div class="pc-skeleton pc-skeleton--chip pc-skeleton--chip-wide"></div>
+    </div>
+
+    <div class="pc-card__title-wrap">
+      <div class="pc-skeleton pc-skeleton--line w-full"></div>
+      <div class="pc-skeleton pc-skeleton--line w-3/4 mt-1"></div>
+    </div>
+
+    <div class="pc-card__owner">
+      <div class="pc-skeleton pc-skeleton--line w-1/3"></div>
+      <div class="pc-skeleton pc-skeleton--line w-2/3 mt-1"></div>
+    </div>
+
+    <div class="pc-card__footer">
+      <div class="pc-skeleton pc-skeleton--chip"></div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ── CONTENT STATE — PORTRAIT (grid / carousel) ──────────── -->
+@if (!isLoading() && plan() && layout() === 'portrait') {
+@let p = plan()!;
+<div class="pc-card" role="article" [attr.aria-label]="p.title" tabindex="0" (click)="onCardClick()"
+  (keydown.enter)="onCardClick()" (keydown.space)="$event.preventDefault(); onCardClick()">
+
+  <!-- ┌─── MEDIA — drawn, not loaded: a plan has no thumbnail ─┐ -->
+  <div class="pc-card__media">
+    <span class="pc-card__media-arc" aria-hidden="true"></span>
+
+    <!-- Status badge (top-left) -->
+    <span class="pc-card__status" [class.pc-card__status--overdue]="p.planStatus === 'overdue'"
+      [class.pc-card__status--in-progress]="p.planStatus === 'inProgress'"
+      [class.pc-card__status--completed]="p.planStatus === 'completed'">
+      <span class="pc-card__status-dot" aria-hidden="true"></span>
+      {{ statusLabelKey() | translate }}
+    </span>
+
+    <!-- Content count (bottom-right) -->
+    @if (p.contentCount > 0) {
+    <span class="pc-card__count">
+      <mat-icon class="pc-card__count-icon" aria-hidden="true">school</mat-icon>
+      {{ p.contentCount }} {{ contentCountLabelKey() | translate }}
+    </span>
+    }
+  </div>
+  <!-- └──────────────────────────────────────────────────────────┘ -->
+
+  <!-- ┌─── BODY ──────────────────────────────────────────────┐ -->
+  <div class="pc-card__body">
+
+    <!-- Row 1 – plan year + due date -->
+    <div class="pc-card__meta-row">
+      @if (p.planYear) {
+      <span class="pc-card__chip">{{ p.planYear }}</span>
+      }
+      @if (p.endDate) {
+      <span class="pc-card__chip" [attr.aria-label]="'Due on ' + (p.endDate | date: 'dd/MM/yyyy')">
+        <mat-icon class="pc-card__chip-icon" aria-hidden="true">calendar_today</mat-icon>
+        {{ p.endDate | date: 'dd/MM/yyyy' }}
+      </span>
+      }
+    </div>
+
+    <!-- Row 2 – plan name (always 2-line height) -->
+    <div class="pc-card__title-wrap">
+      <h3 #titleEl class="pc-card__title" [matTooltip]="p.title" [matTooltipDisabled]="!isTitleTruncated()"
+        [matTooltipShowDelay]="400" matTooltipClass="pc-title-tooltip">{{ p.title }}</h3>
+    </div>
+
+    <!-- Row 3 – who owns the plan -->
+    @if (p.createdByName) {
+    <div class="pc-card__owner">
+      <span class="pc-card__owner-label">{{ 'cardplanv2.createdBy' | translate }}</span>
+      <span #ownerEl class="pc-card__owner-name" [matTooltip]="p.createdByName"
+        [matTooltipDisabled]="!isOwnerTruncated()" [matTooltipShowDelay]="400"
+        matTooltipClass="pc-title-tooltip">{{ p.createdByName }}</span>
+    </div>
+    }
+
+    <!-- Row 4 – plan type -->
+    <div class="pc-card__footer">
+      <span class="pc-card__chip pc-card__chip--type">
+        @if (planTypeIcon()) {
+        <img class="pc-card__chip-img" [src]="planTypeIcon()" alt="" aria-hidden="true" />
+        }
+        {{ planTypeLabel() }}
+      </span>
+    </div>
+
+  </div>
+  <!-- └──────────────────────────────────────────────────────────┘ -->
+
+</div>
+}
+
+<!-- ── CONTENT STATE — LANDSCAPE (mobile listing row) ─────── -->
+@if (!isLoading() && plan() && layout() === 'landscape') {
+@let p = plan()!;
+<div class="pc-row" role="article" [attr.aria-label]="p.title" tabindex="0" (click)="onCardClick()"
+  (keydown.enter)="onCardClick()" (keydown.space)="$event.preventDefault(); onCardClick()">
+
+  <div class="pc-row__top">
+    <!-- Media — drawn, not loaded -->
+    <div class="pc-row__media">
+      <span class="pc-card__media-arc" aria-hidden="true"></span>
+      @if (p.contentCount > 0) {
+      <span class="pc-card__count pc-row__count">
+        <mat-icon class="pc-card__count-icon" aria-hidden="true">school</mat-icon>
+        {{ p.contentCount }} {{ contentCountLabelKey() | translate }}
+      </span>
+      }
+    </div>
+
+    <div class="pc-row__main">
+      <div class="pc-card__meta-row">
+        @if (p.planYear) {
+        <span class="pc-card__chip">{{ p.planYear }}</span>
+        }
+        @if (p.endDate) {
+        <span class="pc-card__chip" [attr.aria-label]="'Due on ' + (p.endDate | date: 'dd/MM/yyyy')">
+          <mat-icon class="pc-card__chip-icon" aria-hidden="true">calendar_today</mat-icon>
+          {{ p.endDate | date: 'dd/MM/yyyy' }}
+        </span>
+        }
+      </div>
+
+      <div class="pc-card__title-wrap">
+        <h3 #titleEl class="pc-card__title" [matTooltip]="p.title" [matTooltipDisabled]="!isTitleTruncated()"
+          [matTooltipShowDelay]="400" matTooltipClass="pc-title-tooltip">{{ p.title }}</h3>
+      </div>
+
+      <div class="pc-row__type">
+        <span class="pc-card__chip pc-card__chip--type">
+          @if (planTypeIcon()) {
+          <img class="pc-card__chip-img" [src]="planTypeIcon()" alt="" aria-hidden="true" />
+          }
+          {{ planTypeLabel() }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pc-row__divider"></div>
+
+  <!-- Owner on the left, status on the right — the media area carries no badge here. -->
+  <div class="pc-row__footer">
+    <img class="pc-row__org-logo" [src]="defaultSLogo()" alt="" aria-hidden="true" loading="lazy" />
+    <span #ownerEl class="pc-row__org-name" [matTooltip]="p.createdByName"
+      [matTooltipDisabled]="!isOwnerTruncated()" [matTooltipShowDelay]="400"
+      matTooltipClass="pc-title-tooltip">{{ p.createdByName }}</span>
+    <span class="pc-row__status" [class.pc-card__status--overdue]="p.planStatus === 'overdue'"
+      [class.pc-card__status--in-progress]="p.planStatus === 'inProgress'"
+      [class.pc-card__status--completed]="p.planStatus === 'completed'">
+      <span class="pc-card__status-dot" aria-hidden="true"></span>
+      {{ statusLabelKey() | translate }}
+    </span>
+  </div>
+</div>
+}

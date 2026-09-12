@@ -1,12 +1,15 @@
+/* Colours here are design-system custom properties, which the tokens redefine under
+   [data-theme="dark"] — so this panel follows the app's light/dark mode with no separate
+   dark ruleset. Every light-mode value below is the same colour the hardcoded hex was. */
 .filter-sidebar {
-  background: #ffffff;
+  background: var(--environment-application-backgrounds-card-background);
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-strong);
 }
 
 .filter-section-container {
   padding-bottom: 16px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--border-default);
   margin-bottom: 8px;
 
   &:last-child {
@@ -38,11 +41,11 @@
 
 :host ::ng-deep {
   .mat-checkbox-frame {
-    border: 1px solid #00000099;
+    border: 1px solid var(--text-bandw-black-captions);
   }
 
   .mat-checkbox-checked.mat-accent .mat-checkbox-background {
-    background: #1b4ca1 0% 0% no-repeat padding-box !important;
+    background: var(--environment-application-backgrounds-other-background) 0% 0% no-repeat padding-box !important;
     border-radius: 4px;
   }
 
@@ -50,7 +53,7 @@
     @extend .mat-checkbox-label;
     font-weight: 700;
     line-height: 100%;
-    color: #1b4ca1;
+    color: var(--text-button-text-link);
   }
 }
 
@@ -97,13 +100,13 @@
   .filter-pill {
     padding: 2px 2px 2px 12px;
     border-radius: 18px;
-    background-color: #e0e0e0;
+    background-color: var(--surface-tertiary);
 
     span {
       /* stylelint-disable */
       font-family: Lato;
       /* stylelint-enable */
-      color: #626262;
+      color: var(--text-bandw-black-captions);
       display: inline-block;
       max-width: 14em;
       overflow: hidden;
@@ -127,7 +130,7 @@
   /* stylelint-disable */
   font-family: Lato;
   /* stylelint-enable */
-  color: #d13924 !important;
+  color: var(--text-system-text-error) !important;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -137,7 +140,7 @@
   /* stylelint-disable */
   font-family: Lato;
   /* stylelint-enable */
-  color: #d13924 !important;
+  color: var(--text-system-text-error) !important;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -157,7 +160,7 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 16.8px;
-  color: #00000099;
+  color: var(--text-bandw-black-captions);
   display: inline-block;
   max-width: 11em;
   overflow: hidden;
@@ -171,7 +174,7 @@
 
   .search-icon {
     font-size: 20px;
-    color: #999;
+    color: var(--text-bandw-black-fine-print);
   }
 }
 
@@ -180,7 +183,7 @@
   font: 400 14px Lato;
   margin-top: 8px;
   display: inline-block;
-  color: #1b4ca1;
+  color: var(--text-button-text-link);
   cursor: pointer;
   text-decoration: none;
   background: none;
@@ -192,13 +195,13 @@
   &:active,
   &:visited {
     text-decoration: none;
-    color: #1b4ca1;
+    color: var(--text-button-text-link);
     outline: none;
   }
 }
 
 .brand-color {
-  color: #1b4ca1;
+  color: var(--text-button-text-link);
 }
 
 .underline {

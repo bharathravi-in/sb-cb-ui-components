@@ -171,6 +171,7 @@ export * from './lib/_common/continue-learning-v2/weekly-claps-card-v2/weekly-cl
 export * from './lib/_common/continue-learning-v2/weekly-claps-card-v2/weekly-claps-data.util'
 
 export * from './lib/_common/card-course-v2/card-course-v2.component'
+export * from './lib/_common/card-plan-v2/card-plan-v2.component'
 // Left Navigation Bar - Dynamic Sidebar
 export * from './lib/_common/left_nav_bar/models/sidebar.models'
 export * from './lib/_common/left_nav_bar/constants/sidebar.constants'

@@ -17,7 +17,11 @@ export enum DisplayType {
 export enum CardType {
   CourseCard = 'courseCard',
   AssessmentCard = 'assessmentCard',
-  ProgramCard = 'programCard'
+  ProgramCard = 'programCard',
+  // Plan-level card (CBP / APAR / AI-CBP training plans) rather than a piece of content.
+  // Needs a plan-level response — see the *PlanListApi keys in the API registry — because
+  // the CBPlan V3 dictionary keys flatten plans down to one item per content id.
+  PlanCard = 'planCard'
 }
 
 export enum ApiMethod {

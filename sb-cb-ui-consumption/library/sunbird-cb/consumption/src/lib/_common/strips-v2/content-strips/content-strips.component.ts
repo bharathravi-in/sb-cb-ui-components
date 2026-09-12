@@ -4,11 +4,11 @@ import { CommonModule } from '@angular/common'
 import { forkJoin, of } from 'rxjs'
 import { catchError } from 'rxjs/operators'
 import { ContentConfig, CardType } from '../models/content-section.model'
-import { CardViewModel } from '../models/card.model'
+import { CardViewModel, PlanCardViewModel } from '../models/card.model'
 import { ContentApiService } from '../services/content-api.service'
 import { CardTransformerService } from '../services/card-transformer.service'
 import { CarouselComponent } from '../../carousel/carousel.component'
-import { CardCourseV2Component, ContentDictionaryService } from '../../../../public-api'
+import { CardCourseV2Component, CardPlanV2Component, ContentDictionaryService } from '../../../../public-api'
 import { CbpPlanCacheService } from '../../../_services/cbp-plan-cache.service'
 import { Router } from '@angular/router'
 
@@ -22,7 +22,8 @@ const TRAINING_PLANS_SEARCH_CATEGORY = 'training-plans'
   imports: [
     CommonModule,
     CarouselComponent,
-    CardCourseV2Component],
+    CardCourseV2Component,
+    CardPlanV2Component],
   templateUrl: './content-strips.component.html',
   styleUrl: './content-strips.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -45,7 +46,7 @@ export class ContentStripsComponent implements OnInit {
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
 
-  cards = signal<CardViewModel[]>([]);
+  cards = signal<(CardViewModel | PlanCardViewModel)[]>([]);
   skeletonArray = signal<number[]>([]);
   loading = signal<boolean>(true);
 
@@ -159,6 +160,9 @@ export class ContentStripsComponent implements OnInit {
           ...viewMoreUrl,
           queryParams: { ...(viewMoreUrl.queryParams || {}), isApar: 'true' },
         }
+      // The *PlanListApi keys are deliberately absent from this switch: plan cards link to the
+      // plan listing (/app/plans), which carries its own params, so their configured
+      // viewMoreUrl is passed through untouched by the default branch below.
       case 'trainingPlanApi':
         // The listing page drives BOTH the visible result set (LearnSearchComponent
         // .seeAllResults) and the pre-checked category checkbox (SearchFiltersComponent

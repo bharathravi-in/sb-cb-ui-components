@@ -8,6 +8,9 @@
       <!-- the card renders its own skeleton, so the placeholder matches the real card's shape -->
       <sb-uic-card-course-v2 [isLoading]="true"></sb-uic-card-course-v2>
       }
+      @case (CardType.PlanCard) {
+      <sb-uic-card-plan-v2 [isLoading]="true"></sb-uic-card-plan-v2>
+      }
       @default {
       <!-- card types without a skeleton state keep the plain block -->
       <div class="animate-pulse bg-gray-200 rounded-lg h-64 w-full"></div>
@@ -25,6 +28,9 @@
       @case (CardType.CourseCard) {
       <sb-uic-card-course-v2 [content]="item" [config]="contentConfig()" [cbPlanMapData]="cbPlanMapData()"
         [isLoading]="loading()"></sb-uic-card-course-v2>
+      }
+      @case (CardType.PlanCard) {
+      <sb-uic-card-plan-v2 [plan]="item" [config]="contentConfig()" [isLoading]="loading()"></sb-uic-card-plan-v2>
       }
       }
     </ng-template>

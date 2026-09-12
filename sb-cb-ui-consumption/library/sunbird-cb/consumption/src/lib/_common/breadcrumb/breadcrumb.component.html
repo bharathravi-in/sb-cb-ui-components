@@ -1,7 +1,7 @@
 <nav class="breadcrumb" aria-label="breadcrumb">
   <ol class="breadcrumb-list">
     @for (item of items(); track $index) {
-      <li class="breadcrumb-item?" [class.is-active]="isLast($index)">
+      <li class="breadcrumb-item" [class.is-active]="isLast($index)">
         @if (!isLast($index)) {
           @if (item?.url) {
             <a class="breadcrumb-link" [routerLink]="[item?.url]">

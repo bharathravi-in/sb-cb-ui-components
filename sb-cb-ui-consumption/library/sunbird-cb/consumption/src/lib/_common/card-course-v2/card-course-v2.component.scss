@@ -23,7 +23,7 @@ $done-green : #388e3c;
   border-radius: $cc-radius;
   // box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   overflow: hidden;
-  // background: var(--environment-application-backgrounds-card-background-1);
+  // background: var(--environment-application-backgrounds-card-background);
   cursor: pointer;
   box-sizing: border-box;
   border: 1px solid var(--border-strong);
@@ -114,7 +114,7 @@ $done-green : #388e3c;
     flex-direction: column;
     padding: $cc-body-pad;
     overflow: hidden;
-    background: var(--environment-application-backgrounds-card-background-1);
+    background: var(--environment-application-backgrounds-card-background);
   }
 
   /* Row 1 – type chip + rating (fixed 26px) */
@@ -133,7 +133,9 @@ $done-green : #388e3c;
     gap: 4px;
     border-radius: 14px;
     padding: 1px 10px;
-    background: var(--color-accents-yellow);
+    /* Theme-aware fill: --color-accents-* are primitives declared only under
+       [data-theme="light"], so they resolve to nothing in dark mode. */
+    background: var(--environment-all-fills-secondry-secondry-500-400);
     max-width: 70%;
     overflow: hidden;
 
@@ -297,7 +299,7 @@ $done-green : #388e3c;
     flex-shrink: 0;
 
     &--overdue {
-      color: var(--color-accents-red)
+      color: var(--text-system-text-error)
     }
 
     &--done {

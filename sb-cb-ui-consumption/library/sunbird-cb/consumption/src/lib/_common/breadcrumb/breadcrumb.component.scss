@@ -1,3 +1,6 @@
+/* Colours are design-system custom properties, which the tokens redefine under
+   [data-theme="dark"], so the trail follows the app's light/dark mode. Light-mode values are
+   the same colours the hardcoded hex codes were. */
 .breadcrumb {
   display: inline-block;
 }
@@ -10,7 +13,7 @@
   margin: 0;
   padding: 8px 16px;
   list-style: none;
-  background: #e8edf6;
+  background: var(--surface-secondary);
   border-radius: 999px;
 }
 
@@ -31,7 +34,7 @@
   gap: 6px;
   padding: 4px 8px;
   border-radius: 6px;
-  color: #40455a;
+  color: var(--text-bandw-black-body);
   font-weight: 500;
   text-decoration: none;
   white-space: nowrap;
@@ -41,8 +44,8 @@
     background-color 0.2s ease;
 
   &:hover {
-    color: #1e5aa8;
-    background: rgba(30, 90, 168, 0.08);
+    color: var(--text-button-text-link);
+    background: var(--environment-all-fills-primary-o-primary-o-8-96);
   }
 }
 
@@ -51,7 +54,7 @@
   align-items: center;
   gap: 6px;
   padding: 4px 8px;
-  color: #000000cc;
+  color: var(--text-bandw-black-heading);
   font-weight: 700;
   white-space: nowrap;
 }
@@ -70,5 +73,5 @@
   height: 20px;
   font-size: 20px;
   line-height: 20px;
-  color: #8a93a6;
+  color: var(--text-bandw-black-captions);
 }

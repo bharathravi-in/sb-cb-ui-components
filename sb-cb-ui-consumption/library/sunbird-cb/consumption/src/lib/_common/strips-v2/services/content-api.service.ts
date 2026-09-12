@@ -259,6 +259,22 @@ export class ContentApiService {
       return body
     }
 
+    // Plan search (/cbplan/v2/search) takes a FLAT body — { filter, pageNumber, pageSize, … } —
+    // rather than the { request: { filters } } envelope every content search uses. Its
+    // `orgIdList` placeholder still has to be resolved to the signed-in user's org, or the
+    // plan strips would ask for every org's plans.
+    const flatFilter = (body as Record<string, any>).filter
+    if (flatFilter && Object.prototype.hasOwnProperty.call(flatFilter, 'orgIdList')) {
+      const rootOrgId = this.configSvc?.userProfile?.rootOrgId
+      return {
+        ...body,
+        filter: {
+          ...flatFilter,
+          orgIdList: rootOrgId ? [rootOrgId] : [],
+        },
+      }
+    }
+
     const request = (body as Record<string, any>).request
     if (!request || !request.filters) {
       return body
